@@ -81,8 +81,16 @@ const Checkout = () => {
     <div className="min-h-screen">
       <div className="container mx-auto px-4 py-6 pb-24">
         <h1 className="text-2xl font-bold mb-6 text-white">
-          Оформление заказа
+          Оформление заказа - VAPE PLUG
         </h1>
+        <div className="glass-panel p-4 mb-4">
+          <p className="text-white/80 text-sm">
+            📍 Доставка по Минску, Беларусь
+          </p>
+          <p className="text-white/80 text-sm mt-2">
+            💬 Вопросы: <a href="https://t.me/vapepluggmanager" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">@vapepluggmanager</a>
+          </p>
+        </div>
 
         <div className="glass-panel p-4 mb-4">
           <h3 className="font-semibold text-lg mb-3 text-white">

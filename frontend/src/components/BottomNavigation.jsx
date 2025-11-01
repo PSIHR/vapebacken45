@@ -8,7 +8,7 @@ const BottomNavigation = ({ cartCount }) => {
   const navItems = [
     {
       id: 'catalog',
-      label: 'Магазин',
+      label: 'Каталог',
       icon: Store,
       path: '/',
     },

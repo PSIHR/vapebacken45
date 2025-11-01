@@ -22,7 +22,7 @@ const Catalog = ({ onCartUpdate }) => {
       const response = await itemsAPI.getAll();
       const items = response.data.items || [];
       setProducts(items);
-      
+
       const uniqueCategories = [...new Set(items.map(item => item.category).filter(Boolean))];
       setCategories(uniqueCategories);
     } catch (error) {
@@ -50,7 +50,7 @@ const Catalog = ({ onCartUpdate }) => {
         quantity: 1,
         selected_taste: taste,
       });
-      
+
       showAlert(`${product.name} добавлен в корзину`);
       onCartUpdate();
     } catch (error) {
@@ -74,10 +74,14 @@ const Catalog = ({ onCartUpdate }) => {
   return (
     <div className="min-h-screen">
       <div className="container mx-auto px-4 py-6">
-        <h1 className="text-2xl font-bold mb-6 text-white">
-          Каталог товаров
-        </h1>
-        
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-white">
+            VAPE PLUG
+          </h1>
+          <p className="text-white/70 mt-2">📍 Минск, Беларусь</p>
+          <p className="text-white/70 mt-1">💬 По всем вопросам: <a href="https://t.me/vapepluggmanager" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">@vapepluggmanager</a></p>
+        </div>
+
         {categories.length > 0 && (
           <div className="mb-6 flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
             <button

@@ -36,7 +36,7 @@ const Cart = ({ onCartUpdate }) => {
 
   const handleUpdateQuantity = async (itemId, newQuantity) => {
     if (newQuantity < 1) return;
-    
+
     const updatedItems = cartItems.map(item =>
       item.id === itemId ? { ...item, quantity: newQuantity } : item
     );
@@ -97,9 +97,9 @@ const Cart = ({ onCartUpdate }) => {
     <div className="min-h-screen">
       <div className="container mx-auto px-4 py-6 pb-32">
         <h1 className="text-2xl font-bold mb-6 text-white">
-          Корзина
+          Корзина - VAPE PLUG
         </h1>
-        
+
         <div className="mb-6 space-y-3">
           {cartItems.map((item) => (
             <CartItem

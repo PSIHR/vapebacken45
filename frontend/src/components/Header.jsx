@@ -7,7 +7,7 @@ const Header = () => {
         <div className="flex items-center justify-center">
           <Link to="/" className="flex items-center gap-2">
             <span className="text-xl font-semibold text-white">
-              Магазин
+              VAPE PLUG
             </span>
           </Link>
         </div>
