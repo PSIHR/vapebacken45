@@ -59,9 +59,14 @@ This is a **Telegram Mini App** with a complete full-stack implementation combin
 ```
 
 ## Recent Changes
+- **2025-11-01**: Simplified product cards for better mobile UX
+  - Removed "В корзину" button from product cards (was too bulky on mobile)
+  - Entire product card is now clickable to open product detail page
+  - Users add items to cart from detail page where they can select taste/variant
+  - Cleaner, more minimalist card design with just product info and price
+  - Price increased to text-2xl for better visibility without button
 - **2025-11-01**: Improved product card layout and styling
   - Product titles now larger and bolder (text-xl font-bold)
-  - Prices reduced in size (text-lg instead of text-2xl)
   - Changed currency from ₽ to BYN (Belarusian Ruble)
   - Grid layout changed to 2 columns for better mobile view
   - Fixed search icon blur issue by restructuring backdrop-blur application

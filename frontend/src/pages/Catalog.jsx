@@ -1,17 +1,16 @@
 import { useState, useEffect } from 'react';
-import { itemsAPI, basketAPI, categoriesAPI } from '../services/api';
+import { itemsAPI, categoriesAPI } from '../services/api';
 import { useTelegram } from '../hooks/useTelegram';
 import ProductCard from '../components/ProductCard';
 import { Loader2, Search } from 'lucide-react';
 
-const Catalog = ({ onCartUpdate }) => {
+const Catalog = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
-  const [selectedTaste, setSelectedTaste] = useState({});
-  const { user, showAlert } = useTelegram();
+  const { showAlert } = useTelegram();
 
   useEffect(() => {
     loadData();
@@ -35,32 +34,6 @@ const Catalog = ({ onCartUpdate }) => {
       showAlert('Ошибка загрузки данных');
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleAddToCart = async (product) => {
-    if (!user?.id) {
-      showAlert('Необходима авторизация через Telegram');
-      return;
-    }
-
-    try {
-      let taste = null;
-      if (product.tastes && product.tastes.length > 0) {
-        taste = selectedTaste[product.id] || product.tastes[0].name;
-      }
-
-      await basketAPI.addItem(user.id, {
-        item_id: product.id,
-        quantity: 1,
-        selected_taste: taste,
-      });
-
-      showAlert(`${product.name} добавлен в корзину`);
-      onCartUpdate();
-    } catch (error) {
-      console.error('Error adding to cart:', error);
-      showAlert('Ошибка добавления в корзину');
     }
   };
 
@@ -137,7 +110,6 @@ const Catalog = ({ onCartUpdate }) => {
               <ProductCard
                 key={product.id}
                 product={product}
-                onAddToCart={handleAddToCart}
               />
             ))}
           </div>

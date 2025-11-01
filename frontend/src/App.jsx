@@ -50,7 +50,7 @@ function App() {
         <Header />
         <main className="pb-24">
           <Routes>
-            <Route path="/" element={<Catalog onCartUpdate={updateCartCount} />} />
+            <Route path="/" element={<Catalog />} />
             <Route path="/product/:id" element={<ProductDetail onCartUpdate={updateCartCount} />} />
             <Route path="/cart" element={<Cart onCartUpdate={updateCartCount} />} />
             <Route path="/checkout" element={<Checkout />} />

@@ -1,17 +1,12 @@
 import { useNavigate } from 'react-router-dom';
-import { ShoppingCart, Plus } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 import { formatPrice } from '../utils/helpers';
 
-const ProductCard = ({ product, onAddToCart }) => {
+const ProductCard = ({ product }) => {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
     navigate(`/product/${product.id}`);
-  };
-
-  const handleAddToCart = (e) => {
-    e.stopPropagation();
-    onAddToCart(product);
   };
 
   return (
@@ -45,16 +40,9 @@ const ProductCard = ({ product, onAddToCart }) => {
           {product.description}
         </p>
         <div className="flex items-center justify-between">
-          <span className="text-lg font-semibold text-white">
+          <span className="text-2xl font-bold text-white">
             {formatPrice(product.price)}
           </span>
-          <button
-            onClick={handleAddToCart}
-            className="bg-white/30 hover:bg-white/40 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all backdrop-blur-sm"
-          >
-            <Plus size={18} />
-            <span className="font-medium">В корзину</span>
-          </button>
         </div>
       </div>
     </div>
