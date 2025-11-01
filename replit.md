@@ -32,6 +32,16 @@ The application follows a client-server architecture with a clear separation bet
 
 ## Recent Changes
 
+- **2025-11-01**: Configured production deployment
+  - Added static file serving for built frontend in `app/main.py`
+  - Backend now serves frontend from `frontend/dist` when built
+  - Deployment configuration: builds frontend with `npm run build`, then runs backend
+  - Backend uses PORT environment variable (defaults to 5000 in production, 3000 in development)
+  - Production-ready for custom domain deployment
+- **2025-11-01**: Added responsive "Выбрать" button to product cards
+  - Mobile: Button is full-width below price for better UX
+  - Desktop: Button appears inline next to price
+  - Glassmorphism design with hover animations and chevron icon
 - **2025-11-01**: Added product characteristics system
   - Database: Added 4 new nullable fields to Item model (strength, puffs, vg_pg, tank_volume)
   - Created Alembic migration for schema update

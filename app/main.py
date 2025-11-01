@@ -89,6 +89,10 @@ async def lifespan(app: FastAPI):
         await conn.run_sync(Base.metadata.create_all)
 
     app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+    
+    if os.path.exists("frontend/dist"):
+        app.mount("/assets", StaticFiles(directory="frontend/dist/assets"), name="assets")
+        app.mount("/", StaticFiles(directory="frontend/dist", html=True), name="frontend")
 
     bot_task = asyncio.create_task(dp.start_polling(bot))
 
@@ -1624,7 +1628,8 @@ async def analytics_completed_orders(
 
 
 async def main():
-    config = uvicorn.Config(app, host="0.0.0.0", port=3000, log_level="info")
+    port = int(os.getenv("PORT", "5000"))
+    config = uvicorn.Config(app, host="0.0.0.0", port=port, log_level="info")
     server = uvicorn.Server(config)
 
     await server.serve()
