@@ -1,33 +1,38 @@
 import { useState, useEffect } from 'react';
-import { itemsAPI, basketAPI } from '../services/api';
+import { itemsAPI, basketAPI, categoriesAPI } from '../services/api';
 import { useTelegram } from '../hooks/useTelegram';
 import ProductCard from '../components/ProductCard';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Search } from 'lucide-react';
 
 const Catalog = ({ onCartUpdate }) => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [selectedTaste, setSelectedTaste] = useState({});
   const { user, showAlert } = useTelegram();
 
   useEffect(() => {
-    loadProducts();
+    loadData();
   }, []);
 
-  const loadProducts = async () => {
+  const loadData = async () => {
     try {
       setLoading(true);
-      const response = await itemsAPI.getAll();
-      const items = response.data.items || [];
+      const [productsResponse, categoriesResponse] = await Promise.all([
+        itemsAPI.getAll(),
+        categoriesAPI.getAll()
+      ]);
+      
+      const items = productsResponse.data.items || [];
       setProducts(items);
 
-      const uniqueCategories = [...new Set(items.map(item => item.category).filter(Boolean))];
-      setCategories(uniqueCategories);
+      const cats = categoriesResponse.data.categories || [];
+      setCategories(cats);
     } catch (error) {
-      console.error('Error loading products:', error);
-      showAlert('Ошибка загрузки товаров');
+      console.error('Error loading data:', error);
+      showAlert('Ошибка загрузки данных');
     } finally {
       setLoading(false);
     }
@@ -59,9 +64,18 @@ const Catalog = ({ onCartUpdate }) => {
     }
   };
 
-  const filteredProducts = selectedCategory
-    ? products.filter(p => p.category?.id === selectedCategory.id)
-    : products;
+  const filteredProducts = products.filter(product => {
+    const matchesCategory = selectedCategory
+      ? product.category?.id === selectedCategory.id
+      : true;
+
+    const matchesSearch = searchQuery
+      ? product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.description?.toLowerCase().includes(searchQuery.toLowerCase())
+      : true;
+
+    return matchesCategory && matchesSearch;
+  });
 
   if (loading) {
     return (
@@ -75,7 +89,7 @@ const Catalog = ({ onCartUpdate }) => {
     <div className="min-h-screen">
       <div className="container mx-auto px-4 py-6">
         {categories.length > 0 && (
-          <div className="mb-6 flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+          <div className="mb-4 flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
             <button
               onClick={() => setSelectedCategory(null)}
               className={`px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-all ${
@@ -101,6 +115,17 @@ const Catalog = ({ onCartUpdate }) => {
             ))}
           </div>
         )}
+
+        <div className="mb-6 relative">
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/60" size={20} />
+          <input
+            type="text"
+            placeholder="Поиск товаров..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-12 pr-4 py-3 rounded-lg bg-white/20 backdrop-blur-sm border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
+          />
+        </div>
 
         {filteredProducts.length === 0 ? (
           <div className="text-center py-16 glass-panel">

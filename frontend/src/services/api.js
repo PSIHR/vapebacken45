@@ -28,6 +28,10 @@ export const itemsAPI = {
   getAll: () => api.get('/items/'),
 };
 
+export const categoriesAPI = {
+  getAll: () => api.get('/categories/'),
+};
+
 export const basketAPI = {
   get: (userId) => api.post(`/basket/${userId}`),
   addItem: (userId, itemData) => api.post(`/basket/${userId}/items`, itemData),
