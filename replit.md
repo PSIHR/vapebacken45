@@ -57,6 +57,13 @@ This is a **Telegram Mini App** with a complete full-stack implementation combin
 ```
 
 ## Recent Changes
+- **2025-11-01**: Added product detail page with taste selection
+  - Created ProductDetail page to view full product information
+  - Implemented taste/flavor selection functionality
+  - Made product cards clickable to navigate to detail page
+  - Added navigation routing for /product/:id
+  - Users can now select taste before adding to cart
+  - Fixed image loading by adding /uploads proxy in Vite config
 - **2025-11-01**: Redesigned UI in Telegram minimalist style
   - Removed bright gradients and emojis for clean, professional look
   - Applied Telegram color palette: white backgrounds, #f4f4f5 page background, #3390ec accent color

@@ -1,9 +1,24 @@
+import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, Plus } from 'lucide-react';
 import { formatPrice } from '../utils/helpers';
 
 const ProductCard = ({ product, onAddToCart }) => {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate(`/product/${product.id}`);
+  };
+
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+    onAddToCart(product);
+  };
+
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+    <div 
+      onClick={handleCardClick}
+      className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-all cursor-pointer"
+    >
       <div className="relative h-48 bg-gray-100">
         {product.image ? (
           <img
@@ -34,7 +49,7 @@ const ProductCard = ({ product, onAddToCart }) => {
             {formatPrice(product.price)}
           </span>
           <button
-            onClick={() => onAddToCart(product)}
+            onClick={handleAddToCart}
             className="bg-[#3390ec] hover:bg-[#2b7cd3] text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
           >
             <Plus size={18} />
