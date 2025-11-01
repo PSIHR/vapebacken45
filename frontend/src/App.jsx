@@ -48,9 +48,9 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen pt-safe">
+      <div className="min-h-screen pt-safe pb-safe">
         <Header />
-        <main className="pb-24">
+        <main className="pb-24 pt-4">
           <Routes>
             <Route path="/" element={<Catalog />} />
             <Route path="/product/:id" element={<ProductDetail onCartUpdate={updateCartCount} />} />
