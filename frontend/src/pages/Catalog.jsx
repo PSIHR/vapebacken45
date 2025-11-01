@@ -72,52 +72,56 @@ const Catalog = ({ onCartUpdate }) => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">Каталог товаров</h1>
-      
-      {categories.length > 0 && (
-        <div className="mb-6 flex gap-2 overflow-x-auto pb-2">
-          <button
-            onClick={() => setSelectedCategory(null)}
-            className={`px-4 py-2 rounded-full whitespace-nowrap transition-colors ${
-              !selectedCategory
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-            }`}
-          >
-            Все
-          </button>
-          {categories.map((cat) => (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-4xl font-extrabold mb-8 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+          Каталог товаров
+        </h1>
+        
+        {categories.length > 0 && (
+          <div className="mb-8 flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
             <button
-              key={cat.id}
-              onClick={() => setSelectedCategory(cat)}
-              className={`px-4 py-2 rounded-full whitespace-nowrap transition-colors ${
-                selectedCategory?.id === cat.id
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              onClick={() => setSelectedCategory(null)}
+              className={`px-6 py-3 rounded-xl font-semibold whitespace-nowrap transition-all duration-300 transform hover:scale-105 shadow-md ${
+                !selectedCategory
+                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                  : 'bg-white text-gray-700 hover:shadow-lg'
               }`}
             >
-              {cat.name}
+              ✨ Все
             </button>
-          ))}
-        </div>
-      )}
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-6 py-3 rounded-xl font-semibold whitespace-nowrap transition-all duration-300 transform hover:scale-105 shadow-md ${
+                  selectedCategory?.id === cat.id
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                    : 'bg-white text-gray-700 hover:shadow-lg'
+                }`}
+              >
+                {cat.name}
+              </button>
+            ))}
+          </div>
+        )}
 
-      {filteredProducts.length === 0 ? (
-        <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">Товары не найдены</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              onAddToCart={handleAddToCart}
-            />
-          ))}
-        </div>
-      )}
+        {filteredProducts.length === 0 ? (
+          <div className="text-center py-20 bg-white/50 backdrop-blur-sm rounded-2xl shadow-lg">
+            <p className="text-gray-500 text-xl font-medium">Товары не найдены 😔</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onAddToCart={handleAddToCart}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

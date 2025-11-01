@@ -73,52 +73,64 @@ const Cart = ({ onCartUpdate }) => {
 
   if (cartItems.length === 0) {
     return (
-      <div className="container mx-auto px-4 py-12">
-        <div className="text-center">
-          <ShoppingBag className="mx-auto text-gray-400 mb-4" size={64} />
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Корзина пуста</h2>
-          <p className="text-gray-600 mb-6">Добавьте товары из каталога</p>
-          <button
-            onClick={() => navigate('/')}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors"
-          >
-            Перейти в каталог
-          </button>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center">
+        <div className="text-center p-8">
+          <div className="bg-white/80 backdrop-blur-sm p-12 rounded-3xl shadow-2xl">
+            <ShoppingBag className="mx-auto text-purple-400 mb-6 animate-bounce-subtle" size={80} />
+            <h2 className="text-3xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">
+              Корзина пуста
+            </h2>
+            <p className="text-gray-600 mb-8 text-lg">Добавьте товары из каталога</p>
+            <button
+              onClick={() => navigate('/')}
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            >
+              🛍️ Перейти в каталог
+            </button>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-6 pb-24">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">Корзина</h1>
-      
-      <div className="mb-6">
-        {cartItems.map((item) => (
-          <CartItem
-            key={item.id}
-            item={item}
-            onUpdateQuantity={handleUpdateQuantity}
-            onRemove={handleRemoveItem}
-          />
-        ))}
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+      <div className="container mx-auto px-4 py-8 pb-32">
+        <h1 className="text-4xl font-extrabold mb-8 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+          🛒 Корзина
+        </h1>
+        
+        <div className="mb-6 space-y-4">
+          {cartItems.map((item) => (
+            <CartItem
+              key={item.id}
+              item={item}
+              onUpdateQuantity={handleUpdateQuantity}
+              onRemove={handleRemoveItem}
+            />
+          ))}
+        </div>
 
-      <div className="bg-white rounded-lg shadow-md p-4 mb-4 sticky bottom-20">
-        <div className="flex justify-between items-center mb-4">
-          <span className="text-lg text-gray-700">Товаров:</span>
-          <span className="text-lg font-semibold">{cartItems.length}</span>
+        <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-6 mb-4 sticky bottom-20 border border-purple-100">
+          <div className="flex justify-between items-center mb-4 text-gray-700">
+            <span className="text-lg font-semibold">Товаров:</span>
+            <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              {cartItems.length}
+            </span>
+          </div>
+          <div className="flex justify-between items-center mb-6 text-2xl font-extrabold border-t border-purple-100 pt-4">
+            <span>Итого:</span>
+            <span className="bg-gradient-to-r from-green-500 to-emerald-600 bg-clip-text text-transparent">
+              {formatPrice(totalPrice)}
+            </span>
+          </div>
+          <button
+            onClick={handleCheckout}
+            className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
+          >
+            ✨ Оформить заказ
+          </button>
         </div>
-        <div className="flex justify-between items-center mb-4 text-xl font-bold border-t pt-4">
-          <span>Итого:</span>
-          <span className="text-green-600">{formatPrice(totalPrice)}</span>
-        </div>
-        <button
-          onClick={handleCheckout}
-          className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold transition-colors"
-        >
-          Оформить заказ
-        </button>
       </div>
     </div>
   );
