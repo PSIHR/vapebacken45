@@ -9,6 +9,20 @@ export const useTelegram = () => {
     if (telegram) {
       telegram.ready();
       telegram.expand();
+      
+      // Дополнительные методы для максимального расширения
+      telegram.isExpanded = true;
+      telegram.headerColor = '#1a1a2e';
+      telegram.backgroundColor = '#1a1a2e';
+      
+      // Включаем полноэкранный режим если доступен
+      if (telegram.requestFullscreen) {
+        telegram.requestFullscreen();
+      }
+      
+      // Скрываем вертикальные свайпы для закрытия
+      telegram.disableVerticalSwipes();
+      
       setTg(telegram);
       setUser(telegram.initDataUnsafe?.user);
     }
