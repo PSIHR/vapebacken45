@@ -32,11 +32,13 @@ The application follows a client-server architecture with a clear separation bet
 
 ## Recent Changes
 
-- **2025-11-01**: Added full-screen mode for Telegram Mini App
+- **2025-11-01**: Added full-screen mode and swipe-lock for Telegram Mini App
   - Implemented `requestFullscreen()` in `useTelegram` hook for immersive experience
   - App now automatically expands to full screen on launch, removing Telegram's header and bottom bars
+  - Added `disableVerticalSwipes()` to prevent closing app by swiping down on content
+  - Users can only close app via header swipe or close button (prevents accidental exits)
   - Full-screen mode provides better UX for product browsing and checkout
-  - Falls back gracefully if full-screen is not available on older Telegram clients
+  - Falls back gracefully if features are not available on older Telegram clients
 
 ## External Dependencies
 

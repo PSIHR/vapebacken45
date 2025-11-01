@@ -19,6 +19,12 @@ export const useTelegram = () => {
         }
       }
       
+      // Блокировка закрытия приложения свайпом вниз по контенту
+      // Пользователь всё ещё может закрыть приложение через шапку или кнопку закрытия
+      if (telegram.disableVerticalSwipes) {
+        telegram.disableVerticalSwipes();
+      }
+      
       setTg(telegram);
       setUser(telegram.initDataUnsafe?.user);
     }
