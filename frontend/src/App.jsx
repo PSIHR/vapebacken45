@@ -48,7 +48,7 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen">
+      <div className="min-h-screen pt-safe">
         <Header />
         <main className="pb-24">
           <Routes>

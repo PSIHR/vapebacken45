@@ -132,4 +132,8 @@ body {
   .pb-safe {
     padding-bottom: env(safe-area-inset-bottom);
   }
+  
+  .pt-safe {
+    padding-top: max(env(safe-area-inset-top), 1rem);
+  }
 }
