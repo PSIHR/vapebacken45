@@ -135,6 +135,13 @@ class AnalyticsStates(StatesGroup):
     waiting_for_period_input = State()
 
 
+class LoyaltyManagementStates(StatesGroup):
+    waiting_for_user_id = State()
+    waiting_for_loyalty_level = State()
+    waiting_for_stamps = State()
+    waiting_for_total_items = State()
+
+
 def get_courier_keyboard(order_id: int, status: str):
     builder = InlineKeyboardBuilder()
 
@@ -3788,6 +3795,274 @@ async def process_delete_promocode(callback: CallbackQuery, state: FSMContext):
 
 async def is_courier_or_admin(user_id: int) -> bool:
     return user_id in COURIERS or user_id in ADMINS
+
+
+# ============= УПРАВЛЕНИЕ ПРОФИЛЕМ ЛОЯЛЬНОСТИ =============
+
+@dp.message(Command("set_loyalty"))
+async def set_loyalty_start(message: Message, state: FSMContext):
+    """Начало процесса настройки профиля лояльности пользователя"""
+    if message.from_user.id not in ADMINS:
+        await message.answer("❌ Эта команда доступна только для администраторов")
+        return
+    
+    await state.set_state(LoyaltyManagementStates.waiting_for_user_id)
+    await message.answer(
+        "🎯 Управление профилем лояльности\n\n"
+        "Введите Telegram ID пользователя:"
+    )
+
+
+@dp.message(LoyaltyManagementStates.waiting_for_user_id)
+async def set_loyalty_get_user(message: Message, state: FSMContext):
+    """Получение ID пользователя и вывод текущих данных"""
+    try:
+        user_telegram_id = int(message.text.strip())
+        
+        async with AsyncSessionLocal() as session:
+            # Находим пользователя
+            result = await session.execute(
+                select(DBUser).where(DBUser.telegram_id == user_telegram_id)
+            )
+            user = result.scalar_one_or_none()
+            
+            if not user:
+                await message.answer(
+                    f"❌ Пользователь с ID {user_telegram_id} не найден в базе.\n"
+                    "Попробуйте другой ID:"
+                )
+                return
+            
+            # Сохраняем ID в состояние
+            await state.update_data(user_telegram_id=user_telegram_id)
+            
+            # Показываем текущие данные
+            await message.answer(
+                f"👤 Пользователь: @{user.username or 'нет username'}\n"
+                f"🆔 ID: {user.telegram_id}\n\n"
+                f"📊 Текущие данные лояльности:\n"
+                f"🎴 Уровень карты: {user.loyalty_level}\n"
+                f"⭐ Штампов: {user.stamps}/6\n"
+                f"📦 Всего куплено товаров: {user.total_items_purchased}\n\n"
+                "Выберите, что хотите изменить:",
+                reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+                    [InlineKeyboardButton(text="🎴 Уровень карты", callback_data="loyalty_set_level")],
+                    [InlineKeyboardButton(text="⭐ Количество штампов", callback_data="loyalty_set_stamps")],
+                    [InlineKeyboardButton(text="📦 Всего товаров", callback_data="loyalty_set_total")],
+                    [InlineKeyboardButton(text="❌ Отмена", callback_data="loyalty_cancel")]
+                ])
+            )
+            
+    except ValueError:
+        await message.answer("❌ Неверный формат. Введите числовой Telegram ID:")
+
+
+@dp.callback_query(F.data == "loyalty_set_level")
+async def set_loyalty_level_menu(callback: CallbackQuery, state: FSMContext):
+    """Выбор уровня карты лояльности"""
+    await state.set_state(LoyaltyManagementStates.waiting_for_loyalty_level)
+    await callback.message.edit_text(
+        "🎴 Выберите уровень карты лояльности:",
+        reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="⚪ White (25%)", callback_data="level_White")],
+            [InlineKeyboardButton(text="💜 Platinum (30%)", callback_data="level_Platinum")],
+            [InlineKeyboardButton(text="⚫ Black (35%)", callback_data="level_Black")],
+            [InlineKeyboardButton(text="« Назад", callback_data="loyalty_back")]
+        ])
+    )
+    await callback.answer()
+
+
+@dp.callback_query(F.data.startswith("level_"))
+async def process_loyalty_level(callback: CallbackQuery, state: FSMContext):
+    """Сохранение выбранного уровня карты"""
+    level = callback.data.split("_")[1]
+    data = await state.get_data()
+    user_telegram_id = data.get("user_telegram_id")
+    
+    async with AsyncSessionLocal() as session:
+        result = await session.execute(
+            select(DBUser).where(DBUser.telegram_id == user_telegram_id)
+        )
+        user = result.scalar_one_or_none()
+        
+        if user:
+            user.loyalty_level = level
+            await session.commit()
+            
+            level_emoji = {"White": "⚪", "Platinum": "💜", "Black": "⚫"}
+            await callback.message.edit_text(
+                f"✅ Уровень карты изменен на {level_emoji.get(level, '')} {level}\n\n"
+                "Что еще хотите изменить?",
+                reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+                    [InlineKeyboardButton(text="⭐ Количество штампов", callback_data="loyalty_set_stamps")],
+                    [InlineKeyboardButton(text="📦 Всего товаров", callback_data="loyalty_set_total")],
+                    [InlineKeyboardButton(text="✅ Завершить", callback_data="loyalty_finish")]
+                ])
+            )
+    
+    await callback.answer()
+
+
+@dp.callback_query(F.data == "loyalty_set_stamps")
+async def set_loyalty_stamps_menu(callback: CallbackQuery, state: FSMContext):
+    """Выбор количества штампов"""
+    await state.set_state(LoyaltyManagementStates.waiting_for_stamps)
+    await callback.message.edit_text(
+        "⭐ Введите количество штампов (0-5):"
+    )
+    await callback.answer()
+
+
+@dp.message(LoyaltyManagementStates.waiting_for_stamps)
+async def process_loyalty_stamps(message: Message, state: FSMContext):
+    """Сохранение количества штампов"""
+    try:
+        stamps = int(message.text.strip())
+        
+        if stamps < 0 or stamps > 5:
+            await message.answer("❌ Количество штампов должно быть от 0 до 5. Попробуйте снова:")
+            return
+        
+        data = await state.get_data()
+        user_telegram_id = data.get("user_telegram_id")
+        
+        async with AsyncSessionLocal() as session:
+            result = await session.execute(
+                select(DBUser).where(DBUser.telegram_id == user_telegram_id)
+            )
+            user = result.scalar_one_or_none()
+            
+            if user:
+                user.stamps = stamps
+                await session.commit()
+                
+                await message.answer(
+                    f"✅ Количество штампов установлено: {stamps}/6\n\n"
+                    "Что еще хотите изменить?",
+                    reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+                        [InlineKeyboardButton(text="🎴 Уровень карты", callback_data="loyalty_set_level")],
+                        [InlineKeyboardButton(text="📦 Всего товаров", callback_data="loyalty_set_total")],
+                        [InlineKeyboardButton(text="✅ Завершить", callback_data="loyalty_finish")]
+                    ])
+                )
+    
+    except ValueError:
+        await message.answer("❌ Неверный формат. Введите число от 0 до 5:")
+
+
+@dp.callback_query(F.data == "loyalty_set_total")
+async def set_loyalty_total_menu(callback: CallbackQuery, state: FSMContext):
+    """Установка общего количества купленных товаров"""
+    await state.set_state(LoyaltyManagementStates.waiting_for_total_items)
+    await callback.message.edit_text(
+        "📦 Введите общее количество купленных товаров:"
+    )
+    await callback.answer()
+
+
+@dp.message(LoyaltyManagementStates.waiting_for_total_items)
+async def process_loyalty_total(message: Message, state: FSMContext):
+    """Сохранение общего количества товаров"""
+    try:
+        total_items = int(message.text.strip())
+        
+        if total_items < 0:
+            await message.answer("❌ Количество должно быть положительным числом. Попробуйте снова:")
+            return
+        
+        data = await state.get_data()
+        user_telegram_id = data.get("user_telegram_id")
+        
+        async with AsyncSessionLocal() as session:
+            result = await session.execute(
+                select(DBUser).where(DBUser.telegram_id == user_telegram_id)
+            )
+            user = result.scalar_one_or_none()
+            
+            if user:
+                user.total_items_purchased = total_items
+                await session.commit()
+                
+                await message.answer(
+                    f"✅ Общее количество товаров установлено: {total_items}\n\n"
+                    "Что еще хотите изменить?",
+                    reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+                        [InlineKeyboardButton(text="🎴 Уровень карты", callback_data="loyalty_set_level")],
+                        [InlineKeyboardButton(text="⭐ Количество штампов", callback_data="loyalty_set_stamps")],
+                        [InlineKeyboardButton(text="✅ Завершить", callback_data="loyalty_finish")]
+                    ])
+                )
+    
+    except ValueError:
+        await message.answer("❌ Неверный формат. Введите положительное число:")
+
+
+@dp.callback_query(F.data == "loyalty_back")
+async def loyalty_back(callback: CallbackQuery, state: FSMContext):
+    """Возврат к выбору параметров"""
+    data = await state.get_data()
+    user_telegram_id = data.get("user_telegram_id")
+    
+    async with AsyncSessionLocal() as session:
+        result = await session.execute(
+            select(DBUser).where(DBUser.telegram_id == user_telegram_id)
+        )
+        user = result.scalar_one_or_none()
+        
+        if user:
+            await callback.message.edit_text(
+                f"👤 Пользователь: @{user.username or 'нет username'}\n"
+                f"🆔 ID: {user.telegram_id}\n\n"
+                f"📊 Текущие данные лояльности:\n"
+                f"🎴 Уровень карты: {user.loyalty_level}\n"
+                f"⭐ Штампов: {user.stamps}/6\n"
+                f"📦 Всего куплено товаров: {user.total_items_purchased}\n\n"
+                "Выберите, что хотите изменить:",
+                reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+                    [InlineKeyboardButton(text="🎴 Уровень карты", callback_data="loyalty_set_level")],
+                    [InlineKeyboardButton(text="⭐ Количество штампов", callback_data="loyalty_set_stamps")],
+                    [InlineKeyboardButton(text="📦 Всего товаров", callback_data="loyalty_set_total")],
+                    [InlineKeyboardButton(text="❌ Отмена", callback_data="loyalty_cancel")]
+                ])
+            )
+    
+    await callback.answer()
+
+
+@dp.callback_query(F.data == "loyalty_finish")
+async def loyalty_finish(callback: CallbackQuery, state: FSMContext):
+    """Завершение настройки профиля лояльности"""
+    data = await state.get_data()
+    user_telegram_id = data.get("user_telegram_id")
+    
+    async with AsyncSessionLocal() as session:
+        result = await session.execute(
+            select(DBUser).where(DBUser.telegram_id == user_telegram_id)
+        )
+        user = result.scalar_one_or_none()
+        
+        if user:
+            await callback.message.edit_text(
+                f"✅ Профиль лояльности обновлен!\n\n"
+                f"👤 Пользователь: @{user.username or 'нет username'}\n"
+                f"🆔 ID: {user.telegram_id}\n\n"
+                f"📊 Новые данные:\n"
+                f"🎴 Уровень карты: {user.loyalty_level}\n"
+                f"⭐ Штампов: {user.stamps}/6\n"
+                f"📦 Всего куплено товаров: {user.total_items_purchased}"
+            )
+    
+    await state.clear()
+    await callback.answer()
+
+
+@dp.callback_query(F.data == "loyalty_cancel")
+async def loyalty_cancel(callback: CallbackQuery, state: FSMContext):
+    """Отмена настройки профиля лояльности"""
+    await callback.message.edit_text("❌ Настройка профиля лояльности отменена")
+    await state.clear()
+    await callback.answer()
 
 
 async def main():

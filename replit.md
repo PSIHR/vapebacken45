@@ -32,6 +32,12 @@ The application follows a client-server architecture with a clear separation bet
 
 ## Recent Changes
 
+- **2025-11-01**: Added admin command to manually manage user loyalty profiles
+  - New command `/set_loyalty` for admins to update loyalty data for any user
+  - Allows setting: loyalty level (White/Platinum/Black), stamps (0-5), total items purchased
+  - Interactive menu with buttons for easy management
+  - Shows current loyalty status before making changes
+  - Useful for migrating existing customers with established loyalty cards
 - **2025-11-01**: Improved loyalty program UX with clearer messaging
   - Changed text from "6 покупок до скидки" to "5 покупок для скидки на 6-й заказ" (more logical)
   - When 5 stamps collected, shows animated message "🎉 На эту покупку у вас скидка!"
