@@ -202,7 +202,14 @@ async def register_user(
             return {"status": "success", "message": "User already registered"}
 
         logger.info(f"Creating new user with ID: {telegram_id}")
-        new_user = DBUser(id=telegram_id, username=user_data.username)
+        new_user = DBUser(
+            id=telegram_id, 
+            telegram_id=telegram_id,
+            username=user_data.username,
+            stamps=0,
+            loyalty_level="White",
+            total_items_purchased=0
+        )
 
         db.add(new_user)
         await db.commit()
@@ -213,7 +220,12 @@ async def register_user(
         return {
             "status": "success",
             "message": "User registered successfully",
-            "user": {"id": new_user.id, "username": new_user.username},
+            "user": {
+                "id": new_user.id, 
+                "username": new_user.username,
+                "stamps": new_user.stamps,
+                "loyalty_level": new_user.loyalty_level
+            },
         }
 
     except Exception as e:
@@ -222,6 +234,49 @@ async def register_user(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"An error occurred while registering user: {str(e)}",
+        )
+
+
+@app.get("/users/{telegram_id}/loyalty")
+async def get_user_loyalty(
+    telegram_id: int,
+    db: AsyncSession = Depends(get_db),
+):
+    """Get user loyalty information including stamps, level, and discount percentage"""
+    try:
+        result = await db.execute(select(DBUser).where(DBUser.id == telegram_id))
+        user = result.scalar_one_or_none()
+        
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found"
+            )
+        
+        # Calculate discount percentage based on loyalty level
+        discount_map = {
+            "White": 25,
+            "Platinum": 30,
+            "Black": 35
+        }
+        
+        return {
+            "telegram_id": user.id,
+            "username": user.username,
+            "stamps": user.stamps,
+            "loyalty_level": user.loyalty_level,
+            "discount_percentage": discount_map.get(user.loyalty_level, 25),
+            "total_items_purchased": user.total_items_purchased,
+            "stamps_until_discount": 6 - user.stamps if user.stamps < 6 else 0
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting user loyalty: {str(e)}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"An error occurred while getting user loyalty: {str(e)}",
         )
 
 
@@ -234,6 +289,14 @@ async def create_or_get_basket(
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail="User ID must be an integer",
+        )
+
+    # Get user for loyalty information
+    user = await db.get(DBUser, user_id)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"User with ID {user_id} not found"
         )
 
     result = await db.execute(select(Basket).where(Basket.user_id == user_id))
@@ -256,9 +319,49 @@ async def create_or_get_basket(
 
     total_price = 0.0
     basket_items = []
+    
+    # Calculate total items in basket
+    total_items_in_basket = sum(basket_item.quantity for basket_item, _ in items)
+    
+    # Calculate how many items qualify for discount
+    # Every 6 items (stamps + items in basket) = 1 discounted item
+    total_qualifying_items = user.stamps + total_items_in_basket
+    num_discounted_items = total_qualifying_items // 6  # Number of items that get discount
+    
+    # Setup loyalty discount
+    discount_map = {"White": 25, "Platinum": 30, "Black": 35}
+    loyalty_discount_percentage = discount_map.get(user.loyalty_level, 25)
+    loyalty_discount_applied = num_discounted_items > 0
+    
+    # Sort items by price (descending) to apply discount to most expensive first
+    sorted_items = sorted(items, key=lambda x: x[1].price, reverse=True)
+    
+    # Track how many discounts we've applied
+    remaining_discounts = num_discounted_items
+    discount_allocation = {}  # basket_item_id -> quantity_with_discount
 
+    # Distribute discounts across items, starting with most expensive
+    for basket_item, item in sorted_items:
+        if remaining_discounts <= 0:
+            break
+        
+        # Apply discount to min(remaining_discounts, basket_item.quantity) units
+        discounted_qty = min(remaining_discounts, basket_item.quantity)
+        discount_allocation[basket_item.id] = discounted_qty
+        remaining_discounts -= discounted_qty
+
+    # Now build the basket items list with correct pricing
     for basket_item, item in items:
-        total_price += item.price * basket_item.quantity
+        discounted_quantity = discount_allocation.get(basket_item.id, 0)
+        regular_quantity = basket_item.quantity - discounted_quantity
+        
+        # Calculate total price for this basket item
+        regular_price = item.price * regular_quantity
+        discounted_price_per_unit = item.price * (100 - loyalty_discount_percentage) / 100
+        discounted_price = discounted_price_per_unit * discounted_quantity
+        item_total = regular_price + discounted_price
+        
+        total_price += item_total
         basket_items.append(
             {
                 "id": basket_item.id,
@@ -266,6 +369,9 @@ async def create_or_get_basket(
                 "name": item.name,
                 "image": item.image,
                 "price": item.price,
+                "discounted_price": discounted_price_per_unit if discounted_quantity > 0 else None,
+                "discount_percentage": loyalty_discount_percentage if discounted_quantity > 0 else 0,
+                "discounted_quantity": discounted_quantity,
                 "quantity": basket_item.quantity,
                 "selected_taste": basket_item.selected_taste,
             }
@@ -275,7 +381,13 @@ async def create_or_get_basket(
     await db.commit()
     await db.refresh(basket)
 
-    return {"user_id": user_id, "items": basket_items, "total_price": total_price}
+    return {
+        "user_id": user_id, 
+        "items": basket_items, 
+        "total_price": total_price,
+        "loyalty_discount_applied": loyalty_discount_applied,
+        "loyalty_discount_percentage": loyalty_discount_percentage if loyalty_discount_applied else 0
+    }
 
 
 @app.post("/basket/{user_id}/items", response_model=BasketResponse)
@@ -788,12 +900,32 @@ async def create_order_from_basket(
         except Exception as e:
             logger.error(f"Ошибка при уведомлении курьеров: {str(e)}")
 
-        # 9. Очищаем корзину
+        # 9. Обновляем программу лояльности
+        total_items_in_order = sum(item['quantity'] for item in order_items)
+        user.total_items_purchased += total_items_in_order
+        user.stamps += total_items_in_order
+        
+        # Проверяем, нужно ли повысить уровень лояльности
+        while user.stamps >= 6:
+            user.stamps -= 6  # Сбрасываем 6 штампов
+            
+            # Повышаем уровень лояльности
+            if user.loyalty_level == "White":
+                user.loyalty_level = "Platinum"
+                logger.info(f"User {user_id} upgraded to Platinum level")
+            elif user.loyalty_level == "Platinum":
+                user.loyalty_level = "Black"
+                logger.info(f"User {user_id} upgraded to Black level")
+            # Black level остается навсегда
+        
+        await db.commit()
+
+        # 10. Очищаем корзину
         await db.execute(delete(BasketItem).where(BasketItem.basket_id == basket.id))
         basket.total_price = 0
         await db.commit()
 
-        # 10. Формируем ответ
+        # 11. Формируем ответ
         return {
             "id": order.id,
             "user_id": order.user_id,

@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Store, ShoppingCart, Package } from 'lucide-react';
+import { Store, ShoppingCart, User } from 'lucide-react';
 
 const BottomNavigation = ({ cartCount }) => {
   const navigate = useNavigate();
@@ -20,10 +20,10 @@ const BottomNavigation = ({ cartCount }) => {
       badge: cartCount > 0 ? cartCount : null,
     },
     {
-      id: 'orders',
-      label: 'Заказы',
-      icon: Package,
-      path: '/orders',
+      id: 'profile',
+      label: 'Профиль',
+      icon: User,
+      path: '/profile',
     },
   ];
 

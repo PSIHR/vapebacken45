@@ -22,6 +22,7 @@ api.interceptors.request.use((config) => {
 export const userAPI = {
   register: (userData) => api.post('/users/register', userData),
   getOrders: (userId) => api.get(`/users/${userId}/orders/`),
+  getLoyalty: (telegramId) => api.get(`/users/${telegramId}/loyalty`),
 };
 
 export const itemsAPI = {

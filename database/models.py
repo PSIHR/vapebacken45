@@ -89,10 +89,16 @@ class Category(Base):
 class DBUser(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
+    telegram_id = Column(Integer, unique=True, index=True, nullable=True)
     username = Column(String, index=True)
     point = Column(Integer, default=0)
     basket = relationship("Basket", back_populates="user", uselist=False)
     is_banned = Column(Boolean, default=False)
+    
+    # Loyalty program fields
+    stamps = Column(Integer, default=0)  # Current stamps (0-5)
+    loyalty_level = Column(String, default="White")  # White, Platinum, Black
+    total_items_purchased = Column(Integer, default=0)  # Total items ever purchased
 
     orders = relationship("Order", back_populates="user")
     # Удаляем courier_orders, так как это создает циклическую зависимость

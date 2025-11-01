@@ -59,6 +59,15 @@ This is a **Telegram Mini App** with a complete full-stack implementation combin
 ```
 
 ## Recent Changes
+- **2025-11-01**: Implemented Loyalty Program with Stamp System
+  - Added loyalty program: 1 stamp per purchased item, every 6th item gets discount
+  - Three loyalty card levels: White (25%), Platinum (30%), Black (35% forever)
+  - Created Profile page with beautiful 3D loyalty card and order history
+  - Replaced "Orders" navigation button with "Profile" 
+  - Automatic discount applied in cart on most expensive item when eligible
+  - Backend tracks stamps, loyalty_level, total_items_purchased for each user
+  - Stamps reset every 6 items and loyalty level upgrades automatically
+  - Created LoyaltyCard component with 3D effects and level-specific styling
 - **2025-11-01**: Simplified product cards for better mobile UX
   - Removed "В корзину" button from product cards (was too bulky on mobile)
   - Entire product card is now clickable to open product detail page
