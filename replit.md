@@ -57,10 +57,17 @@ This is a **Telegram Mini App** with a complete full-stack implementation combin
 ```
 
 ## Recent Changes
+- **2025-11-01**: Redesigned UI in Telegram minimalist style
+  - Removed bright gradients and emojis for clean, professional look
+  - Applied Telegram color palette: white backgrounds, #f4f4f5 page background, #3390ec accent color
+  - Simplified all components (Header, ProductCard, Catalog, Cart, Checkout, CartItem)
+  - Replaced shadows with subtle borders for consistency
+  - Minimalist typography and spacing throughout
+  - Clean, modern, professional design matching Telegram aesthetic
 - **2025-11-01**: Complete full-stack implementation
   - Added React + Vite frontend with TailwindCSS
   - Integrated Telegram Web App SDK
-  - Created beautiful UI for catalog, cart, checkout, and orders
+  - Created UI for catalog, cart, checkout, and orders
   - Backend moved to port 3000, frontend on port 5000
   - Set up dual workflows for backend and frontend
   - Configured API proxy for seamless communication
