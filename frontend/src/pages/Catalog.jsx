@@ -116,14 +116,14 @@ const Catalog = ({ onCartUpdate }) => {
           </div>
         )}
 
-        <div className="mb-6 relative">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/60" size={20} />
+        <div className="mb-6 relative backdrop-blur-sm rounded-lg">
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white z-10" size={20} />
           <input
             type="text"
             placeholder="Поиск товаров..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 rounded-lg bg-white/20 backdrop-blur-sm border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
+            className="w-full pl-12 pr-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all relative z-10"
           />
         </div>
 
