@@ -66,15 +66,15 @@ const Catalog = ({ onCartUpdate }) => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="animate-spin text-blue-600" size={48} />
+        <Loader2 className="animate-spin text-white" size={48} />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#f4f4f5]">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-6">
-        <h1 className="text-2xl font-bold mb-6 text-gray-900">
+        <h1 className="text-2xl font-bold mb-6 text-white">
           Каталог товаров
         </h1>
         
@@ -82,10 +82,10 @@ const Catalog = ({ onCartUpdate }) => {
           <div className="mb-6 flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
             <button
               onClick={() => setSelectedCategory(null)}
-              className={`px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${
+              className={`px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-all ${
                 !selectedCategory
-                  ? 'bg-[#3390ec] text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-100'
+                  ? 'bg-white text-purple-600'
+                  : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
               }`}
             >
               Все
@@ -94,10 +94,10 @@ const Catalog = ({ onCartUpdate }) => {
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${
+                className={`px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-all ${
                   selectedCategory?.id === cat.id
-                    ? 'bg-[#3390ec] text-white'
-                    : 'bg-white text-gray-700 hover:bg-gray-100'
+                    ? 'bg-white text-purple-600'
+                    : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
                 }`}
               >
                 {cat.name}
@@ -107,8 +107,8 @@ const Catalog = ({ onCartUpdate }) => {
         )}
 
         {filteredProducts.length === 0 ? (
-          <div className="text-center py-16 bg-white rounded-lg border border-gray-200">
-            <p className="text-gray-500 text-lg">Товары не найдены</p>
+          <div className="text-center py-16 glass-panel">
+            <p className="text-white/80 text-lg">Товары не найдены</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

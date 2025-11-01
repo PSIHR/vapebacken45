@@ -72,50 +72,50 @@ const Checkout = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="animate-spin text-blue-600" size={48} />
+        <Loader2 className="animate-spin text-white" size={48} />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#f4f4f5]">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-6 pb-24">
-        <h1 className="text-2xl font-bold mb-6 text-gray-900">
+        <h1 className="text-2xl font-bold mb-6 text-white">
           Оформление заказа
         </h1>
 
-        <div className="bg-white rounded-lg border border-gray-200 p-4 mb-4">
-          <h3 className="font-semibold text-lg mb-3 text-gray-900">
+        <div className="glass-panel p-4 mb-4">
+          <h3 className="font-semibold text-lg mb-3 text-white">
             Ваш заказ:
           </h3>
           {cartItems.map((item) => (
             <div key={item.id} className="flex justify-between mb-2 text-sm">
-              <span className="text-gray-700">
-                {item.name} <span className="text-gray-900 font-medium">x{item.quantity}</span>
+              <span className="text-white/80">
+                {item.name} <span className="text-white font-medium">x{item.quantity}</span>
               </span>
-              <span className="font-semibold text-gray-900">
+              <span className="font-semibold text-white">
                 {formatPrice(item.price * item.quantity)}
               </span>
             </div>
           ))}
-          <div className="border-t border-gray-200 mt-3 pt-3 flex justify-between font-bold text-lg">
-            <span className="text-gray-900">Итого:</span>
-            <span className="text-gray-900">
+          <div className="border-t border-white/20 mt-3 pt-3 flex justify-between font-bold text-lg">
+            <span className="text-white">Итого:</span>
+            <span className="text-white">
               {formatPrice(totalPrice)}
             </span>
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-white rounded-lg border border-gray-200 p-4">
+        <form onSubmit={handleSubmit} className="glass-panel p-4">
           <div className="mb-4">
-            <label className="block text-gray-900 font-medium mb-2">
-              Адрес доставки <span className="text-red-500">*</span>
+            <label className="block text-white font-medium mb-2">
+              Адрес доставки <span className="text-red-300">*</span>
             </label>
             <textarea
               name="address"
               value={formData.address}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3390ec] focus:border-transparent"
+              className="w-full px-3 py-2 border border-white/30 bg-white/10 text-white placeholder-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
               rows="3"
               placeholder="Улица, дом, квартира"
               required
@@ -123,52 +123,52 @@ const Checkout = () => {
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-900 font-medium mb-2">
-              Телефон <span className="text-red-500">*</span>
+            <label className="block text-white font-medium mb-2">
+              Телефон <span className="text-red-300">*</span>
             </label>
             <input
               type="tel"
               name="telephone"
               value={formData.telephone}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3390ec] focus:border-transparent"
+              className="w-full px-3 py-2 border border-white/30 bg-white/10 text-white placeholder-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
               placeholder="+7 (999) 123-45-67"
               required
             />
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-900 font-medium mb-2">
+            <label className="block text-white font-medium mb-2">
               Способ оплаты
             </label>
             <select
               name="payment"
               value={formData.payment}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3390ec] focus:border-transparent bg-white"
+              className="w-full px-3 py-2 border border-white/30 bg-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
             >
-              <option value="Наличные">Наличные</option>
-              <option value="Карта">Карта</option>
+              <option value="Наличные" className="bg-purple-600">Наличные</option>
+              <option value="Карта" className="bg-purple-600">Карта</option>
             </select>
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-900 font-medium mb-2">
+            <label className="block text-white font-medium mb-2">
               Способ доставки
             </label>
             <select
               name="delivery"
               value={formData.delivery}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3390ec] focus:border-transparent bg-white"
+              className="w-full px-3 py-2 border border-white/30 bg-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
             >
-              <option value="Курьером">Курьером</option>
-              <option value="Самовывоз">Самовывоз</option>
+              <option value="Курьером" className="bg-purple-600">Курьером</option>
+              <option value="Самовывоз" className="bg-purple-600">Самовывоз</option>
             </select>
           </div>
 
           <div className="mb-6">
-            <label className="block text-gray-900 font-medium mb-2">
+            <label className="block text-white font-medium mb-2">
               Промокод
             </label>
             <input
@@ -176,7 +176,7 @@ const Checkout = () => {
               name="promocode"
               value={formData.promocode}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3390ec] focus:border-transparent"
+              className="w-full px-3 py-2 border border-white/30 bg-white/10 text-white placeholder-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
               placeholder="Введите промокод"
             />
           </div>
@@ -184,7 +184,7 @@ const Checkout = () => {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full bg-[#3390ec] hover:bg-[#2b7cd3] text-white py-3 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full bg-white/30 hover:bg-white/40 text-white py-3 rounded-lg font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 backdrop-blur-sm"
           >
             {submitting ? (
               <>

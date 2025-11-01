@@ -69,8 +69,8 @@ const ProductDetail = ({ onCartUpdate }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#f4f4f5] flex items-center justify-center">
-        <div className="text-gray-500">Загрузка...</div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-white">Загрузка...</div>
       </div>
     );
   }
@@ -80,18 +80,18 @@ const ProductDetail = ({ onCartUpdate }) => {
   }
 
   return (
-    <div className="min-h-screen bg-[#f4f4f5]">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-6 pb-32">
         <button
           onClick={() => navigate('/')}
-          className="flex items-center gap-2 text-gray-700 mb-4 hover:text-gray-900"
+          className="flex items-center gap-2 text-white mb-4 hover:text-white/80"
         >
           <ArrowLeft size={20} />
           <span className="font-medium">Назад</span>
         </button>
 
-        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-          <div className="relative h-80 bg-gray-100">
+        <div className="glass-panel overflow-hidden">
+          <div className="relative h-80 bg-white/10">
             {product.image ? (
               <img
                 src={product.image}
@@ -99,7 +99,7 @@ const ProductDetail = ({ onCartUpdate }) => {
                 className="w-full h-full object-contain"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-gray-400">
+              <div className="w-full h-full flex items-center justify-center text-white/40">
                 <ShoppingCart size={80} />
               </div>
             )}
@@ -107,22 +107,22 @@ const ProductDetail = ({ onCartUpdate }) => {
 
           <div className="p-6">
             {product.category && (
-              <span className="inline-block px-3 py-1 text-sm font-medium text-[#3390ec] bg-blue-50 rounded mb-3">
+              <span className="inline-block px-3 py-1 text-sm font-medium text-white bg-white/20 rounded-full mb-3">
                 {product.category.name}
               </span>
             )}
 
-            <h1 className="text-3xl font-bold text-gray-900 mb-3">
+            <h1 className="text-3xl font-bold text-white mb-3">
               {product.name}
             </h1>
 
-            <p className="text-lg text-gray-600 mb-6">
+            <p className="text-lg text-white/80 mb-6">
               {product.description}
             </p>
 
             {product.tastes && product.tastes.length > 0 && (
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                <h3 className="text-lg font-semibold text-white mb-3">
                   Выберите вкус:
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
@@ -132,16 +132,16 @@ const ProductDetail = ({ onCartUpdate }) => {
                       onClick={() => setSelectedTaste(taste)}
                       className={`p-4 rounded-lg border-2 transition-all ${
                         selectedTaste?.id === taste.id
-                          ? 'border-[#3390ec] bg-blue-50'
-                          : 'border-gray-200 hover:border-gray-300'
+                          ? 'border-white bg-white/20'
+                          : 'border-white/30 hover:border-white/50'
                       }`}
                     >
                       <div className="flex items-center justify-between">
-                        <span className="font-medium text-gray-900">
+                        <span className="font-medium text-white">
                           {taste.name}
                         </span>
                         {selectedTaste?.id === taste.id && (
-                          <Check size={20} className="text-[#3390ec]" />
+                          <Check size={20} className="text-white" />
                         )}
                       </div>
                     </button>
@@ -150,10 +150,10 @@ const ProductDetail = ({ onCartUpdate }) => {
               </div>
             )}
 
-            <div className="border-t border-gray-200 pt-6">
+            <div className="border-t border-white/20 pt-6">
               <div className="flex items-center justify-between mb-6">
-                <span className="text-lg text-gray-600">Цена:</span>
-                <span className="text-4xl font-bold text-gray-900">
+                <span className="text-lg text-white/80">Цена:</span>
+                <span className="text-4xl font-bold text-white">
                   {formatPrice(product.price)}
                 </span>
               </div>
@@ -161,7 +161,7 @@ const ProductDetail = ({ onCartUpdate }) => {
               <button
                 onClick={handleAddToCart}
                 disabled={adding}
-                className="w-full bg-[#3390ec] hover:bg-[#2b7cd3] text-white py-4 rounded-lg font-medium text-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full bg-white/30 hover:bg-white/40 text-white py-4 rounded-lg font-medium text-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 backdrop-blur-sm"
               >
                 {adding ? (
                   'Добавление...'
