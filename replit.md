@@ -59,6 +59,14 @@ This is a **Telegram Mini App** with a complete full-stack implementation combin
 ```
 
 ## Recent Changes
+- **2025-11-01**: Added categories and search functionality to main catalog page
+  - Categories now load from backend `/categories/` API endpoint
+  - Added categoriesAPI to services/api.js for fetching categories
+  - Implemented search bar below categories with real-time filtering
+  - Search filters products by name and description
+  - Combined filtering: both category and search work together
+  - Updated Catalog.jsx to use Promise.all for parallel data loading
+  - Search bar styled with glassmorphism effect matching app design
 - **2025-11-01**: Added Web App button to /start command
   - Users now see "🛍 Открыть магазин" inline button after /start command
   - Button opens Telegram Mini App directly from bot conversation
