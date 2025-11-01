@@ -10,6 +10,7 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Orders from './pages/Orders';
 import Profile from './pages/Profile';
+import FAQ from './pages/FAQ';
 
 function App() {
   const [cartCount, setCartCount] = useState(0);
@@ -57,6 +58,7 @@ function App() {
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/faq" element={<FAQ />} />
           </Routes>
         </main>
         <BottomNavigation cartCount={cartCount} />
