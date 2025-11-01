@@ -36,13 +36,13 @@ const ProductCard = ({ product }) => {
         <p className="text-sm text-white/80 mb-3 line-clamp-2">
           {product.description}
         </p>
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <span className="text-2xl font-bold text-white">
             {formatPrice(product.price)}
           </span>
           <button
             onClick={handleSelectClick}
-            className="px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white rounded-lg font-medium transition-all flex items-center gap-2 group"
+            className="w-full sm:w-auto px-4 py-2.5 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white rounded-lg font-medium transition-all flex items-center justify-center gap-2 group"
           >
             Выбрать
             <ChevronRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
