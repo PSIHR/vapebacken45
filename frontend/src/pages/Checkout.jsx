@@ -81,7 +81,7 @@ const Checkout = () => {
     <div className="min-h-screen">
       <div className="container mx-auto px-4 py-6 pb-24">
         <h1 className="text-2xl font-bold mb-6 text-white">
-          Оформление заказа - VAPE PLUG
+          Оформление заказа
         </h1>
         <div className="glass-panel p-4 mb-4">
           <p className="text-white/80 text-sm">

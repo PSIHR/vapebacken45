@@ -1,11 +1,3 @@
-# VAPE PLUG - Telegram Mini App
-
-**Магазин вейп-продукции в Минске, Беларусь**
-
-📱 По всем вопросам: [@vapepluggmanager](https://t.me/vapepluggmanager)
-
----
-
 # Telegram Mini App - Backend (aiosqlite)
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue) 

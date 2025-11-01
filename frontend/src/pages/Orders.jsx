@@ -42,7 +42,7 @@ const Orders = () => {
         <div className="container mx-auto px-4 py-12">
           <div className="text-center glass-panel p-12 rounded-lg shadow-xl">
             <Package className="mx-auto text-vape-plug-accent mb-4" size={64} />
-            <h2 className="text-3xl font-bold text-white mb-2">VAPE PLUG - Ваш заказ</h2>
+            <h2 className="text-3xl font-bold text-white mb-2">Ваши заказы</h2>
             <p className="text-white/80 text-lg">У вас пока нет оформленных заказов. Свяжитесь с нами для консультации.</p>
             <p className="text-white/70 mt-4">По вопросам: @vapepluggmanager</p>
             <p className="text-white/70">Находимся в Беларуси, Минск.</p>
@@ -55,7 +55,7 @@ const Orders = () => {
   return (
     <div className="min-h-screen bg-gray-900">
       <div className="container mx-auto px-4 py-6">
-        <h1 className="text-3xl font-bold mb-6 text-white">VAPE PLUG - Мои заказы</h1>
+        <h1 className="text-3xl font-bold mb-6 text-white">Мои заказы</h1>
         <div>
           {orders.map((order) => (
             <OrderCard key={order.id} order={order} />
