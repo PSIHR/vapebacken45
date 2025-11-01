@@ -532,6 +532,10 @@ async def read_items(
                 ]
                 if item.tastes
                 else None,
+                "strength": item.strength,
+                "puffs": item.puffs,
+                "vg_pg": item.vg_pg,
+                "tank_volume": item.tank_volume,
             }
             for item in items
         ]

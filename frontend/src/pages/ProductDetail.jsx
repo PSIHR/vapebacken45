@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { itemsAPI, basketAPI } from '../services/api';
 import { useTelegram } from '../hooks/useTelegram';
 import { formatPrice } from '../utils/helpers';
-import { ArrowLeft, ShoppingCart, Check } from 'lucide-react';
+import { ArrowLeft, ShoppingCart, Check, ChevronDown, ChevronUp } from 'lucide-react';
 
 const ProductDetail = ({ onCartUpdate }) => {
   const { id } = useParams();
@@ -13,6 +13,7 @@ const ProductDetail = ({ onCartUpdate }) => {
   const [selectedTaste, setSelectedTaste] = useState(null);
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
   useEffect(() => {
     loadProduct();
@@ -112,13 +113,9 @@ const ProductDetail = ({ onCartUpdate }) => {
               </span>
             )}
 
-            <h1 className="text-3xl font-bold text-white mb-3">
+            <h1 className="text-3xl font-bold text-white mb-4">
               {product.name}
             </h1>
-
-            <p className="text-lg text-white/80 mb-6">
-              {product.description}
-            </p>
 
             {product.tastes && product.tastes.length > 0 && (
               <div className="mb-6">
@@ -146,6 +143,69 @@ const ProductDetail = ({ onCartUpdate }) => {
                       </div>
                     </button>
                   ))}
+                </div>
+              </div>
+            )}
+
+            {product.description && (
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-white mb-2">
+                  Описание:
+                </h3>
+                <div className="relative">
+                  <p className={`text-white/80 ${!isDescriptionExpanded ? 'line-clamp-3' : ''}`}>
+                    {product.description}
+                  </p>
+                  {product.description.length > 150 && (
+                    <button
+                      onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
+                      className="mt-2 text-white/60 hover:text-white flex items-center gap-1 transition-colors"
+                    >
+                      {isDescriptionExpanded ? (
+                        <>
+                          Свернуть <ChevronUp size={18} />
+                        </>
+                      ) : (
+                        <>
+                          Подробнее <ChevronDown size={18} />
+                        </>
+                      )}
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {(product.strength || product.puffs || product.vg_pg || product.tank_volume) && (
+              <div className="mb-6 bg-white/5 rounded-lg p-4">
+                <h3 className="text-lg font-semibold text-white mb-3">
+                  Характеристики:
+                </h3>
+                <div className="space-y-2">
+                  {product.strength && (
+                    <div className="flex justify-between items-center py-2 border-b border-white/10">
+                      <span className="text-white/60">Крепкость:</span>
+                      <span className="text-white font-medium">{product.strength}</span>
+                    </div>
+                  )}
+                  {product.puffs && (
+                    <div className="flex justify-between items-center py-2 border-b border-white/10">
+                      <span className="text-white/60">Количество тяг:</span>
+                      <span className="text-white font-medium">{product.puffs}</span>
+                    </div>
+                  )}
+                  {product.vg_pg && (
+                    <div className="flex justify-between items-center py-2 border-b border-white/10">
+                      <span className="text-white/60">VG/PG:</span>
+                      <span className="text-white font-medium">{product.vg_pg}</span>
+                    </div>
+                  )}
+                  {product.tank_volume && (
+                    <div className="flex justify-between items-center py-2">
+                      <span className="text-white/60">Объем бака:</span>
+                      <span className="text-white font-medium">{product.tank_volume}</span>
+                    </div>
+                  )}
                 </div>
               </div>
             )}

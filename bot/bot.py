@@ -66,6 +66,10 @@ class ItemStates(StatesGroup):
     waiting_for_category = State()
     waiting_for_image = State()
     waiting_for_tastes = State()
+    waiting_for_strength = State()
+    waiting_for_puffs = State()
+    waiting_for_vg_pg = State()
+    waiting_for_tank_volume = State()
 
 
 class AdminStates(StatesGroup):
@@ -1639,7 +1643,7 @@ async def process_item_image(message: Message, state: FSMContext):
 
 @dp.message(ItemStates.waiting_for_tastes)
 async def process_item_tastes(message: Message, state: FSMContext):
-    """Обработка вкусов и завершение создания товара"""
+    """Обработка вкусов"""
     # Получаем текст сообщения и очищаем от лишних пробелов
     tastes_text = message.text.strip() if message.text else ""
 
@@ -1650,18 +1654,82 @@ async def process_item_tastes(message: Message, state: FSMContext):
     else:
         # Разделяем вкусы по запятым и очищаем от пробелов
         tastes = [taste.strip() for taste in tastes_text.split(",") if taste.strip()]
+    
+    # Сохраняем вкусы в state
+    await state.update_data(tastes=tastes)
+    
+    # Переходим к запросу крепкости
+    await state.set_state(ItemStates.waiting_for_strength)
+    await message.answer("💪 Введите крепкость (например: 20 мг, 50 мг) или 'нет' чтобы пропустить:")
 
+
+@dp.message(ItemStates.waiting_for_strength)
+async def process_item_strength(message: Message, state: FSMContext):
+    """Обработка крепкости товара"""
+    strength = message.text.strip() if message.text else ""
+    
+    # Если пользователь ввел "нет", сохраняем как None
+    if strength.lower() in ("нет", "0", "-"):
+        strength = None
+    
+    await state.update_data(strength=strength)
+    await state.set_state(ItemStates.waiting_for_puffs)
+    await message.answer("💨 Введите количество тяг (например: 800, 1500) или 'нет' чтобы пропустить:")
+
+
+@dp.message(ItemStates.waiting_for_puffs)
+async def process_item_puffs(message: Message, state: FSMContext):
+    """Обработка количества тяг"""
+    puffs = message.text.strip() if message.text else ""
+    
+    if puffs.lower() in ("нет", "0", "-"):
+        puffs = None
+    
+    await state.update_data(puffs=puffs)
+    await state.set_state(ItemStates.waiting_for_vg_pg)
+    await message.answer("🧪 Введите VG/PG соотношение (например: 50/50, 70/30) или 'нет' чтобы пропустить:")
+
+
+@dp.message(ItemStates.waiting_for_vg_pg)
+async def process_item_vg_pg(message: Message, state: FSMContext):
+    """Обработка VG/PG соотношения"""
+    vg_pg = message.text.strip() if message.text else ""
+    
+    if vg_pg.lower() in ("нет", "0", "-"):
+        vg_pg = None
+    
+    await state.update_data(vg_pg=vg_pg)
+    await state.set_state(ItemStates.waiting_for_tank_volume)
+    await message.answer("📦 Введите объем бака (например: 2 мл, 3.5 мл) или 'нет' чтобы пропустить:")
+
+
+@dp.message(ItemStates.waiting_for_tank_volume)
+async def process_item_tank_volume(message: Message, state: FSMContext):
+    """Обработка объема бака и завершение создания товара"""
+    tank_volume = message.text.strip() if message.text else ""
+    
+    if tank_volume.lower() in ("нет", "0", "-"):
+        tank_volume = None
+    
+    await state.update_data(tank_volume=tank_volume)
+    
+    # Получаем все данные
     data = await state.get_data()
+    tastes = data.get("tastes", [])
 
     try:
         async with AsyncSessionLocal() as session:
-            # Создаем товар
+            # Создаем товар со всеми характеристиками
             new_item = Item(
                 name=data["name"],
                 description=data["description"],
                 price=data["price"],
                 category_id=data["category_id"],
                 image=data["image_path"],
+                strength=data.get("strength"),
+                puffs=data.get("puffs"),
+                vg_pg=data.get("vg_pg"),
+                tank_volume=tank_volume,
             )
             session.add(new_item)
             await session.flush()
