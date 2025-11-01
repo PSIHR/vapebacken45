@@ -1471,7 +1471,7 @@ async def analytics_completed_orders(
 
 
 async def main():
-    config = uvicorn.Config(app, host="localhost", port=8084, log_level="info")
+    config = uvicorn.Config(app, host="0.0.0.0", port=5000, log_level="info")
     server = uvicorn.Server(config)
 
     await server.serve()
