@@ -78,105 +78,105 @@ const Checkout = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
-      <div className="container mx-auto px-4 py-8 pb-24">
-        <h1 className="text-4xl font-extrabold mb-8 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-          📝 Оформление заказа
+    <div className="min-h-screen bg-[#f4f4f5]">
+      <div className="container mx-auto px-4 py-6 pb-24">
+        <h1 className="text-2xl font-bold mb-6 text-gray-900">
+          Оформление заказа
         </h1>
 
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 mb-6 border border-purple-100">
-          <h3 className="font-bold text-xl mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        <div className="bg-white rounded-lg border border-gray-200 p-4 mb-4">
+          <h3 className="font-semibold text-lg mb-3 text-gray-900">
             Ваш заказ:
           </h3>
           {cartItems.map((item) => (
-            <div key={item.id} className="flex justify-between mb-3 text-base p-2 hover:bg-purple-50 rounded-lg transition-colors">
-              <span className="text-gray-800 font-medium">
-                {item.name} <span className="text-purple-600 font-bold">x{item.quantity}</span>
+            <div key={item.id} className="flex justify-between mb-2 text-sm">
+              <span className="text-gray-700">
+                {item.name} <span className="text-gray-900 font-medium">x{item.quantity}</span>
               </span>
-              <span className="font-bold bg-gradient-to-r from-green-500 to-emerald-600 bg-clip-text text-transparent">
+              <span className="font-semibold text-gray-900">
                 {formatPrice(item.price * item.quantity)}
               </span>
             </div>
           ))}
-          <div className="border-t border-purple-100 mt-4 pt-4 flex justify-between font-extrabold text-2xl">
-            <span>Итого:</span>
-            <span className="bg-gradient-to-r from-green-500 to-emerald-600 bg-clip-text text-transparent">
+          <div className="border-t border-gray-200 mt-3 pt-3 flex justify-between font-bold text-lg">
+            <span className="text-gray-900">Итого:</span>
+            <span className="text-gray-900">
               {formatPrice(totalPrice)}
             </span>
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 border border-purple-100">
-          <div className="mb-5">
-            <label className="block text-gray-800 font-bold mb-2 text-lg">
-              📍 Адрес доставки <span className="text-red-500">*</span>
+        <form onSubmit={handleSubmit} className="bg-white rounded-lg border border-gray-200 p-4">
+          <div className="mb-4">
+            <label className="block text-gray-900 font-medium mb-2">
+              Адрес доставки <span className="text-red-500">*</span>
             </label>
             <textarea
               name="address"
               value={formData.address}
               onChange={handleChange}
-              className="w-full px-4 py-3 border-2 border-purple-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3390ec] focus:border-transparent"
               rows="3"
               placeholder="Улица, дом, квартира"
               required
             />
           </div>
 
-          <div className="mb-5">
-            <label className="block text-gray-800 font-bold mb-2 text-lg">
-              📱 Телефон <span className="text-red-500">*</span>
+          <div className="mb-4">
+            <label className="block text-gray-900 font-medium mb-2">
+              Телефон <span className="text-red-500">*</span>
             </label>
             <input
               type="tel"
               name="telephone"
               value={formData.telephone}
               onChange={handleChange}
-              className="w-full px-4 py-3 border-2 border-purple-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3390ec] focus:border-transparent"
               placeholder="+7 (999) 123-45-67"
               required
             />
           </div>
 
-          <div className="mb-5">
-            <label className="block text-gray-800 font-bold mb-2 text-lg">
-              💳 Способ оплаты
+          <div className="mb-4">
+            <label className="block text-gray-900 font-medium mb-2">
+              Способ оплаты
             </label>
             <select
               name="payment"
               value={formData.payment}
               onChange={handleChange}
-              className="w-full px-4 py-3 border-2 border-purple-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all bg-white"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3390ec] focus:border-transparent bg-white"
             >
-              <option value="Наличные">💵 Наличные</option>
-              <option value="Карта">💳 Карта</option>
+              <option value="Наличные">Наличные</option>
+              <option value="Карта">Карта</option>
             </select>
           </div>
 
-          <div className="mb-5">
-            <label className="block text-gray-800 font-bold mb-2 text-lg">
-              🚚 Способ доставки
+          <div className="mb-4">
+            <label className="block text-gray-900 font-medium mb-2">
+              Способ доставки
             </label>
             <select
               name="delivery"
               value={formData.delivery}
               onChange={handleChange}
-              className="w-full px-4 py-3 border-2 border-purple-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all bg-white"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3390ec] focus:border-transparent bg-white"
             >
-              <option value="Курьером">🚚 Курьером</option>
-              <option value="Самовывоз">🏪 Самовывоз</option>
+              <option value="Курьером">Курьером</option>
+              <option value="Самовывоз">Самовывоз</option>
             </select>
           </div>
 
           <div className="mb-6">
-            <label className="block text-gray-800 font-bold mb-2 text-lg">
-              🎁 Промокод
+            <label className="block text-gray-900 font-medium mb-2">
+              Промокод
             </label>
             <input
               type="text"
               name="promocode"
               value={formData.promocode}
               onChange={handleChange}
-              className="w-full px-4 py-3 border-2 border-purple-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3390ec] focus:border-transparent"
               placeholder="Введите промокод"
             />
           </div>
@@ -184,17 +184,15 @@ const Checkout = () => {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
+            className="w-full bg-[#3390ec] hover:bg-[#2b7cd3] text-white py-3 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {submitting ? (
               <>
-                <Loader2 className="animate-spin" size={24} />
+                <Loader2 className="animate-spin" size={20} />
                 Оформление...
               </>
             ) : (
-              <>
-                ✨ Подтвердить заказ
-              </>
+              'Подтвердить заказ'
             )}
           </button>
         </form>
