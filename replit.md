@@ -59,6 +59,14 @@ This is a **Telegram Mini App** with a complete full-stack implementation combin
 ```
 
 ## Recent Changes
+- **2025-11-01**: Added bottom navigation in Telegram style with glassmorphism
+  - Created BottomNavigation component with three buttons: Магазин, Корзина, Заказы
+  - Implemented glassmorphism effect with dark translucent background and blur
+  - Active button highlighted in blue (Telegram style)
+  - Added badge counter for cart items
+  - Simplified Header to show only shop name (centered)
+  - Navigation fixed at bottom with safe-area-inset support
+  - Smooth transitions and hover effects
 - **2025-11-01**: Fixed dark gradient background display issue
   - Removed bg-gray-50 from App.jsx that was overriding body gradient
   - Applied dark gradient background (135deg, #0f172a slate-900 to #581c87 purple-900)

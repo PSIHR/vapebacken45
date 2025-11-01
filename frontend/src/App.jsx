@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useTelegram } from './hooks/useTelegram';
 import { userAPI, basketAPI } from './services/api';
 import Header from './components/Header';
+import BottomNavigation from './components/BottomNavigation';
 import Catalog from './pages/Catalog';
 import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
@@ -46,8 +47,8 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen">
-        <Header cartCount={cartCount} />
-        <main>
+        <Header />
+        <main className="pb-24">
           <Routes>
             <Route path="/" element={<Catalog onCartUpdate={updateCartCount} />} />
             <Route path="/product/:id" element={<ProductDetail onCartUpdate={updateCartCount} />} />
@@ -56,6 +57,7 @@ function App() {
             <Route path="/orders" element={<Orders />} />
           </Routes>
         </main>
+        <BottomNavigation cartCount={cartCount} />
       </div>
     </Router>
   );
