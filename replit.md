@@ -32,6 +32,18 @@ The application follows a client-server architecture with a clear separation bet
 
 ## Recent Changes
 
+- **2025-11-01**: Added product characteristics system
+  - Database: Added 4 new nullable fields to Item model (strength, puffs, vg_pg, tank_volume)
+  - Created Alembic migration for schema update
+  - Bot admin panel: Added 4 new FSM states to collect characteristics during item creation
+  - Characteristics are optional - admin can skip any field by entering "нет"
+  - API: GET /items/ endpoint now returns all characteristics fields
+  - Frontend ProductDetail improvements:
+    - Moved tastes section ABOVE description for better UX flow
+    - Made description collapsible with "Подробнее/Свернуть" button (auto-collapses after 3 lines if text >150 chars)
+    - Added dedicated characteristics section displaying: крепкость, количество тяг, VG/PG, объем бака
+    - Characteristics only display when present (handles nullable fields gracefully)
+  - Full end-to-end flow: bot creation → database → API → frontend display
 - **2025-11-01**: Added admin command to manually manage user loyalty profiles
   - New command `/set_loyalty` for admins to update loyalty data for any user
   - Allows setting: loyalty level (White/Platinum/Black), stamps (0-5), total items purchased
