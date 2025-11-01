@@ -59,6 +59,23 @@ This is a **Telegram Mini App** with a complete full-stack implementation combin
 ```
 
 ## Recent Changes
+- **2025-11-01**: Comprehensive delivery system update with time fields and cost calculation
+  - Added "Яндекс доставка" delivery method with link to instructions
+  - Updated self-pickup address to: пр. Дзержинского 26, подъезд 4
+  - Implemented info modals (ℹ️ button) for each delivery method with full conditions
+  - Added time input fields:
+    - Self-pickup & Metro: Text input for preferred time
+    - Address delivery: Dropdown for time slots (14:00-16:00 or 18:00-21:30)
+  - Automatic delivery cost calculation:
+    - Address delivery: 8 BYN if order < 80 BYN, free if ≥ 80 BYN
+    - Other methods: Free
+  - Database changes:
+    - Added preferred_time, time_slot, delivery_cost columns to Order model
+    - Changed address column to nullable for self-pickup and metro orders
+    - Created two Alembic migrations for schema updates
+  - Frontend auto-fills address for self-pickup and metro delivery
+  - Backend notifications now show delivery cost and time information
+  - All prices displayed in BYN (Belarusian Ruble)
 - **2025-11-01**: Added FAQ page with accessible accordion component
   - Created comprehensive FAQ page with 11 questions and answers about products and usage
   - Implemented accordion with smooth transitions and glassmorphism design

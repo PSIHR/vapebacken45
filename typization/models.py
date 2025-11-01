@@ -88,6 +88,9 @@ class OrderFromBasketCreate(BaseModel):
     telephone: str | None = None
     metro_line: Optional[str] = None
     metro_station: Optional[str] = None
+    preferred_time: Optional[str] = None
+    time_slot: Optional[str] = None
+    delivery_cost: Optional[float] = 0.0
     promocode: Optional[str] = None
 
 

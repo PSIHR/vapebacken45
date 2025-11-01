@@ -807,6 +807,9 @@ async def create_order_from_basket(
             telephone=f"@{user.username}" if user.username else None,
             metro_line=order_data.metro_line,
             metro_station=order_data.metro_station,
+            preferred_time=order_data.preferred_time,
+            time_slot=order_data.time_slot,
+            delivery_cost=order_data.delivery_cost or 0.0,
             total_price=0,  # Временное значение, будет пересчитано
             discount=0,
             promocode=order_data.promocode,
@@ -869,7 +872,8 @@ async def create_order_from_basket(
                 order.discount = promo.percentage
                 total_price = total_price * (100 - promo.percentage) / 100
 
-        # 6. Обновляем итоговую стоимость заказа
+        # 6. Добавляем стоимость доставки и обновляем итоговую стоимость заказа
+        total_price += order.delivery_cost
         order.total_price = total_price
         await db.commit()
 
@@ -882,12 +886,24 @@ async def create_order_from_basket(
                 for item in order_items
             )
 
+            delivery_info = ""
+            if order.delivery_cost > 0:
+                delivery_info = f"🚚 Доставка: {order.delivery_cost} BYN\n"
+            
+            time_info = ""
+            if order.preferred_time:
+                time_info = f"⏰ Время: {order.preferred_time}\n"
+            elif order.time_slot:
+                time_info = f"⏰ Время: {order.time_slot}\n"
+            
             message_text = (
                 f"🛒 Ваш заказ №{order.id} принят!\n\n"
                 f"📦 Состав заказа:\n{items_text}\n\n"
-                f"💰 Итого: {order.total_price}₽\n"
+                f"{delivery_info}"
+                f"💰 Итого: {order.total_price} BYN\n"
                 f"🚚 Способ доставки: {order.delivery}\n"
-                f"🏠 Адрес: {order.address}\n\n"
+                f"🏠 Адрес: {order.address}\n"
+                f"{time_info}\n"
             )
 
             await bot.send_message(chat_id=user_id, text=message_text)
