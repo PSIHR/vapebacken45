@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { basketAPI, ordersAPI } from '../services/api';
 import { useTelegram } from '../hooks/useTelegram';
 import { formatPrice } from '../utils/helpers';
+import { metroLines } from '../data/metroData';
 import { Loader2 } from 'lucide-react';
 
 const Checkout = () => {
@@ -16,7 +17,11 @@ const Checkout = () => {
     payment: 'Наличные',
     delivery: 'Курьером',
     promocode: '',
+    metro_line: '',
+    metro_station: '',
   });
+  
+  const [availableStations, setAvailableStations] = useState([]);
 
   const { user, showAlert } = useTelegram();
   const navigate = useNavigate();
@@ -44,7 +49,12 @@ const Checkout = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.address || !formData.telephone) {
+    if (formData.delivery === 'По метро') {
+      if (!formData.metro_line || !formData.metro_station || !formData.telephone) {
+        showAlert('Заполните все обязательные поля');
+        return;
+      }
+    } else if (!formData.address || !formData.telephone) {
       showAlert('Заполните все обязательные поля');
       return;
     }
@@ -63,10 +73,30 @@ const Checkout = () => {
   };
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    
+    if (name === 'delivery') {
+      setFormData({
+        ...formData,
+        [name]: value,
+        metro_line: '',
+        metro_station: '',
+        address: value === 'По метро' ? '' : formData.address,
+      });
+      setAvailableStations([]);
+    } else if (name === 'metro_line') {
+      setFormData({
+        ...formData,
+        [name]: value,
+        metro_station: '',
+      });
+      setAvailableStations(metroLines[value] || []);
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   if (loading) {
@@ -117,18 +147,80 @@ const Checkout = () => {
         <form onSubmit={handleSubmit} className="glass-panel p-4">
           <div className="mb-4">
             <label className="block text-white font-medium mb-2">
-              Адрес доставки <span className="text-red-300">*</span>
+              Способ доставки
             </label>
-            <textarea
-              name="address"
-              value={formData.address}
+            <select
+              name="delivery"
+              value={formData.delivery}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-white/30 bg-white/10 text-white placeholder-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
-              rows="3"
-              placeholder="Улица, дом, квартира"
-              required
-            />
+              className="w-full px-3 py-2 border border-white/30 bg-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
+            >
+              <option value="Курьером" className="bg-purple-600">Курьером</option>
+              <option value="Самовывоз" className="bg-purple-600">Самовывоз</option>
+              <option value="По метро" className="bg-purple-600">По метро</option>
+            </select>
           </div>
+
+          {formData.delivery === 'По метро' ? (
+            <>
+              <div className="mb-4">
+                <label className="block text-white font-medium mb-2">
+                  Линия метро <span className="text-red-300">*</span>
+                </label>
+                <select
+                  name="metro_line"
+                  value={formData.metro_line}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-white/30 bg-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
+                  required
+                >
+                  <option value="" className="bg-purple-600">Выберите линию метро</option>
+                  {Object.keys(metroLines).map((line) => (
+                    <option key={line} value={line} className="bg-purple-600">
+                      {line}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {formData.metro_line && (
+                <div className="mb-4">
+                  <label className="block text-white font-medium mb-2">
+                    Станция метро <span className="text-red-300">*</span>
+                  </label>
+                  <select
+                    name="metro_station"
+                    value={formData.metro_station}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-white/30 bg-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
+                    required
+                  >
+                    <option value="" className="bg-purple-600">Выберите станцию</option>
+                    {availableStations.map((station) => (
+                      <option key={station} value={station} className="bg-purple-600">
+                        {station}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="mb-4">
+              <label className="block text-white font-medium mb-2">
+                Адрес доставки <span className="text-red-300">*</span>
+              </label>
+              <textarea
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-white/30 bg-white/10 text-white placeholder-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
+                rows="3"
+                placeholder="Улица, дом, квартира"
+                required={formData.delivery !== 'По метро'}
+              />
+            </div>
+          )}
 
           <div className="mb-4">
             <label className="block text-white font-medium mb-2">
@@ -160,20 +252,6 @@ const Checkout = () => {
             </select>
           </div>
 
-          <div className="mb-4">
-            <label className="block text-white font-medium mb-2">
-              Способ доставки
-            </label>
-            <select
-              name="delivery"
-              value={formData.delivery}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-white/30 bg-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
-            >
-              <option value="Курьером" className="bg-purple-600">Курьером</option>
-              <option value="Самовывоз" className="bg-purple-600">Самовывоз</option>
-            </select>
-          </div>
 
           <div className="mb-6">
             <label className="block text-white font-medium mb-2">

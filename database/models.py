@@ -145,6 +145,8 @@ class Order(Base):
     delivery = Column(String, nullable=False)
     address = Column(String, nullable=False)
     telephone = Column(String, nullable=False)
+    metro_line = Column(String, nullable=True)
+    metro_station = Column(String, nullable=True)
     total_price = Column(Float, nullable=False)
     discount = Column(Integer, default=0)
     promocode = Column(String, nullable=True)

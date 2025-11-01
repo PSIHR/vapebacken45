@@ -59,6 +59,15 @@ This is a **Telegram Mini App** with a complete full-stack implementation combin
 ```
 
 ## Recent Changes
+- **2025-11-01**: Added metro delivery option with line and station selection
+  - Added "По метро" as delivery option in checkout
+  - Implemented cascading dropdowns: select metro line first, then station
+  - Three metro lines available: Московская, Автозаводская, Зеленолужская (Minsk metro)
+  - Each line has 7-15 stations to choose from
+  - Database updated with metro_line and metro_station columns in orders table
+  - Bot notifications updated to show metro information to couriers and admins
+  - Frontend validates metro fields when metro delivery is selected
+  - Created metroData.js with complete metro lines and stations data
 - **2025-11-01**: Added bottom navigation in Telegram style with glassmorphism
   - Created BottomNavigation component with three buttons: Магазин, Корзина, Заказы
   - Implemented glassmorphism effect with dark translucent background and blur

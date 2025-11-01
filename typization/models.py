@@ -86,6 +86,8 @@ class OrderFromBasketCreate(BaseModel):
     delivery: str
     address: str
     telephone: str
+    metro_line: Optional[str] = None
+    metro_station: Optional[str] = None
     promocode: Optional[str] = None
 
 
@@ -107,6 +109,8 @@ class OrderResponse(BaseModel):
     delivery: str
     address: str
     telephone: str
+    metro_line: Optional[str] = None
+    metro_station: Optional[str] = None
     total_price: int
     discount: int
     promocode: Optional[str] = None

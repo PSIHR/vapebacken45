@@ -214,6 +214,19 @@ def format_order_info(order: Order, orders_count: int, username: str = None) -> 
         username if username is not None else getattr(order, "username", "не указан")
     )
 
+    # Форматируем информацию о доставке
+    if order.delivery == "По метро":
+        delivery_info = (
+            f"🚇 *Способ доставки:* {escape_markdown(order.delivery)}\n"
+            f"🚇 *Линия метро:* {escape_markdown(order.metro_line or 'не указана')}\n"
+            f"📍 *Станция метро:* {escape_markdown(order.metro_station or 'не указана')}\n\n"
+        )
+    else:
+        delivery_info = (
+            f"🏠 *Адрес:* {escape_markdown(order.address)}\n"
+            f"🚚 *Способ доставки:* {escape_markdown(order.delivery)}\n\n"
+        )
+    
     return (
         f"📋 *ИНФОРМАЦИЯ О ЗАКАЗЕ*\n\n"
         f"📦 *Состав заказа:*\n"
@@ -223,8 +236,7 @@ def format_order_info(order: Order, orders_count: int, username: str = None) -> 
         f"🔹 *Статус клиента:* {escape_markdown(client_status)}\n"
         f"📊 *Статус:* {escape_markdown(status_emojis.get(order.status, order.status))}\n"
         f"📞 *Телефон:* {escape_markdown(order.telephone)}\n\n"
-        f"🏠 *Адрес:* {escape_markdown(order.address)}\n"
-        f"🚚 *Способ доставки:* {escape_markdown(order.delivery)}\n\n"
+        f"{delivery_info}"
         f"📅 *Дата:* {escape_markdown(order.created_at.strftime('%d.%m.%Y %H:%M'))}\n"
         f"🆔 *Номер:* {escape_markdown(str(order.id))}\n"
     )

@@ -693,6 +693,8 @@ async def create_order_from_basket(
             delivery=order_data.delivery,
             address=order_data.address,
             telephone=order_data.telephone,
+            metro_line=order_data.metro_line,
+            metro_station=order_data.metro_station,
             total_price=0,  # Временное значение, будет пересчитано
             discount=0,
             promocode=order_data.promocode,
