@@ -230,7 +230,7 @@ const Checkout = () => {
               <button
                 type="button"
                 onClick={() => showDeliveryInfo(formData.delivery)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-full transition-colors"
+                className="absolute right-10 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-full transition-colors"
               >
                 <Info className="w-5 h-5 text-white/70 hover:text-white" />
               </button>
