@@ -67,12 +67,18 @@ This is a **Telegram Mini App** with a complete full-stack implementation combin
   - Added responsive design optimized for mobile Telegram app
 
 ## Environment Variables
-Required environment variables in `config/.env.local`:
+
+### Backend (`config/.env.local`)
 - `LOG_LEVEL`: Logging level (default: ERROR)
 - `BACKEND_URL`: Backend URL for API
 - `TOKEN`: Telegram Bot API token
 - `ADMINS`: Comma-separated list of admin Telegram user IDs
 - `COURIERS`: Comma-separated list of courier Telegram user IDs
+
+### Frontend (`frontend/.env`)
+- `VITE_API_URL`: Backend API URL (used in production builds)
+  - Development mode uses Vite proxy to route `/api` → `localhost:3000`
+  - Production mode requires explicit VITE_API_URL configuration
 
 ## Running the Application
 
