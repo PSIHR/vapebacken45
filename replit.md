@@ -1,9 +1,14 @@
-# Telegram Mini App - Backend
+# Telegram Mini App - Full Stack
 
 ## Overview
-This is a **Telegram Mini App backend** that combines a FastAPI REST API with a Telegram bot using aiogram. The application provides order management, user authentication, and product catalog functionality for a Telegram-based e-commerce system.
+This is a **Telegram Mini App** with a complete full-stack implementation combining:
+- **Backend**: FastAPI REST API with Telegram bot using aiogram
+- **Frontend**: Modern React SPA with TailwindCSS and Telegram Web App integration
+- **Database**: SQLite with async support for order management and product catalog
 
 ## Technology Stack
+
+### Backend
 - **Framework**: FastAPI 0.116.1
 - **Telegram Bot**: aiogram 3.21.0
 - **Database**: SQLite with aiosqlite (async)
@@ -11,6 +16,14 @@ This is a **Telegram Mini App backend** that combines a FastAPI REST API with a 
 - **Migrations**: Alembic 1.16.4
 - **Web Server**: Uvicorn 0.35.0
 - **Python Version**: 3.11+
+
+### Frontend
+- **Framework**: React 18 with Vite
+- **Styling**: TailwindCSS
+- **Routing**: React Router DOM
+- **HTTP Client**: Axios
+- **Icons**: Lucide React
+- **Telegram SDK**: @telegram-apps/sdk-react
 
 ## Project Structure
 ```
@@ -27,20 +40,31 @@ This is a **Telegram Mini App backend** that combines a FastAPI REST API with a 
 │   └── ban.py             # Banned user middleware
 ├── typization/             # Pydantic models
 │   └── models.py          # Request/response models
+├── frontend/               # React frontend application
+│   ├── src/
+│   │   ├── components/    # Reusable UI components
+│   │   ├── pages/         # Page components (Catalog, Cart, Checkout, Orders)
+│   │   ├── services/      # API client
+│   │   ├── hooks/         # Custom React hooks
+│   │   └── utils/         # Helper functions
+│   ├── vite.config.js     # Vite configuration
+│   └── package.json       # Frontend dependencies
 ├── alembic/                # Database migrations
 ├── uploads/                # User uploaded files
 ├── config/                 # Configuration files
-│   └── .env.local         # Environment variables
+│   └── .env.local         # Backend environment variables
 └── requirements.txt        # Python dependencies
 ```
 
 ## Recent Changes
-- **2025-11-01**: Imported from GitHub and configured for Replit environment
-  - Updated port from 8084 to 5000 for Replit compatibility
-  - Updated host from localhost to 0.0.0.0 for public access
-  - Added python-dotenv to requirements.txt
-  - Configured PYTHONPATH in workflow to resolve module imports
-  - Set up workflow for automatic server startup
+- **2025-11-01**: Complete full-stack implementation
+  - Added React + Vite frontend with TailwindCSS
+  - Integrated Telegram Web App SDK
+  - Created beautiful UI for catalog, cart, checkout, and orders
+  - Backend moved to port 3000, frontend on port 5000
+  - Set up dual workflows for backend and frontend
+  - Configured API proxy for seamless communication
+  - Added responsive design optimized for mobile Telegram app
 
 ## Environment Variables
 Required environment variables in `config/.env.local`:
@@ -51,25 +75,43 @@ Required environment variables in `config/.env.local`:
 - `COURIERS`: Comma-separated list of courier Telegram user IDs
 
 ## Running the Application
-The application runs automatically via the configured workflow:
+
+The application runs automatically via two configured workflows:
+
+### Backend Workflow
 ```bash
 PYTHONPATH=/home/runner/workspace:$PYTHONPATH python app/main.py
 ```
+- **Host**: 0.0.0.0
+- **Port**: 3000
+- **Type**: Console (internal API)
 
-The server starts on:
+### Frontend Workflow
+```bash
+cd frontend && npm run dev
+```
 - **Host**: 0.0.0.0
 - **Port**: 5000
+- **Type**: Webview (public web interface)
 
 ## Features
-- User registration and authentication via Telegram
-- Product catalog management
-- Shopping basket functionality
-- Order creation and management
-- Courier assignment and order tracking
-- Promocode system
-- User ban/unban functionality
-- Analytics and sales reporting
-- Admin panel via Telegram bot
+
+### Customer Features (Web App)
+- 🛍️ Beautiful product catalog with categories
+- 🎨 Responsive design optimized for Telegram
+- 🛒 Shopping cart with quantity management
+- 📝 Order checkout with address and payment options
+- 📦 Order history and status tracking
+- 🎯 Category filtering
+- 💰 Promocode support
+
+### Admin/Courier Features (Telegram Bot)
+- 👥 User management (ban/unban)
+- 📦 Product catalog management
+- 🚚 Order assignment and tracking
+- 📊 Analytics and sales reporting
+- 🏷️ Promocode creation and management
+- 📈 Customer statistics (new, regular, VIP)
 
 ## Database
 The application uses SQLite with async support (aiosqlite). The database file is created automatically on first run as `database.db` in the root directory.
@@ -104,8 +146,39 @@ The bot provides different interfaces for:
 - **Couriers**: New orders, active orders, completed orders
 - **Admins**: User management, product management, analytics
 
+## Frontend Pages
+
+### Catalog Page (`/`)
+- Displays all products with images, prices, and descriptions
+- Category filtering
+- Add to cart functionality
+- Product taste/variant selection
+
+### Cart Page (`/cart`)
+- View cart items
+- Adjust quantities
+- Remove items
+- See total price
+- Proceed to checkout
+
+### Checkout Page (`/checkout`)
+- Enter delivery address
+- Provide phone number
+- Select payment method
+- Choose delivery type
+- Apply promocodes
+- Confirm order
+
+### Orders Page (`/orders`)
+- View order history
+- Track order status
+- See order details and items
+
 ## Deployment Notes
-- The application is configured to run on port 5000 for Replit deployments
+- Backend runs on port 3000 (internal API)
+- Frontend runs on port 5000 (public web interface)
 - CORS is enabled for all origins
 - Static files (uploads) are served from the `/uploads` directory
 - The Telegram bot polls for updates in the background
+- Frontend uses Replit domain for backend API calls
+- Telegram Web App SDK integrated for native Telegram features
