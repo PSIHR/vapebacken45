@@ -59,13 +59,17 @@ This is a **Telegram Mini App** with a complete full-stack implementation combin
 ```
 
 ## Recent Changes
+- **2025-11-01**: Fixed dark gradient background display issue
+  - Removed bg-gray-50 from App.jsx that was overriding body gradient
+  - Applied dark gradient background (135deg, #0f172a slate-900 to #581c87 purple-900)
+  - Added background-attachment: fixed for consistent gradient display
+  - All pages now correctly display dark gradient with excellent text contrast
 - **2025-11-01**: Implemented glassmorphism design with Unbounded font
   - Added Unbounded font from Google Fonts for modern typography
   - Implemented glassmorphism effect with backdrop blur and translucency
   - Created custom CSS utility classes: .glass-card, .glass-header, .glass-panel
-  - Applied purple gradient background (135deg, #667eea to #764ba2)
   - Updated all components with glassmorphism styling (ProductCard, Header, CartItem, Cart, Checkout, Orders, OrderCard)
-  - Changed all text colors to white/white-translucent for readability on gradient background
+  - Changed all text colors to white/white-translucent for readability on dark gradient background
   - Product images display with object-contain for full, uncropped photos
   - Modern, premium aesthetic combining Telegram minimalism with glassmorphism effects
 - **2025-11-01**: Added product detail page with taste selection
