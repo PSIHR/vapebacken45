@@ -19,6 +19,7 @@ from aiogram.types import (
     Message,
     ReplyKeyboardMarkup,
     ReplyKeyboardRemove,
+    WebAppInfo,
 )
 from aiogram.utils.keyboard import InlineKeyboardBuilder, ReplyKeyboardBuilder
 from dotenv import load_dotenv
@@ -1436,6 +1437,14 @@ async def cmd_start(message: Message):
                 existing_user.username = username
                 await session.commit()
 
+    # Получаем URL веб-приложения из переменной окружения
+    webapp_url = f"https://{os.getenv('REPLIT_DEV_DOMAIN', 'localhost:5000')}"
+    
+    # Создаем inline клавиатуру с кнопкой для открытия Web App
+    webapp_keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🛍 Открыть магазин", web_app=WebAppInfo(url=webapp_url))]
+    ])
+
     if user_id in ADMINS:  # Проверяем, что пользователь - админ
         builder = ReplyKeyboardBuilder()
         builder.row(
@@ -1484,6 +1493,11 @@ async def cmd_start(message: Message):
             "👨‍💻 Панель администратора:",
             reply_markup=builder.as_markup(resize_keyboard=True),
         )
+        # Отправляем кнопку для открытия Web App
+        await message.answer(
+            "🛍 Откройте магазин, чтобы посмотреть товары и сделать заказ:",
+            reply_markup=webapp_keyboard
+        )
     elif user_id in COURIERS:
         builder = ReplyKeyboardBuilder()
         builder.row(
@@ -1497,17 +1511,23 @@ async def cmd_start(message: Message):
         await message.answer(
             "🚴 Панель курьера:", reply_markup=builder.as_markup(resize_keyboard=True)
         )
+        # Отправляем кнопку для открытия Web App
+        await message.answer(
+            "🛍 Откройте магазин, чтобы посмотреть товары:",
+            reply_markup=webapp_keyboard
+        )
     else:
         await message.answer(
             """<b>💨 VAPE PLUG</b> - ваш магазин вейп-продукции в Минске
 
         <b>🛒 Как сделать заказ:</b>
-        1. Откройте наше веб-приложение через кнопку меню
+        1. Нажмите кнопку "Открыть магазин" ниже
         2. Выберите товары в каталоге
         3. Оформите заказ в корзине
 
         <b>🚚 Доставка:</b>
         • По Минску
+        • По метро (Московская, Автозаводская, Зеленолужская линии)
         • Самовывоз
 
         <b>📍 Мы находимся:</b>
@@ -1516,6 +1536,7 @@ async def cmd_start(message: Message):
         <b>📞 По всем вопросам:</b>
         @vapepluggmanager""",
             parse_mode="HTML",
+            reply_markup=webapp_keyboard,
         )
 
 

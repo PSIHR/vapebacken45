@@ -59,6 +59,11 @@ This is a **Telegram Mini App** with a complete full-stack implementation combin
 ```
 
 ## Recent Changes
+- **2025-11-01**: Added Web App button to /start command
+  - Users now see "🛍 Открыть магазин" inline button after /start command
+  - Button opens Telegram Mini App directly from bot conversation
+  - Available for all user types (customers, couriers, admins)
+  - Uses WebAppInfo with REPLIT_DEV_DOMAIN for Web App URL
 - **2025-11-01**: Added metro delivery option with line and station selection
   - Added "По метро" as delivery option in checkout
   - Implemented cascading dropdowns: select metro line first, then station
