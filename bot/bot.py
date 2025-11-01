@@ -3809,52 +3809,49 @@ async def set_loyalty_start(message: Message, state: FSMContext):
     await state.set_state(LoyaltyManagementStates.waiting_for_user_id)
     await message.answer(
         "🎯 Управление профилем лояльности\n\n"
-        "Введите Telegram ID пользователя:"
+        "Введите @username пользователя:"
     )
 
 
 @dp.message(LoyaltyManagementStates.waiting_for_user_id)
 async def set_loyalty_get_user(message: Message, state: FSMContext):
-    """Получение ID пользователя и вывод текущих данных"""
-    try:
-        user_telegram_id = int(message.text.strip())
+    """Получение username пользователя и вывод текущих данных"""
+    # Убираем @ если есть и пробелы
+    username = message.text.strip().lstrip('@')
+    
+    async with AsyncSessionLocal() as session:
+        # Находим пользователя по username
+        result = await session.execute(
+            select(DBUser).where(DBUser.username == username)
+        )
+        user = result.scalar_one_or_none()
         
-        async with AsyncSessionLocal() as session:
-            # Находим пользователя
-            result = await session.execute(
-                select(DBUser).where(DBUser.telegram_id == user_telegram_id)
-            )
-            user = result.scalar_one_or_none()
-            
-            if not user:
-                await message.answer(
-                    f"❌ Пользователь с ID {user_telegram_id} не найден в базе.\n"
-                    "Попробуйте другой ID:"
-                )
-                return
-            
-            # Сохраняем ID в состояние
-            await state.update_data(user_telegram_id=user_telegram_id)
-            
-            # Показываем текущие данные
+        if not user:
             await message.answer(
-                f"👤 Пользователь: @{user.username or 'нет username'}\n"
-                f"🆔 ID: {user.telegram_id}\n\n"
-                f"📊 Текущие данные лояльности:\n"
-                f"🎴 Уровень карты: {user.loyalty_level}\n"
-                f"⭐ Штампов: {user.stamps}/6\n"
-                f"📦 Всего куплено товаров: {user.total_items_purchased}\n\n"
-                "Выберите, что хотите изменить:",
-                reply_markup=InlineKeyboardMarkup(inline_keyboard=[
-                    [InlineKeyboardButton(text="🎴 Уровень карты", callback_data="loyalty_set_level")],
-                    [InlineKeyboardButton(text="⭐ Количество штампов", callback_data="loyalty_set_stamps")],
-                    [InlineKeyboardButton(text="📦 Всего товаров", callback_data="loyalty_set_total")],
-                    [InlineKeyboardButton(text="❌ Отмена", callback_data="loyalty_cancel")]
-                ])
+                f"❌ Пользователь @{username} не найден в базе.\n"
+                "Попробуйте другой username:"
             )
-            
-    except ValueError:
-        await message.answer("❌ Неверный формат. Введите числовой Telegram ID:")
+            return
+        
+        # Сохраняем telegram_id в состояние
+        await state.update_data(user_telegram_id=user.telegram_id)
+        
+        # Показываем текущие данные
+        await message.answer(
+            f"👤 Пользователь: @{user.username or 'нет username'}\n"
+            f"🆔 ID: {user.telegram_id}\n\n"
+            f"📊 Текущие данные лояльности:\n"
+            f"🎴 Уровень карты: {user.loyalty_level}\n"
+            f"⭐ Штампов: {user.stamps}/6\n"
+            f"📦 Всего куплено товаров: {user.total_items_purchased}\n\n"
+            "Выберите, что хотите изменить:",
+            reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+                [InlineKeyboardButton(text="🎴 Уровень карты", callback_data="loyalty_set_level")],
+                [InlineKeyboardButton(text="⭐ Количество штампов", callback_data="loyalty_set_stamps")],
+                [InlineKeyboardButton(text="📦 Всего товаров", callback_data="loyalty_set_total")],
+                [InlineKeyboardButton(text="❌ Отмена", callback_data="loyalty_cancel")]
+            ])
+        )
 
 
 @dp.callback_query(F.data == "loyalty_set_level")
