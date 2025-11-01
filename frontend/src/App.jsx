@@ -50,7 +50,7 @@ function App() {
     <Router>
       <div className="min-h-screen pt-safe pb-safe">
         <Header />
-        <main className="pb-48 pt-40">
+        <main className="pb-24 pt-4">
           <Routes>
             <Route path="/" element={<Catalog />} />
             <Route
