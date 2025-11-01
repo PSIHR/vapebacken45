@@ -692,7 +692,7 @@ async def create_order_from_basket(
             payment=order_data.payment,
             delivery=order_data.delivery,
             address=order_data.address,
-            telephone=order_data.telephone,
+            telephone=f"@{user.username}" if user.username else None,
             metro_line=order_data.metro_line,
             metro_station=order_data.metro_station,
             total_price=0,  # Временное значение, будет пересчитано
@@ -775,8 +775,7 @@ async def create_order_from_basket(
                 f"📦 Состав заказа:\n{items_text}\n\n"
                 f"💰 Итого: {order.total_price}₽\n"
                 f"🚚 Способ доставки: {order.delivery}\n"
-                f"🏠 Адрес: {order.address}\n"
-                f"📞 Телефон: {order.telephone}\n\n"
+                f"🏠 Адрес: {order.address}\n\n"
             )
 
             await bot.send_message(chat_id=user_id, text=message_text)

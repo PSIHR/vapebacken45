@@ -85,7 +85,7 @@ class OrderFromBasketCreate(BaseModel):
     payment: str
     delivery: str
     address: str
-    telephone: str
+    telephone: str | None = None
     metro_line: Optional[str] = None
     metro_station: Optional[str] = None
     promocode: Optional[str] = None

@@ -13,7 +13,6 @@ const Checkout = () => {
   const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     address: '',
-    telephone: '',
     payment: 'Наличные',
     delivery: 'Курьером',
     promocode: '',
@@ -50,11 +49,11 @@ const Checkout = () => {
     e.preventDefault();
 
     if (formData.delivery === 'По метро') {
-      if (!formData.metro_line || !formData.metro_station || !formData.telephone) {
+      if (!formData.metro_line || !formData.metro_station) {
         showAlert('Заполните все обязательные поля');
         return;
       }
-    } else if (!formData.address || !formData.telephone) {
+    } else if (!formData.address) {
       showAlert('Заполните все обязательные поля');
       return;
     }
@@ -221,21 +220,6 @@ const Checkout = () => {
               />
             </div>
           )}
-
-          <div className="mb-4">
-            <label className="block text-white font-medium mb-2">
-              Телефон <span className="text-red-300">*</span>
-            </label>
-            <input
-              type="tel"
-              name="telephone"
-              value={formData.telephone}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-white/30 bg-white/10 text-white placeholder-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
-              placeholder="+7 (999) 123-45-67"
-              required
-            />
-          </div>
 
           <div className="mb-4">
             <label className="block text-white font-medium mb-2">

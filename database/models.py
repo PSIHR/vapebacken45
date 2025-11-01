@@ -144,7 +144,7 @@ class Order(Base):
     payment = Column(String, nullable=False)
     delivery = Column(String, nullable=False)
     address = Column(String, nullable=False)
-    telephone = Column(String, nullable=False)
+    telephone = Column(String, nullable=True)
     metro_line = Column(String, nullable=True)
     metro_station = Column(String, nullable=True)
     total_price = Column(Float, nullable=False)
