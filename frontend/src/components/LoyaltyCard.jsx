@@ -41,13 +41,17 @@ const LoyaltyCard = ({ loyaltyData }) => {
 
   const renderStamps = () => {
     const stampElements = [];
+    const isDiscountActive = stamps === 5; // Скидка активна когда 5 штампов
+    
     for (let i = 0; i < 6; i++) {
+      const isDiscountStamp = i === 5 && isDiscountActive; // 6-й круг подсвечивается
+      
       stampElements.push(
         <div
           key={i}
           className={`w-10 h-10 rounded-full ${
             i < stamps ? config.stampColor : config.stampEmptyColor
-          } flex items-center justify-center text-white font-bold text-sm transition-all duration-300`}
+          } ${isDiscountStamp ? 'ring-4 ring-yellow-400 scale-110 animate-pulse' : ''} flex items-center justify-center text-white font-bold text-sm transition-all duration-300`}
         >
           {i < stamps ? '✓' : i + 1}
         </div>
@@ -84,10 +88,12 @@ const LoyaltyCard = ({ loyaltyData }) => {
 
         {/* Stamps */}
         <div className="mb-4 relative z-10">
-          <p className={`text-sm font-medium mb-2 ${config.textColor}`}>
-            {stamps_until_discount > 0 
-              ? `Еще ${stamps_until_discount} покупок до скидки` 
-              : 'Скидка доступна!'}
+          <p className={`text-sm font-medium mb-2 ${config.textColor} ${stamps === 5 ? 'animate-bounce-subtle' : ''}`}>
+            {stamps === 5
+              ? '🎉 На эту покупку у вас скидка!' 
+              : stamps_until_discount > 0 
+                ? `Еще ${stamps_until_discount} ${stamps_until_discount === 1 ? 'покупка' : 'покупки'} для скидки на 6-й заказ` 
+                : 'Скидка доступна!'}
           </p>
           <div className="grid grid-cols-6 gap-2">
             {renderStamps()}

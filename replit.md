@@ -32,6 +32,11 @@ The application follows a client-server architecture with a clear separation bet
 
 ## Recent Changes
 
+- **2025-11-01**: Improved loyalty program UX with clearer messaging
+  - Changed text from "6 покупок до скидки" to "5 покупок для скидки на 6-й заказ" (more logical)
+  - When 5 stamps collected, shows animated message "🎉 На эту покупку у вас скидка!"
+  - 6th circle gets golden ring highlight and pulse animation when discount is active
+  - Added proper Russian pluralization (покупка/покупки) for better readability
 - **2025-11-01**: Added full-screen mode and swipe-lock for Telegram Mini App
   - Implemented `requestFullscreen()` in `useTelegram` hook for immersive experience
   - App now automatically expands to full screen on launch, removing Telegram's header and bottom bars
@@ -39,6 +44,7 @@ The application follows a client-server architecture with a clear separation bet
   - Users can only close app via header swipe or close button (prevents accidental exits)
   - Full-screen mode provides better UX for product browsing and checkout
   - Falls back gracefully if features are not available on older Telegram clients
+  - Added safe-area padding at top for devices with notches/Dynamic Island
 
 ## External Dependencies
 
