@@ -15,7 +15,7 @@ The frontend is a React SPA using TailwindCSS for styling, with a modern glassmo
 
 ### Technical Implementations
 - **Backend**: FastAPI serves a REST API, integrated with `aiogram` for Telegram bot functionalities. It uses `SQLAlchemy` with `aiosqlite` for asynchronous database operations and `Alembic` for migrations.
-- **Frontend**: Built with React 18 and Vite, it utilizes `@telegram-apps/sdk-react` for Telegram Web App integration. `Axios` handles API requests, and `React Router DOM` manages navigation.
+- **Frontend**: Built with React 18 and Vite, it utilizes the official Telegram Web App script for integration with full-screen mode support. `Axios` handles API requests, and `React Router DOM` manages navigation.
 - **Database**: SQLite is used for persistent data storage, including models for users, products, categories, orders, and loyalty program data.
 - **Key Features**:
     - **Product Catalog**: Displays products with images, prices, categories, and taste/variant selection. Includes search and category filtering.
@@ -30,6 +30,14 @@ The frontend is a React SPA using TailwindCSS for styling, with a modern glassmo
 ### System Design Choices
 The application follows a client-server architecture with a clear separation between frontend and backend. The Telegram bot acts as an interface for both customer entry points (via Web App button) and administrative tasks. The database schema supports a comprehensive e-commerce flow, including product variations (tastes), user baskets, orders, and promotional mechanics. Environment variables manage configuration for both backend and frontend. The system is designed for dual workflows, with the backend running on an internal port (3000) and the frontend on a public webview port (5000), utilizing a Vite proxy for API communication in development.
 
+## Recent Changes
+
+- **2025-11-01**: Added full-screen mode for Telegram Mini App
+  - Implemented `requestFullscreen()` in `useTelegram` hook for immersive experience
+  - App now automatically expands to full screen on launch, removing Telegram's header and bottom bars
+  - Full-screen mode provides better UX for product browsing and checkout
+  - Falls back gracefully if full-screen is not available on older Telegram clients
+
 ## External Dependencies
 
 - **FastAPI**: Backend web framework.
@@ -43,5 +51,5 @@ The application follows a client-server architecture with a clear separation bet
 - **Uvicorn**: ASGI web server.
 - **Axios**: Promise-based HTTP client for the browser and Node.js.
 - **Lucide React**: Icon library.
-- **@telegram-apps/sdk-react**: Telegram Web App SDK for React.
+- **Telegram Web App API**: Official Telegram script for Mini App integration with full-screen support.
 - **Google Fonts**: For `Unbounded` typography.

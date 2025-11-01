@@ -9,6 +9,16 @@ export const useTelegram = () => {
     if (telegram) {
       telegram.ready();
       telegram.expand();
+      
+      // Запрос полноэкранного режима (убирает шапку и панели Telegram)
+      if (telegram.requestFullscreen) {
+        try {
+          telegram.requestFullscreen();
+        } catch (error) {
+          console.log('Fullscreen not available:', error);
+        }
+      }
+      
       setTg(telegram);
       setUser(telegram.initDataUnsafe?.user);
     }
