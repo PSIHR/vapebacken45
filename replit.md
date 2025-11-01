@@ -59,6 +59,13 @@ This is a **Telegram Mini App** with a complete full-stack implementation combin
 ```
 
 ## Recent Changes
+- **2025-11-01**: Fixed critical bugs in loyalty discount logic (PRODUCTION READY)
+  - Fixed NameError in basket endpoint return statement
+  - Fixed discount allocation to use basket_item.id instead of item.id (handles same product with different tastes)
+  - Discounts now correctly distribute across multiple items sorted by price (most expensive first)
+  - Multiple discount thresholds handled correctly (6, 12, 18 items, etc.)
+  - All earned discounts applied even when most expensive item has lower quantity
+  - Architect confirmed implementation is production-ready ✓
 - **2025-11-01**: Implemented Loyalty Program with Stamp System
   - Added loyalty program: 1 stamp per purchased item, every 6th item gets discount
   - Three loyalty card levels: White (25%), Platinum (30%), Black (35% forever)
