@@ -40,12 +40,12 @@ const ProductCard = ({ product, onAddToCart }) => {
             </span>
           )}
         </div>
-        <h3 className="text-lg font-semibold text-white mb-1">{product.name}</h3>
+        <h3 className="text-xl font-bold text-white mb-1">{product.name}</h3>
         <p className="text-sm text-white/80 mb-3 line-clamp-2">
           {product.description}
         </p>
         <div className="flex items-center justify-between">
-          <span className="text-2xl font-bold text-white">
+          <span className="text-lg font-semibold text-white">
             {formatPrice(product.price)}
           </span>
           <button

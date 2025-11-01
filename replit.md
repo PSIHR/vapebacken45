@@ -59,6 +59,12 @@ This is a **Telegram Mini App** with a complete full-stack implementation combin
 ```
 
 ## Recent Changes
+- **2025-11-01**: Improved product card layout and styling
+  - Product titles now larger and bolder (text-xl font-bold)
+  - Prices reduced in size (text-lg instead of text-2xl)
+  - Changed currency from ₽ to BYN (Belarusian Ruble)
+  - Grid layout changed to 2 columns for better mobile view
+  - Fixed search icon blur issue by restructuring backdrop-blur application
 - **2025-11-01**: Added categories and search functionality to main catalog page
   - Categories now load from backend `/categories/` API endpoint
   - Added categoriesAPI to services/api.js for fetching categories

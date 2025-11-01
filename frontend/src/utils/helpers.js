@@ -1,5 +1,5 @@
 export const formatPrice = (price) => {
-  return `${price}₽`;
+  return `${price} BYN`;
 };
 
 export const formatDate = (dateString) => {
