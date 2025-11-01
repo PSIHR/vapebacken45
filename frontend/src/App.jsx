@@ -48,9 +48,9 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen pt-safe pb-safe">
+      <div className="min-h-screen pt-safe pb-safe pt-40">
         <Header />
-        <main className="pb-24 pt-4">
+        <main className="pb-48">
           <Routes>
             <Route path="/" element={<Catalog />} />
             <Route
