@@ -59,6 +59,15 @@ This is a **Telegram Mini App** with a complete full-stack implementation combin
 ```
 
 ## Recent Changes
+- **2025-11-01**: Added FAQ page with accessible accordion component
+  - Created comprehensive FAQ page with 11 questions and answers about products and usage
+  - Implemented accordion with smooth transitions and glassmorphism design
+  - First question opens by default for better UX
+  - Added FAQ button to Header (top-right corner) for easy access
+  - Full ARIA compliance: aria-expanded, aria-controls, aria-labelledby, aria-hidden
+  - Screen reader compatible - collapsed panels hidden from assistive technology
+  - Questions cover: warranty, cartridge care, taste fatigue, winter usage, PG/VG info, and more
+  - Architect confirmed implementation meets all accessibility requirements ✓
 - **2025-11-01**: Fixed critical bugs in loyalty discount logic (PRODUCTION READY)
   - Fixed NameError in basket endpoint return statement
   - Fixed discount allocation to use basket_item.id instead of item.id (handles same product with different tastes)
