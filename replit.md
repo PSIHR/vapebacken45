@@ -19,7 +19,9 @@ This is a **Telegram Mini App** with a complete full-stack implementation combin
 
 ### Frontend
 - **Framework**: React 18 with Vite
-- **Styling**: TailwindCSS
+- **Styling**: TailwindCSS with custom glassmorphism utilities
+- **Typography**: Unbounded font from Google Fonts
+- **Design**: Glassmorphism with gradient backgrounds
 - **Routing**: React Router DOM
 - **HTTP Client**: Axios
 - **Icons**: Lucide React
@@ -57,6 +59,15 @@ This is a **Telegram Mini App** with a complete full-stack implementation combin
 ```
 
 ## Recent Changes
+- **2025-11-01**: Implemented glassmorphism design with Unbounded font
+  - Added Unbounded font from Google Fonts for modern typography
+  - Implemented glassmorphism effect with backdrop blur and translucency
+  - Created custom CSS utility classes: .glass-card, .glass-header, .glass-panel
+  - Applied purple gradient background (135deg, #667eea to #764ba2)
+  - Updated all components with glassmorphism styling (ProductCard, Header, CartItem, Cart, Checkout, Orders, OrderCard)
+  - Changed all text colors to white/white-translucent for readability on gradient background
+  - Product images display with object-contain for full, uncropped photos
+  - Modern, premium aesthetic combining Telegram minimalism with glassmorphism effects
 - **2025-11-01**: Added product detail page with taste selection
   - Created ProductDetail page to view full product information
   - Implemented taste/flavor selection functionality
