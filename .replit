@@ -5,3 +5,31 @@ expertMode = true
 [nix]
 channel = "stable-25_05"
 packages = ["cacert", "glibcLocales", "libxcrypt", "util-linux"]
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "fastapi-bot"
+
+[[workflows.workflow]]
+name = "fastapi-bot"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "PYTHONPATH=/home/runner/workspace:$PYTHONPATH python app/main.py"
+waitForPort = 5000
+
+[[ports]]
+localPort = 5000
+externalPort = 80
