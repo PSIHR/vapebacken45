@@ -69,6 +69,12 @@ class Item(Base):
     price = Column(Integer)
     category_id = Column(Integer, ForeignKey("categories.id"))
     image = Column(String)
+    
+    # Характеристики
+    strength = Column(String, nullable=True)  # Крепкость (например: "20 мг", "50 мг")
+    puffs = Column(String, nullable=True)  # Количество тяг (например: "800", "1500")
+    vg_pg = Column(String, nullable=True)  # VG/PG соотношение (например: "50/50", "70/30")
+    tank_volume = Column(String, nullable=True)  # Объем бака (например: "2 мл", "3.5 мл")
 
     # Связи
     category = relationship("Category", back_populates="items")
