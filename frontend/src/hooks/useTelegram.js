@@ -27,21 +27,36 @@ export const useTelegram = () => {
       
       setTg(telegram);
       setUser(telegram.initDataUnsafe?.user);
+    } else {
+      // Mock user для preview/тестирования
+      setUser({ id: 123456789, username: 'preview_user' });
     }
   }, []);
 
   const showAlert = (message) => {
-    tg?.showAlert(message);
+    if (tg?.showAlert) {
+      tg.showAlert(message);
+    } else {
+      console.log('Alert:', message);
+    }
   };
 
   const showConfirm = (message) => {
     return new Promise((resolve) => {
-      tg?.showConfirm(message, resolve);
+      if (tg?.showConfirm) {
+        tg.showConfirm(message, resolve);
+      } else {
+        resolve(window.confirm(message));
+      }
     });
   };
 
   const close = () => {
-    tg?.close();
+    if (tg?.close) {
+      tg.close();
+    } else {
+      console.log('Close app');
+    }
   };
 
   const MainButton = {
