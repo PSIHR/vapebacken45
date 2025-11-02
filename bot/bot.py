@@ -4157,6 +4157,7 @@ async def loyalty_cancel(callback: CallbackQuery, state: FSMContext):
 
 
 # Импорт товаров из Google Docs
+@dp.message(Command("import"))
 @dp.message(F.text == "📥 Загрузить из Google Docs")
 async def import_from_docs_start(message: Message, state: FSMContext):
     """Начало импорта товаров из Google Docs"""
