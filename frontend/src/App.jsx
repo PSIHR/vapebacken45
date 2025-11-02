@@ -4,8 +4,7 @@ import { useTelegram } from "./hooks/useTelegram";
 import { userAPI, basketAPI } from "./services/api";
 import Header from "./components/Header";
 import BottomNavigation from "./components/BottomNavigation";
-import Home from "./pages/Home";
-import CategoryProducts from "./pages/CategoryProducts";
+import Catalog from "./pages/Catalog";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
@@ -53,8 +52,7 @@ function App() {
         <Header />
         <main className="pb-48">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/category/:id" element={<CategoryProducts />} />
+            <Route path="/" element={<Catalog />} />
             <Route
               path="/product/:id"
               element={<ProductDetail onCartUpdate={updateCartCount} />}

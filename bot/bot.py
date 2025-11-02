@@ -39,7 +39,6 @@ from database.models import (
     Taste,
     item_taste_association,
 )
-from utils.google_docs_parser import GoogleDocsParser
 
 if not load_dotenv("./config/.env.local"):
     raise Exception("Failed to load .env file")
@@ -122,11 +121,6 @@ class TasteStates(StatesGroup):
 
 class ItemNameEditStates(StatesGroup):
     waiting_for_item_name = State()
-
-
-class ImportDocsStates(StatesGroup):
-    waiting_for_category_type = State()
-    waiting_for_doc_url = State()
 
 
 class ItemCharacteristicsEditStates(StatesGroup):
@@ -1483,9 +1477,6 @@ async def cmd_start(message: Message):
             types.KeyboardButton(text="➕ Создать товар"),
             types.KeyboardButton(text="📁 Создать категорию"),
             types.KeyboardButton(text="🎫 Создать промокод"),
-        )
-        builder.row(
-            types.KeyboardButton(text="📥 Загрузить из Google Docs"),
         )
         builder.row(
             types.KeyboardButton(text="🛍️ Список товаров"),
@@ -4154,118 +4145,6 @@ async def loyalty_cancel(callback: CallbackQuery, state: FSMContext):
     await callback.message.edit_text("❌ Настройка профиля лояльности отменена")
     await state.clear()
     await callback.answer()
-
-
-# Импорт товаров из Google Docs
-@dp.message(Command("import"))
-@dp.message(F.text == "📥 Загрузить из Google Docs")
-async def import_from_docs_start(message: Message, state: FSMContext):
-    """Начало импорта товаров из Google Docs"""
-    if message.from_user.id not in ADMINS:
-        await message.answer("❌ Эта команда доступна только администраторам")
-        return
-    
-    await state.set_state(ImportDocsStates.waiting_for_category_type)
-    
-    builder = InlineKeyboardBuilder()
-    builder.add(InlineKeyboardButton(text="🔥 Одноразки", callback_data="import_type_одноразки"))
-    builder.add(InlineKeyboardButton(text="💧 Жидкости", callback_data="import_type_жижи"))
-    builder.add(InlineKeyboardButton(text="🌿 Снюс", callback_data="import_type_снюс"))
-    builder.add(InlineKeyboardButton(text="🔧 Расходники", callback_data="import_type_расходники"))
-    builder.adjust(2)
-    
-    await message.answer(
-        "📥 <b>Импорт товаров из Google Docs</b>\n\n"
-        "Выберите тип товаров, которые хотите загрузить:",
-        parse_mode="HTML",
-        reply_markup=builder.as_markup()
-    )
-
-
-@dp.callback_query(F.data.startswith("import_type_"))
-async def import_docs_category_selected(callback: CallbackQuery, state: FSMContext):
-    """Обработка выбора типа товара"""
-    category_type = callback.data.replace("import_type_", "")
-    await state.update_data(category_type=category_type)
-    await state.set_state(ImportDocsStates.waiting_for_doc_url)
-    
-    category_names = {
-        "одноразки": "одноразок",
-        "жижи": "жидкостей",
-        "снюс": "снюса",
-        "расходники": "расходников"
-    }
-    
-    await callback.message.edit_text(
-        f"📝 Отправьте ссылку на Google Docs с данными {category_names.get(category_type, 'товаров')}.\n\n"
-        f"<b>Пример ссылки:</b>\n"
-        f"<code>https://docs.google.com/document/d/...</code>\n\n"
-        f"<i>Убедитесь, что документ доступен по ссылке!</i>",
-        parse_mode="HTML"
-    )
-    await callback.answer()
-
-
-@dp.message(ImportDocsStates.waiting_for_doc_url)
-async def import_docs_process_url(message: Message, state: FSMContext):
-    """Обработка URL документа и импорт товаров"""
-    doc_url = message.text.strip()
-    
-    # Проверяем, что это ссылка на Google Docs
-    if "docs.google.com/document" not in doc_url:
-        await message.answer(
-            "❌ Неверная ссылка! Отправьте ссылку на Google Документ.\n\n"
-            "Пример: https://docs.google.com/document/d/..."
-        )
-        return
-    
-    data = await state.get_data()
-    category_type = data.get("category_type")
-    
-    # Показываем индикатор загрузки
-    loading_message = await message.answer("⏳ Загружаю данные из документа...\nЭто может занять некоторое время.")
-    
-    try:
-        # Импортируем товары
-        result = await GoogleDocsParser.import_products(doc_url, category_type)
-        
-        if result['success']:
-            await message.answer(
-                f"✅ <b>Импорт завершен успешно!</b>\n\n"
-                f"📦 Категория: {result['category']}\n"
-                f"➕ Добавлено новых товаров: {result['added']}\n"
-                f"📊 Всего обработано: {result['total']}\n\n"
-                f"{'ℹ️ ' + str(result['total'] - result['added']) + ' товаров уже существовали в базе' if result['added'] < result['total'] else ''}",
-                parse_mode="HTML"
-            )
-        else:
-            await message.answer(
-                f"❌ <b>Ошибка при импорте:</b>\n\n"
-                f"{result.get('error', 'Неизвестная ошибка')}",
-                parse_mode="HTML"
-            )
-    
-    except Exception as e:
-        logger.error(f"Error importing from Google Docs: {e}")
-        error_text = str(e).replace('<', '&lt;').replace('>', '&gt;')
-        await message.answer(
-            f"❌ <b>Произошла ошибка:</b>\n\n"
-            f"<code>{error_text}</code>\n\n"
-            f"Проверьте:\n"
-            f"• Доступна ли ссылка\n"
-            f"• Правильный ли формат документа\n"
-            f"• Соответствуют ли данные выбранному типу товаров",
-            parse_mode="HTML"
-        )
-    
-    finally:
-        # Удаляем сообщение о загрузке
-        try:
-            await loading_message.delete()
-        except:
-            pass
-        
-        await state.clear()
 
 
 async def main():

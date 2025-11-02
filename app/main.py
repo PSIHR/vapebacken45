@@ -90,7 +90,7 @@ async def lifespan(app: FastAPI):
         await conn.run_sync(Base.metadata.create_all)
 
     bot_task = None
-    if os.getenv("START_BOT", "false").lower() == "true":
+    if os.getenv("START_BOT", "true").lower() == "true":
         bot_task = asyncio.create_task(dp.start_polling(bot))
 
     yield

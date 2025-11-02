@@ -14,9 +14,9 @@ Do not make changes to the file Y.
 The frontend is a React SPA using TailwindCSS for styling, with a modern glassmorphism design incorporating `Unbounded` font from Google Fonts. It adopts a minimalist Telegram-like aesthetic with dark gradient backgrounds and translucent elements. Key UI components include responsive product cards, a bottom navigation bar, and accessible elements like an accordion-based FAQ. The design prioritizes mobile UX within the Telegram environment.
 
 ### Technical Implementations
-- **Backend**: FastAPI serves a REST API, integrated with `aiogram` for Telegram bot functionalities. It uses `SQLAlchemy` with `asyncpg` for asynchronous database operations and `Alembic` for migrations.
+- **Backend**: FastAPI serves a REST API, integrated with `aiogram` for Telegram bot functionalities. It uses `SQLAlchemy` with `aiosqlite` for asynchronous database operations and `Alembic` for migrations.
 - **Frontend**: Built with React 18 and Vite, it utilizes the official Telegram Web App script for integration with full-screen mode support. `Axios` handles API requests, and `React Router DOM` manages navigation.
-- **Database**: PostgreSQL (Neon-backed via Replit) is used for persistent data storage, including models for users, products, categories, orders, and loyalty program data. Supports production database separation and rollback functionality.
+- **Database**: SQLite is used for persistent data storage, including models for users, products, categories, orders, and loyalty program data.
 - **Key Features**:
     - **Product Catalog**: Displays products with images, prices, categories, and taste/variant selection. Includes search and category filtering.
     - **Shopping Cart**: Allows quantity management and item removal.
@@ -32,46 +32,6 @@ The application follows a client-server architecture with a clear separation bet
 
 ## Recent Changes
 
-- **2025-11-02**: Fixed PostgreSQL connection pool stability issues
-  - **Critical Fix**: Added proper connection pool configuration to prevent "connection is closed" errors
-  - Configured pool settings: pool_size=10, max_overflow=20, pool_pre_ping=True, pool_recycle=3600
-  - Removed problematic SSL connect_args that caused connection drops
-  - SSL is now handled automatically by asyncpg with Neon/Replit PostgreSQL
-  - Added application_name to server_settings for better connection tracking
-  - **Result**: Products now sync reliably between database and frontend application
-  - API endpoints (/items/, /categories/) now return stable 200 OK responses
-  - Fixed "Request failed with status code 500" error in frontend
-- **2025-11-02**: Added Google Docs automatic import system for products
-  - Created `utils/google_docs_parser.py` for parsing Google Docs with multi-format support
-  - Supports 4 product types: одноразки (disposables), жижи (liquids), снюс (snus), расходники (accessories)
-  - Added "📥 Загрузить из Google Docs" button to admin panel in bot
-  - **Parser Features**:
-    - Single-line format: "Product Name 0.6Ω 12 BYN" - extracts name, characteristics, and price from one line
-    - Multi-line format: name → characteristics → price on separate lines
-    - Characteristic recognition: numbers + units (Ω, Ohm, Om, ml, mg) + descriptors (Mesh, pod, coil)
-    - Preserves full characteristics without hardcoding units (e.g., "0.4 3ml" stays as is, not converted to "0.4Ω")
-    - Smart filtering: skips header rows (наименование, цена, фото, etc.)
-    - Validates product names to contain letters, not just numbers
-  - Automatic category creation based on product type
-  - Duplicate detection - only adds new products
-  - Admin sees detailed import results (added/total/errors)
-  - Full integration with PostgreSQL - all imported products persist in production database
-  - **Workflow**: Admin → Clicks button → Selects product type → Pastes Google Docs URL → System parses & imports
-  - **Testing**: Successfully imported 24 accessories from production Google Doc with correct names and prices
-  - **Known Limitations**: Complex multi-line formats with descriptive characteristics (e.g., "0.6Ω Mesh pod") may require further parser refinements for edge cases
-- **2025-11-02**: Migrated from SQLite to PostgreSQL (Replit/Neon)
-  - Installed asyncpg driver for PostgreSQL async operations
-  - Updated database/db.py to automatically use DATABASE_URL from Replit environment
-  - Modified alembic/env.py to support PostgreSQL migrations with proper SSL handling
-  - Converted SSL parameters from sslmode=require to asyncpg-compatible format
-  - Created all tables in PostgreSQL and applied migration stamps
-  - **Benefits**: Production database separation, rollback support, better scalability
-  - Fallback to SQLite for local development when DATABASE_URL not set
-- **2025-11-02**: Fixed bot conflict in development environment
-  - Changed default START_BOT value from "true" to "false" to prevent bot from auto-starting in development
-  - Eliminates TelegramConflictError when production bot is running
-  - Development environment now only runs FastAPI server without bot polling
-  - Production deployment still runs bot with START_BOT=true environment variable
 - **2025-11-02**: Added postal delivery options with full validation
   - Added two new delivery methods: Европочта (5 BYN) and Белпочта (3 BYN, displayed as 3-5 BYN range)
   - Database: Added 4 postal fields to Order model (postal_full_name, postal_phone, postal_address, postal_index)
