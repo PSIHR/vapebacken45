@@ -44,14 +44,23 @@ if not load_dotenv("./config/.env.local"):
     raise Exception("Failed to load .env file")
 
 # Настройка логирования
-logging.basicConfig(level=os.getenv("LOG_LEVEL"))
+logging.basicConfig(
+    level=os.getenv("LOG_LEVEL", "INFO"),
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
 logger = logging.getLogger(__name__)
 
 # Конфигурация
 IMAGES_DIR = "uploads"
 
-ADMINS = list(map(int, os.getenv("ADMINS").split(",")))
-COURIERS = list(map(int, os.getenv("COURIERS").split(",")))
+# Проверка наличия необходимых переменных окружения
+required_env = ['TOKEN', 'ADMINS', 'COURIERS', 'WEBAPP_URL']
+for var in required_env:
+    if not os.getenv(var):
+        raise Exception(f"Missing required environment variable: {var}")
+
+ADMINS = list(map(int, os.getenv("ADMINS").replace(" ", "").split(",")))
+COURIERS = list(map(int, os.getenv("COURIERS").replace(" ", "").split(",")))
 
 os.makedirs(IMAGES_DIR, exist_ok=True)
 
@@ -4173,7 +4182,16 @@ async def loyalty_cancel(callback: CallbackQuery, state: FSMContext):
 
 
 async def main():
-    await dp.start_polling(bot)
+    logger.info("Starting bot...")
+    logger.info(f"WEBAPP_URL: {os.getenv('WEBAPP_URL')}")
+    logger.info(f"BACKEND_URL: {os.getenv('BACKEND_URL')}")
+    logger.info(f"Admins: {ADMINS}")
+    logger.info(f"Couriers: {COURIERS}")
+    try:
+        await dp.start_polling(bot)
+    except Exception as e:
+        logger.error(f"Bot error: {e}", exc_info=True)
+        raise
 
 
 if __name__ == "__main__":
