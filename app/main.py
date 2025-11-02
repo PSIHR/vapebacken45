@@ -810,6 +810,20 @@ async def create_order_from_basket(
                 detail="Корзина пользователя пуста",
             )
 
+        # 2.5. Валидация полей почтовой доставки
+        if order_data.delivery == "Европочта":
+            if not order_data.postal_full_name or not order_data.postal_phone or not order_data.postal_address:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Для доставки Европочтой необходимо указать ФИО, телефон и адрес/ОПС",
+                )
+        elif order_data.delivery == "Белпочта":
+            if not order_data.postal_full_name or not order_data.postal_phone or not order_data.postal_address or not order_data.postal_index:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Для доставки Белпочтой необходимо указать ФИО, телефон, адрес и почтовый индекс",
+                )
+
         # 3. Создаем новый заказ
         order = Order(
             user_id=user_id,
@@ -827,6 +841,10 @@ async def create_order_from_basket(
             total_price=0,  # Временное значение, будет пересчитано
             discount=0,
             promocode=order_data.promocode,
+            postal_full_name=order_data.postal_full_name,
+            postal_phone=order_data.postal_phone,
+            postal_address=order_data.postal_address,
+            postal_index=order_data.postal_index,
             status="waiting_for_courier",
         )
         db.add(order)

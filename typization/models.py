@@ -92,6 +92,10 @@ class OrderFromBasketCreate(BaseModel):
     time_slot: Optional[str] = None
     delivery_cost: Optional[float] = 0.0
     promocode: Optional[str] = None
+    postal_full_name: Optional[str] = None
+    postal_phone: Optional[str] = None
+    postal_address: Optional[str] = None
+    postal_index: Optional[str] = None
 
 
 class OrderCreate(BaseModel):

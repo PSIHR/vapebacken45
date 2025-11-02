@@ -170,7 +170,13 @@ class Order(Base):
     bot_message_ids = Column(JSON, default=list)
     courier_id = Column(
         Integer, ForeignKey("couriers.id")
-    )  # Изменяем на ForeignKey к couriers.id
+    )
+    
+    # Поля для доставки почтой (Европочта и Белпочта)
+    postal_full_name = Column(String, nullable=True)
+    postal_phone = Column(String, nullable=True)
+    postal_address = Column(String, nullable=True)
+    postal_index = Column(String, nullable=True)
 
     user = relationship("DBUser", back_populates="orders")
     courier = relationship("Courier", back_populates="orders")

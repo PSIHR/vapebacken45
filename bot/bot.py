@@ -233,6 +233,23 @@ def format_order_info(order: Order, orders_count: int, username: str = None) -> 
             f"🚇 *Линия метро:* {escape_markdown(order.metro_line or 'не указана')}\n"
             f"📍 *Станция метро:* {escape_markdown(order.metro_station or 'не указана')}\n\n"
         )
+    elif order.delivery == "Европочта":
+        delivery_info = (
+            f"📮 *Способ доставки:* {escape_markdown(order.delivery)}\n"
+            f"👤 *ФИО получателя:* {escape_markdown(order.postal_full_name or 'не указано')}\n"
+            f"📞 *Телефон:* {escape_markdown(order.postal_phone or 'не указан')}\n"
+            f"📍 *Адрес/ОПС:* {escape_markdown(order.postal_address or 'не указан')}\n"
+            f"💵 *Стоимость доставки:* 5 BYN \\(наложенный платеж\\)\n\n"
+        )
+    elif order.delivery == "Белпочта":
+        delivery_info = (
+            f"📮 *Способ доставки:* {escape_markdown(order.delivery)}\n"
+            f"👤 *ФИО получателя:* {escape_markdown(order.postal_full_name or 'не указано')}\n"
+            f"📞 *Телефон:* {escape_markdown(order.postal_phone or 'не указан')}\n"
+            f"📍 *Полный адрес:* {escape_markdown(order.postal_address or 'не указан')}\n"
+            f"📮 *Почтовый индекс:* {escape_markdown(order.postal_index or 'не указан')}\n"
+            f"💵 *Стоимость доставки:* 3\\-5 BYN \\(наложенный платеж\\)\n\n"
+        )
     else:
         delivery_info = (
             f"🏠 *Адрес:* {escape_markdown(order.address)}\n"

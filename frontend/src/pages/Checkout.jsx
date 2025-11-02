@@ -25,6 +25,10 @@ const Checkout = () => {
     metro_station: '',
     preferred_time: '',
     time_slot: '',
+    postal_full_name: '',
+    postal_phone: '',
+    postal_address: '',
+    postal_index: '',
   });
   
   const [availableStations, setAvailableStations] = useState([]);
@@ -63,6 +67,10 @@ const Checkout = () => {
       } else {
         setDeliveryCost(0);
       }
+    } else if (formData.delivery === 'Европочта') {
+      setDeliveryCost(5);
+    } else if (formData.delivery === 'Белпочта') {
+      setDeliveryCost(3);
     } else {
       setDeliveryCost(0);
     }
@@ -89,6 +97,16 @@ const Checkout = () => {
     } else if (formData.delivery === 'Яндекс доставка') {
       if (!formData.address) {
         showAlert('Укажите адрес доставки');
+        return;
+      }
+    } else if (formData.delivery === 'Европочта') {
+      if (!formData.postal_full_name || !formData.postal_phone || !formData.postal_address) {
+        showAlert('Заполните все обязательные поля');
+        return;
+      }
+    } else if (formData.delivery === 'Белпочта') {
+      if (!formData.postal_full_name || !formData.postal_phone || !formData.postal_address || !formData.postal_index) {
+        showAlert('Заполните все обязательные поля');
         return;
       }
     }
@@ -130,6 +148,10 @@ const Checkout = () => {
         address: '',
         preferred_time: '',
         time_slot: '',
+        postal_full_name: '',
+        postal_phone: '',
+        postal_address: '',
+        postal_index: '',
       });
       setAvailableStations([]);
     } else if (name === 'metro_line') {
@@ -226,6 +248,8 @@ const Checkout = () => {
                 <option value="Самовывоз" className="bg-purple-600">Самовывоз</option>
                 <option value="По метро" className="bg-purple-600">До станции метро</option>
                 <option value="Яндекс доставка" className="bg-purple-600">Яндекс доставка</option>
+                <option value="Европочта" className="bg-purple-600">Европочта (5 BYN)</option>
+                <option value="Белпочта" className="bg-purple-600">Белпочта (3-5 BYN)</option>
               </select>
               <button
                 type="button"
@@ -372,6 +396,125 @@ const Checkout = () => {
                   </p>
                 </div>
               )}
+            </>
+          )}
+
+          {formData.delivery === 'Европочта' && (
+            <>
+              <div className="mb-4">
+                <label className="block text-white font-medium mb-2">
+                  ФИО получателя <span className="text-red-300">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="postal_full_name"
+                  value={formData.postal_full_name}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-white/30 bg-white/10 text-white placeholder-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
+                  placeholder="Иванов Иван Иванович"
+                  required
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-white font-medium mb-2">
+                  Номер телефона <span className="text-red-300">*</span>
+                </label>
+                <input
+                  type="tel"
+                  name="postal_phone"
+                  value={formData.postal_phone}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-white/30 bg-white/10 text-white placeholder-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
+                  placeholder="+375 (29) 123-45-67"
+                  required
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-white font-medium mb-2">
+                  Адрес пункта выдачи или номер ОПС <span className="text-red-300">*</span>
+                </label>
+                <textarea
+                  name="postal_address"
+                  value={formData.postal_address}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-white/30 bg-white/10 text-white placeholder-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
+                  rows="3"
+                  placeholder="Адрес пункта выдачи Европочты или номер ОПС"
+                  required
+                />
+                <p className="text-white/60 text-xs mt-1">
+                  Стоимость пересылки: 5 BYN. Наложенный платеж (оплата при получении)
+                </p>
+              </div>
+            </>
+          )}
+
+          {formData.delivery === 'Белпочта' && (
+            <>
+              <div className="mb-4">
+                <label className="block text-white font-medium mb-2">
+                  ФИО получателя <span className="text-red-300">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="postal_full_name"
+                  value={formData.postal_full_name}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-white/30 bg-white/10 text-white placeholder-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
+                  placeholder="Иванов Иван Иванович"
+                  required
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-white font-medium mb-2">
+                  Номер телефона <span className="text-red-300">*</span>
+                </label>
+                <input
+                  type="tel"
+                  name="postal_phone"
+                  value={formData.postal_phone}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-white/30 bg-white/10 text-white placeholder-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
+                  placeholder="+375 (29) 123-45-67"
+                  required
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-white font-medium mb-2">
+                  Полный адрес <span className="text-red-300">*</span>
+                </label>
+                <textarea
+                  name="postal_address"
+                  value={formData.postal_address}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-white/30 bg-white/10 text-white placeholder-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
+                  rows="3"
+                  placeholder="Город/поселок, улица, дом, квартира"
+                  required
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-white font-medium mb-2">
+                  Почтовый индекс <span className="text-red-300">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="postal_index"
+                  value={formData.postal_index}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-white/30 bg-white/10 text-white placeholder-white/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
+                  placeholder="220000"
+                  required
+                />
+                <p className="text-white/60 text-xs mt-1">
+                  Стоимость пересылки: 3-5 BYN (определяет почта). Наложенный платеж (оплата при получении)
+                </p>
+              </div>
             </>
           )}
 
