@@ -32,13 +32,25 @@ The application follows a client-server architecture with a clear separation bet
 
 ## Recent Changes
 
+- **2025-11-02**: Complete production deployment fixes and unified workflow
+  - Removed separate frontend workflow - backend now serves built SPA on port 5000
+  - Fixed white/black screen issues by adding loading screen and fallback for non-Telegram environments
+  - App.jsx improvements:
+    - Added 1.5s loading screen with animated logo on startup
+    - Added informational fallback screen when opened outside Telegram
+    - Shows proper instructions to open app in Telegram
+  - Updated deployment configuration:
+    - Single workflow on port 5000 (webview)
+    - Build script builds frontend to `frontend/dist`
+    - Backend serves static files and handles SPA routing
+  - Production ready for defivaultpro.com
+  - Note: Only run ONE instance at a time to avoid Telegram bot conflicts
 - **2025-11-02**: Fixed production deployment configuration
   - Created `build.sh` script to properly build frontend in correct directory
   - Build command: `bash build.sh` (changes to frontend dir, runs npm install & build)
   - Run command: `bash -c "PYTHONPATH=/home/runner/workspace:$PYTHONPATH python app/main.py"`
   - Backend serves static files from `frontend/dist` when built (SPA fallback pattern)
-  - Backend uses PORT environment variable (defaults to 5000 in production, 3000 in development)
-  - Production-ready for custom domain deployment on defivaultpro.com
+  - Backend uses PORT environment variable (defaults to 5000 in production)
 - **2025-11-01**: Added responsive "Выбрать" button to product cards
   - Mobile: Button is full-width below price for better UX
   - Desktop: Button appears inline next to price

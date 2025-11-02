@@ -18,33 +18,17 @@ author = "agent"
 task = "workflow.run"
 args = "backend"
 
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "frontend"
-
 [[workflows.workflow]]
 name = "backend"
 author = "agent"
 
 [workflows.workflow.metadata]
-outputType = "console"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "PORT=3000 PYTHONPATH=/home/runner/workspace:$PYTHONPATH python app/main.py"
-waitForPort = 3000
-
-[[workflows.workflow]]
-name = "frontend"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "cd frontend && npm run dev"
-waitForPort = 5000
-
-[workflows.workflow.metadata]
 outputType = "webview"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "PYTHONPATH=/home/runner/workspace:$PYTHONPATH python app/main.py"
+waitForPort = 5000
 
 [[ports]]
 localPort = 3000
@@ -53,6 +37,10 @@ externalPort = 3000
 [[ports]]
 localPort = 5000
 externalPort = 80
+
+[[ports]]
+localPort = 35235
+externalPort = 3001
 
 [deployment]
 deploymentTarget = "vm"
