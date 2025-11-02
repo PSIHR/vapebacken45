@@ -32,6 +32,16 @@ The application follows a client-server architecture with a clear separation bet
 
 ## Recent Changes
 
+- **2025-11-02**: Redesigned navigation with category-first approach
+  - Created new Home page (Home.jsx) displaying category cards with images and names
+  - Added quick links to Telegram channel (t.me/vapplugg) and reviews (t.me/vapepluggcommunity) at top of Home page
+  - Catalog page (Catalog.jsx) now shows products of selected category with "Back to categories" button
+  - Implemented category filtering: users select category → see only that category's products
+  - Updated routing: / (Home with categories), /catalog (all products), /catalog/:categoryId (category products)
+  - Category cards display with glassmorphism design, gradient backgrounds, and fallback emoji when no image
+  - Search on Home page allows searching both categories and products
+  - Bot already supports adding images to categories via admin panel
+  - Fixed category state management: properly resets when navigating between views
 - **2025-11-02**: Added postal delivery options with full validation
   - Added two new delivery methods: Европочта (5 BYN) and Белпочта (3 BYN, displayed as 3-5 BYN range)
   - Database: Added 4 postal fields to Order model (postal_full_name, postal_phone, postal_address, postal_index)
