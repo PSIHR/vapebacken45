@@ -40,16 +40,29 @@ class GoogleDocsParser:
                     raise Exception(f"Не удалось получить документ: {response.status}")
     
     @staticmethod
+    def clean_text(text: str) -> str:
+        """Очистка текста от лишних символов и пробелов"""
+        # Убираем переводы строк и табуляции
+        text = re.sub(r'[\n\t]+', ' ', text)
+        # Убираем множественные пробелы
+        text = re.sub(r'\s+', ' ', text)
+        # Убираем пробелы в начале и конце
+        return text.strip()
+    
+    @staticmethod
     def parse_disposables(content: str) -> List[Dict]:
         """Парсинг одноразок"""
         products = []
         
+        # Очищаем контент
+        content = GoogleDocsParser.clean_text(content)
+        
         # Паттерн для одноразок: название, тяги, цена
-        # Пример: "HQD Cuvie Plus 800 1200 тяг 15 BYN"
-        pattern = r'([A-Za-z0-9\s]+?)\s+(\d+)\s*(?:тяг|puffs?)\s+(\d+(?:\.\d+)?)\s*BYN'
+        # Пример: "HQD Cuvie Plus 1200 тяг 15 BYN"
+        pattern = r'([A-Za-zА-Яа-я0-9\s\-]+?)\s+(\d+)\s*(?:тяг|тяги|puffs?)\s+(\d+(?:\.\d+)?)\s*BYN'
         
         for match in re.finditer(pattern, content, re.IGNORECASE):
-            name = match.group(1).strip()
+            name = GoogleDocsParser.clean_text(match.group(1))
             puffs = match.group(2)
             price = float(match.group(3))
             
@@ -67,12 +80,15 @@ class GoogleDocsParser:
         """Парсинг жидкостей"""
         products = []
         
+        # Очищаем контент
+        content = GoogleDocsParser.clean_text(content)
+        
         # Паттерн для жидкостей: название, крепость, объем, цена
         # Пример: "MACKINTOSH 20mg 30ml 15 BYN"
-        pattern = r'([A-Za-z0-9\s]+?)\s+(\d+)\s*mg\s+(\d+)\s*ml\s+(\d+(?:\.\d+)?)\s*BYN'
+        pattern = r'([A-Za-zА-Яа-я0-9\s\-]+?)\s+(\d+)\s*mg\s+(\d+)\s*ml\s+(\d+(?:\.\d+)?)\s*BYN'
         
         for match in re.finditer(pattern, content, re.IGNORECASE):
-            name = match.group(1).strip()
+            name = GoogleDocsParser.clean_text(match.group(1))
             strength = match.group(2)
             volume = match.group(3)
             price = float(match.group(4))
@@ -92,11 +108,14 @@ class GoogleDocsParser:
         """Парсинг снюса"""
         products = []
         
+        # Очищаем контент
+        content = GoogleDocsParser.clean_text(content)
+        
         # Паттерн для снюса: название, крепость, цена
-        pattern = r'([A-Za-z0-9\s]+?)\s+(\d+)\s*mg\s+(\d+(?:\.\d+)?)\s*BYN'
+        pattern = r'([A-Za-zА-Яа-я0-9\s\-]+?)\s+(\d+)\s*mg\s+(\d+(?:\.\d+)?)\s*BYN'
         
         for match in re.finditer(pattern, content, re.IGNORECASE):
-            name = match.group(1).strip()
+            name = GoogleDocsParser.clean_text(match.group(1))
             strength = match.group(2)
             price = float(match.group(3))
             
@@ -114,20 +133,86 @@ class GoogleDocsParser:
         """Парсинг расходников"""
         products = []
         
-        # Паттерн для расходников: название, параметры, цена
-        # Пример: "Vaporesso xros 0.6 Ohm 12 BYN"
-        pattern = r'([A-Za-z0-9\s]+?)\s+([\d\.]+)\s*(?:Ohm|Om|Ом)?\s+(\d+(?:\.\d+)?)\s*BYN'
+        # Разбиваем на строки
+        lines = content.split('\n')
         
-        for match in re.finditer(pattern, content, re.IGNORECASE):
-            name = match.group(1).strip()
-            resistance = match.group(2)
-            price = float(match.group(3))
+        current_name = None
+        current_resistance = None
+        
+        # Паттерны для пропуска служебных строк
+        skip_patterns = [
+            'наименование', 'цена', 'фото', 'совместим', 'инструкция',
+            'актуальный', 'ассортимент', 'никобустер', 'картриджи',
+            'испарители', 'прочее', 'внешний вид', 'от изображения', 'om:', 'цена:'
+        ]
+        
+        for line in lines:
+            line = GoogleDocsParser.clean_text(line)
             
-            products.append({
-                'name': name,
-                'description': f'{name} {resistance}Ω',
-                'price': price
-            })
+            if not line or len(line) < 3:
+                continue
+            
+            # Пропускаем служебные строки
+            if any(pattern in line.lower() for pattern in skip_patterns):
+                continue
+            
+            # ПРИОРИТЕТ 1: Проверяем, есть ли в строке и название, и цена (single-line формат)
+            # Паттерн: "Vaporesso XROS 0.6Ω 12 BYN" или "Vaporesso XROS 12 BYN"
+            single_line_match = re.search(
+                r'([A-Za-zА-Яа-я][A-Za-zА-Яа-я0-9\s\-/]+?)\s+(?:([\d\.]+)\s*(?:Ω|Ohm|Om|ml|mg)\s+)?(\d+(?:\.\d+)?)\s*BYN',
+                line,
+                re.IGNORECASE
+            )
+            
+            if single_line_match:
+                name = GoogleDocsParser.clean_text(single_line_match.group(1))
+                resistance = single_line_match.group(2) if single_line_match.group(2) else None
+                price = float(single_line_match.group(3))
+                
+                # Проверяем что название валидное
+                if name and len(name) > 3 and re.search(r'[A-Za-zА-Яа-я]{2,}', name):
+                    if not re.match(r'^[\d\.\s]+(?:ml|mg|Ом|Ohm|Om)?$', name, re.IGNORECASE):
+                        products.append({
+                            'name': name,
+                            'description': f'{name}' + (f' {resistance}' if resistance else ''),
+                            'price': price
+                        })
+                
+                # Сбрасываем состояние для multi-line парсинга
+                current_name = None
+                current_resistance = None
+                continue
+            
+            # ПРИОРИТЕТ 2: Multi-line формат - проверяем, есть ли цена в строке
+            price_match = re.search(r'(\d+(?:\.\d+)?)\s*BYN', line, re.IGNORECASE)
+            
+            if price_match:
+                price = float(price_match.group(1))
+                
+                # Добавляем товар только если есть валидное название из предыдущих строк
+                if current_name and len(current_name) > 3:
+                    # Проверяем что название не является чисто характеристикой
+                    if not re.match(r'^[\d\.\s]+(?:ml|mg|Ом|Ohm|Om)?$', current_name, re.IGNORECASE):
+                        products.append({
+                            'name': current_name,
+                            'description': f'{current_name}' + (f' {current_resistance}' if current_resistance else ''),
+                            'price': price
+                        })
+                
+                current_name = None
+                current_resistance = None
+                    
+            # ПРИОРИТЕТ 3: Проверяем, это чистая характеристика
+            # Распознаем различные форматы: "0.6", "0.6Ω", "0.6 Ohm", "0.6Ω Mesh pod", "30ml", "20mg"
+            elif re.match(r'^[\d\.\s]+(?:Ω|Ω|Ом|Ohm|Om|ml|mg)?(?:\s+(?:Mesh|pod|coil|Pod|Coil))?$', line, re.IGNORECASE):
+                # Это характеристика - сохраняем ПОЛНОСТЬЮ (с единицами измерения)
+                current_resistance = line  # Сохраняем полную строку, не только число
+            
+            # ПРИОРИТЕТ 4: Это название товара - должно содержать буквы и не быть чисто числовым
+            elif re.search(r'[A-Za-zА-Яа-я]{2,}', line):
+                # Дополнительная проверка: строка должна содержать хотя бы 2 буквы подряд
+                if len(line) > 3:
+                    current_name = line
         
         return products
     

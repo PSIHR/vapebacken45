@@ -32,6 +32,16 @@ The application follows a client-server architecture with a clear separation bet
 
 ## Recent Changes
 
+- **2025-11-02**: Added Google Docs automatic import system for products
+  - Created `utils/google_docs_parser.py` for parsing Google Docs
+  - Supports 4 product types: одноразки (disposables), жижи (liquids), снюс (snus), расходники (accessories)
+  - Added "📥 Загрузить из Google Docs" button to admin panel in bot
+  - Implemented smart parsing with characteristic filtering (prevents "0.4 3ml" from becoming product names)
+  - Automatic category creation based on product type
+  - Duplicate detection - only adds new products
+  - Admin sees detailed import results (added/total/errors)
+  - Full integration with PostgreSQL - all imported products persist in production database
+  - Workflow: Admin → Clicks button → Selects product type → Pastes Google Docs URL → System parses & imports
 - **2025-11-02**: Migrated from SQLite to PostgreSQL (Replit/Neon)
   - Installed asyncpg driver for PostgreSQL async operations
   - Updated database/db.py to automatically use DATABASE_URL from Replit environment
