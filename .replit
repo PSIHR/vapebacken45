@@ -54,10 +54,6 @@ externalPort = 3000
 localPort = 5000
 externalPort = 80
 
-[[ports]]
-localPort = 40483
-externalPort = 3001
-
 [deployment]
 deploymentTarget = "vm"
 run = ["bash", "-c", "PYTHONPATH=/home/runner/workspace:$PYTHONPATH python app/main.py"]
