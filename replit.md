@@ -33,15 +33,23 @@ The application follows a client-server architecture with a clear separation bet
 ## Recent Changes
 
 - **2025-11-02**: Added Google Docs automatic import system for products
-  - Created `utils/google_docs_parser.py` for parsing Google Docs
+  - Created `utils/google_docs_parser.py` for parsing Google Docs with multi-format support
   - Supports 4 product types: одноразки (disposables), жижи (liquids), снюс (snus), расходники (accessories)
   - Added "📥 Загрузить из Google Docs" button to admin panel in bot
-  - Implemented smart parsing with characteristic filtering (prevents "0.4 3ml" from becoming product names)
+  - **Parser Features**:
+    - Single-line format: "Product Name 0.6Ω 12 BYN" - extracts name, characteristics, and price from one line
+    - Multi-line format: name → characteristics → price on separate lines
+    - Characteristic recognition: numbers + units (Ω, Ohm, Om, ml, mg) + descriptors (Mesh, pod, coil)
+    - Preserves full characteristics without hardcoding units (e.g., "0.4 3ml" stays as is, not converted to "0.4Ω")
+    - Smart filtering: skips header rows (наименование, цена, фото, etc.)
+    - Validates product names to contain letters, not just numbers
   - Automatic category creation based on product type
   - Duplicate detection - only adds new products
   - Admin sees detailed import results (added/total/errors)
   - Full integration with PostgreSQL - all imported products persist in production database
-  - Workflow: Admin → Clicks button → Selects product type → Pastes Google Docs URL → System parses & imports
+  - **Workflow**: Admin → Clicks button → Selects product type → Pastes Google Docs URL → System parses & imports
+  - **Testing**: Successfully imported 24 accessories from production Google Doc with correct names and prices
+  - **Known Limitations**: Complex multi-line formats with descriptive characteristics (e.g., "0.6Ω Mesh pod") may require further parser refinements for edge cases
 - **2025-11-02**: Migrated from SQLite to PostgreSQL (Replit/Neon)
   - Installed asyncpg driver for PostgreSQL async operations
   - Updated database/db.py to automatically use DATABASE_URL from Replit environment
