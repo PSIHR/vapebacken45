@@ -60,5 +60,5 @@ externalPort = 3001
 
 [deployment]
 deploymentTarget = "vm"
-run = ["sh", "-c", "PYTHONPATH=/home/runner/workspace:$PYTHONPATH python app/main.py"]
-build = ["sh", "-c", "cd frontend && npm install && npm run build"]
+run = ["bash", "-c", "PYTHONPATH=/home/runner/workspace:$PYTHONPATH python app/main.py"]
+build = ["bash", "build.sh"]

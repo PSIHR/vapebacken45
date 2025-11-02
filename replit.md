@@ -33,9 +33,9 @@ The application follows a client-server architecture with a clear separation bet
 ## Recent Changes
 
 - **2025-11-02**: Fixed production deployment configuration
-  - Fixed build command to properly change directory before running npm
-  - Build command: `sh -c "cd frontend && npm install && npm run build"`
-  - Run command: `sh -c "PYTHONPATH=/home/runner/workspace:$PYTHONPATH python app/main.py"`
+  - Created `build.sh` script to properly build frontend in correct directory
+  - Build command: `bash build.sh` (changes to frontend dir, runs npm install & build)
+  - Run command: `bash -c "PYTHONPATH=/home/runner/workspace:$PYTHONPATH python app/main.py"`
   - Backend serves static files from `frontend/dist` when built (SPA fallback pattern)
   - Backend uses PORT environment variable (defaults to 5000 in production, 3000 in development)
   - Production-ready for custom domain deployment on defivaultpro.com
