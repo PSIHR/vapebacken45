@@ -7,7 +7,7 @@ channel = "stable-25_05"
 packages = ["cacert", "glibcLocales", "libxcrypt", "util-linux"]
 
 [workflows]
-runButton = "Project"
+runButton = "Full Stack"
 
 [[workflows.workflow]]
 name = "Project"
@@ -30,6 +30,28 @@ task = "shell.exec"
 args = "START_BOT=false PYTHONPATH=/home/runner/workspace:$PYTHONPATH python app/main.py"
 waitForPort = 5000
 
+[[workflows.workflow]]
+name = "Start Bot"
+author = 44812471
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "PYTHONPATH=/home/runner/workspace:$PYTHONPATH python -m bot.bot"
+
+[[workflows.workflow]]
+name = "Full Stack"
+author = 44812471
+mode = "parallel"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "PYTHONPATH=/home/runner/workspace:$PYTHONPATH python -m bot.bot"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "START_BOT=false PYTHONPATH=/home/runner/workspace:$PYTHONPATH python app/main.py"
+
 [[ports]]
 localPort = 3000
 externalPort = 3000
@@ -37,10 +59,6 @@ externalPort = 3000
 [[ports]]
 localPort = 5000
 externalPort = 80
-
-[[ports]]
-localPort = 33865
-externalPort = 3001
 
 [deployment]
 deploymentTarget = "vm"
