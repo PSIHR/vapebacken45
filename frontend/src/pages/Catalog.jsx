@@ -1,34 +1,43 @@
 import { useState, useEffect } from 'react';
+import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { itemsAPI, categoriesAPI } from '../services/api';
 import { useTelegram } from '../hooks/useTelegram';
 import ProductCard from '../components/ProductCard';
-import { Loader2, Search } from 'lucide-react';
+import { Loader2, Search, ArrowLeft } from 'lucide-react';
 
 const Catalog = () => {
+  const { categoryId } = useParams();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [category, setCategory] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
   const [loading, setLoading] = useState(true);
   const { showAlert } = useTelegram();
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [categoryId]);
 
   const loadData = async () => {
     try {
       setLoading(true);
-      const [productsResponse, categoriesResponse] = await Promise.all([
-        itemsAPI.getAll(),
-        categoriesAPI.getAll()
-      ]);
-      
+      const productsResponse = await itemsAPI.getAll();
       const items = productsResponse.data.items || [];
       setProducts(items);
 
-      const cats = categoriesResponse.data.categories || [];
-      setCategories(cats);
+      if (categoryId) {
+        const categoriesResponse = await categoriesAPI.getAll();
+        const cats = categoriesResponse.data.categories || [];
+        const foundCategory = cats.find(c => c.id === parseInt(categoryId));
+        setCategory(foundCategory || null);
+        
+        if (!foundCategory) {
+          showAlert('Категория не найдена');
+        }
+      } else {
+        setCategory(null);
+      }
     } catch (error) {
       console.error('Error loading data:', error);
       showAlert('Ошибка загрузки данных');
@@ -38,8 +47,8 @@ const Catalog = () => {
   };
 
   const filteredProducts = products.filter(product => {
-    const matchesCategory = selectedCategory
-      ? product.category?.id === selectedCategory.id
+    const matchesCategory = categoryId
+      ? product.category?.id === parseInt(categoryId)
       : true;
 
     const matchesSearch = searchQuery
@@ -61,31 +70,20 @@ const Catalog = () => {
   return (
     <div className="min-h-screen">
       <div className="container mx-auto px-4 py-6">
-        {categories.length > 0 && (
-          <div className="mb-4 flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-            <button
-              onClick={() => setSelectedCategory(null)}
-              className={`px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-all ${
-                !selectedCategory
-                  ? 'bg-white text-purple-600'
-                  : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
-              }`}
-            >
-              Все
-            </button>
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-all ${
-                  selectedCategory?.id === cat.id
-                    ? 'bg-white text-purple-600'
-                    : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
-                }`}
-              >
-                {cat.name}
-              </button>
-            ))}
+        <button
+          onClick={() => navigate('/')}
+          className="mb-4 flex items-center gap-2 glass-panel px-4 py-2 rounded-lg hover:bg-white/30 transition-all"
+        >
+          <ArrowLeft size={20} className="text-white" />
+          <span className="text-white font-medium">Назад к категориям</span>
+        </button>
+
+        {category && (
+          <div className="mb-6 glass-panel p-4 rounded-2xl">
+            <h1 className="text-2xl font-bold text-white">{category.name}</h1>
+            {category.description && (
+              <p className="text-white/70 mt-2">{category.description}</p>
+            )}
           </div>
         )}
 
