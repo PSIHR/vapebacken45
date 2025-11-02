@@ -89,11 +89,6 @@ async def lifespan(app: FastAPI):
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
-    app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
-    
-    if os.path.exists("frontend/dist/assets"):
-        app.mount("/assets", StaticFiles(directory="frontend/dist/assets"), name="assets")
-
     bot_task = None
     if os.getenv("START_BOT", "true").lower() == "true":
         bot_task = asyncio.create_task(dp.start_polling(bot))
@@ -120,6 +115,12 @@ app.add_middleware(
 )
 
 app.add_middleware(BannedUserMiddleware)
+
+# Mount static files
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+
+if os.path.exists("frontend/dist/assets"):
+    app.mount("/assets", StaticFiles(directory="frontend/dist/assets"), name="assets")
 
 
 @app.get("/")
@@ -1634,6 +1635,14 @@ async def analytics_completed_orders(
 
 @app.get("/{full_path:path}")
 async def spa_fallback(full_path: str):
+    # Не перехватывать static files
+    if full_path.startswith(("assets/", "uploads/")):
+        raise HTTPException(status_code=404, detail="Not found")
+    
+    # Обработка vite.svg
+    if full_path == "vite.svg" and os.path.exists("frontend/dist/vite.svg"):
+        return FileResponse("frontend/dist/vite.svg")
+    
     if os.path.exists("frontend/dist/index.html"):
         return FileResponse("frontend/dist/index.html")
     raise HTTPException(status_code=404, detail="Not found")

@@ -32,11 +32,13 @@ The application follows a client-server architecture with a clear separation bet
 
 ## Recent Changes
 
-- **2025-11-02**: Fixed preview white screen - added fallback for non-Telegram environments
+- **2025-11-02**: Fixed preview white screen - corrected static files mounting
+  - CRITICAL FIX: Moved static files mounting from lifespan to main app body (FastAPI requirement)
+  - Fixed catchall route to not intercept /assets/ and /uploads/ requests
   - Added mock user (id: 123456789) for preview/testing when Telegram WebApp unavailable
   - Added safe fallbacks: showAlert → console.log, showConfirm → window.confirm
-  - App now works in both preview and Telegram without errors
-  - No loading screen or delays - immediate rendering
+  - App fully functional in both preview and Telegram
+  - Products display correctly with images, categories work, navigation works
   - Ready for production deployment via git commit + redeploy
 - **2025-11-02**: Complete production deployment fixes and unified workflow
   - Removed separate frontend workflow - backend now serves built SPA on port 5000
