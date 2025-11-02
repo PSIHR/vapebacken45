@@ -1366,16 +1366,27 @@ async def process_cancel_reason(message: Message, state: FSMContext):
 
 async def save_photo(file_id: str) -> str:
     """Сохранение фото на диск и возврат относительного пути к файлу"""
-    file = await bot.get_file(file_id)
-    file_path = file.file_path
-    file_name = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{file_id}.jpg"
-    save_path = os.path.join(IMAGES_DIR, file_name)
+    try:
+        logger.info(f"[save_photo] Starting to save photo with file_id: {file_id}")
+        file = await bot.get_file(file_id)
+        file_path = file.file_path
+        logger.info(f"[save_photo] Got file_path from Telegram: {file_path}")
+        
+        file_name = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{file_id}.jpg"
+        save_path = os.path.join(IMAGES_DIR, file_name)
+        logger.info(f"[save_photo] Will save to: {save_path}")
 
-    # Скачиваем файл
-    await bot.download_file(file_path, save_path)
+        # Скачиваем файл
+        await bot.download_file(file_path, save_path)
+        logger.info(f"[save_photo] Successfully downloaded file to {save_path}")
 
-    # Возвращаем относительный путь для веб-доступа
-    return f"/uploads/{file_name}"
+        # Возвращаем относительный путь для веб-доступа
+        result_path = f"/uploads/{file_name}"
+        logger.info(f"[save_photo] Returning path: {result_path}")
+        return result_path
+    except Exception as e:
+        logger.error(f"[save_photo] ERROR: {type(e).__name__}: {e}", exc_info=True)
+        raise
 
 
 @dp.callback_query(F.data.startswith("cancel_delivered_"))
@@ -3420,35 +3431,49 @@ async def process_category_name(message: Message, state: FSMContext):
 async def process_category_image(message: Message, state: FSMContext):
     """Обработка изображения категории"""
     try:
+        logger.info("[process_category_image] Starting category image processing")
         photo = message.photo[-1]
+        logger.info(f"[process_category_image] Photo file_id: {photo.file_id}")
+        
         image_path = await save_photo(photo.file_id)
+        logger.info(f"[process_category_image] Image saved at: {image_path}")
+        
         data = await state.get_data()
+        category_name = data.get("name", "Unknown")
+        logger.info(f"[process_category_image] Category name from state: {category_name}")
 
         async with AsyncSessionLocal() as session:
-            # Проверяем, существует ли категория с таким именем
-            existing_category = (
-                await session.execute(
-                    select(Category).where(Category.name == data["name"])
-                )
-            ).scalar_one_or_none()
+            async with session.begin():
+                logger.info(f"[process_category_image] Checking if category '{category_name}' exists")
+                # Проверяем, существует ли категория с таким именем
+                existing_category = (
+                    await session.execute(
+                        select(Category).where(Category.name == category_name)
+                    )
+                ).scalar_one_or_none()
 
-            if existing_category:
-                await message.answer("ℹ️ Категория с таким названием уже существует")
-                await state.clear()
-                return
+                if existing_category:
+                    logger.warning(f"[process_category_image] Category '{category_name}' already exists")
+                    await message.answer("ℹ️ Категория с таким названием уже существует")
+                    await state.clear()
+                    return
 
-            # Создаем новую категорию
-            new_category = Category(name=data["name"], image=image_path)
-            session.add(new_category)
-            await session.commit()
-
-            await message.answer(f"✅ Категория '{data['name']}' успешно создана!")
+                # Создаем новую категорию
+                logger.info(f"[process_category_image] Creating new category: {category_name}")
+                new_category = Category(name=category_name, image=image_path)
+                session.add(new_category)
+                logger.info(f"[process_category_image] Category added to session, committing...")
+                
+            # session.begin() auto-commits on exit
+            logger.info(f"[process_category_image] Category '{category_name}' committed successfully!")
+            await message.answer(f"✅ Категория '{category_name}' успешно создана!")
 
     except Exception as e:
-        logger.error(f"Error creating category: {e}")
-        await message.answer("❌ Произошла ошибка при создании категории")
+        logger.error(f"[process_category_image] ERROR: {type(e).__name__}: {e}", exc_info=True)
+        await message.answer(f"❌ Произошла ошибка при создании категории: {type(e).__name__}")
     finally:
         await state.clear()
+        logger.info("[process_category_image] State cleared")
 
 
 # Просмотр товаров и категорий
