@@ -32,6 +32,11 @@ The application follows a client-server architecture with a clear separation bet
 
 ## Recent Changes
 
+- **2025-11-02**: Fixed bot conflict in development environment
+  - Changed default START_BOT value from "true" to "false" to prevent bot from auto-starting in development
+  - Eliminates TelegramConflictError when production bot is running
+  - Development environment now only runs FastAPI server without bot polling
+  - Production deployment still runs bot with START_BOT=true environment variable
 - **2025-11-02**: Added postal delivery options with full validation
   - Added two new delivery methods: Европочта (5 BYN) and Белпочта (3 BYN, displayed as 3-5 BYN range)
   - Database: Added 4 postal fields to Order model (postal_full_name, postal_phone, postal_address, postal_index)
