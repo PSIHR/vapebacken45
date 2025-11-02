@@ -14,9 +14,9 @@ Do not make changes to the file Y.
 The frontend is a React SPA using TailwindCSS for styling, with a modern glassmorphism design incorporating `Unbounded` font from Google Fonts. It adopts a minimalist Telegram-like aesthetic with dark gradient backgrounds and translucent elements. Key UI components include responsive product cards, a bottom navigation bar, and accessible elements like an accordion-based FAQ. The design prioritizes mobile UX within the Telegram environment.
 
 ### Technical Implementations
-- **Backend**: FastAPI serves a REST API, integrated with `aiogram` for Telegram bot functionalities. It uses `SQLAlchemy` with `aiosqlite` for asynchronous database operations and `Alembic` for migrations.
+- **Backend**: FastAPI serves a REST API, integrated with `aiogram` for Telegram bot functionalities. It uses `SQLAlchemy` with `asyncpg` for asynchronous database operations and `Alembic` for migrations.
 - **Frontend**: Built with React 18 and Vite, it utilizes the official Telegram Web App script for integration with full-screen mode support. `Axios` handles API requests, and `React Router DOM` manages navigation.
-- **Database**: SQLite is used for persistent data storage, including models for users, products, categories, orders, and loyalty program data.
+- **Database**: PostgreSQL (Neon-backed via Replit) is used for persistent data storage, including models for users, products, categories, orders, and loyalty program data. Supports production database separation and rollback functionality.
 - **Key Features**:
     - **Product Catalog**: Displays products with images, prices, categories, and taste/variant selection. Includes search and category filtering.
     - **Shopping Cart**: Allows quantity management and item removal.
@@ -32,6 +32,14 @@ The application follows a client-server architecture with a clear separation bet
 
 ## Recent Changes
 
+- **2025-11-02**: Migrated from SQLite to PostgreSQL (Replit/Neon)
+  - Installed asyncpg driver for PostgreSQL async operations
+  - Updated database/db.py to automatically use DATABASE_URL from Replit environment
+  - Modified alembic/env.py to support PostgreSQL migrations with proper SSL handling
+  - Converted SSL parameters from sslmode=require to asyncpg-compatible format
+  - Created all tables in PostgreSQL and applied migration stamps
+  - **Benefits**: Production database separation, rollback support, better scalability
+  - Fallback to SQLite for local development when DATABASE_URL not set
 - **2025-11-02**: Fixed bot conflict in development environment
   - Changed default START_BOT value from "true" to "false" to prevent bot from auto-starting in development
   - Eliminates TelegramConflictError when production bot is running

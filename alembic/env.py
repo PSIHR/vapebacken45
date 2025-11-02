@@ -11,9 +11,24 @@ config = context.config
 
 # Get DATABASE_URL from environment
 DATABASE_URL = os.getenv("DATABASE_URL")
-if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
-    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+asyncpg://", 1)
-elif not DATABASE_URL:
+if DATABASE_URL:
+    # Convert postgres:// or postgresql:// to postgresql+asyncpg://
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+asyncpg://", 1)
+    elif DATABASE_URL.startswith("postgresql://") and "asyncpg" not in DATABASE_URL:
+        DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://", 1)
+    
+    # Remove sslmode parameter from URL using proper URL parsing
+    if "?" in DATABASE_URL:
+        from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
+        parsed = urlparse(DATABASE_URL)
+        query_params = parse_qs(parsed.query)
+        # Remove sslmode parameter
+        query_params.pop('sslmode', None)
+        # Rebuild URL without sslmode
+        new_query = urlencode({k: v[0] for k, v in query_params.items()})
+        DATABASE_URL = urlunparse(parsed._replace(query=new_query))
+else:
     DATABASE_URL = "sqlite+aiosqlite:///./database.db"
 
 # Override sqlalchemy.url from config with environment variable
@@ -56,9 +71,17 @@ def do_run_migrations(connection):
 
 async def run_async_migrations():
     """Асинхронный запуск миграций."""
+    url = config.get_main_option("sqlalchemy.url")
+    connect_args = {}
+    
+    # asyncpg uses SSL by default with require mode
+    if "postgresql+asyncpg" in url:
+        connect_args = {"ssl": "require"}
+    
     connectable = create_async_engine(
-        config.get_main_option("sqlalchemy.url"),
+        url,
         poolclass=NullPool,
+        connect_args=connect_args,
     )
 
     async with connectable.connect() as connection:
