@@ -32,12 +32,13 @@ The application follows a client-server architecture with a clear separation bet
 
 ## Recent Changes
 
-- **2025-11-01**: Configured production deployment
-  - Added static file serving for built frontend in `app/main.py`
-  - Backend now serves frontend from `frontend/dist` when built
-  - Deployment configuration: builds frontend with `npm run build`, then runs backend
+- **2025-11-02**: Fixed production deployment configuration
+  - Fixed build command to properly change directory before running npm
+  - Build command: `sh -c "cd frontend && npm install && npm run build"`
+  - Run command: `sh -c "PYTHONPATH=/home/runner/workspace:$PYTHONPATH python app/main.py"`
+  - Backend serves static files from `frontend/dist` when built (SPA fallback pattern)
   - Backend uses PORT environment variable (defaults to 5000 in production, 3000 in development)
-  - Production-ready for custom domain deployment
+  - Production-ready for custom domain deployment on defivaultpro.com
 - **2025-11-01**: Added responsive "Выбрать" button to product cards
   - Mobile: Button is full-width below price for better UX
   - Desktop: Button appears inline next to price
