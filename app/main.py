@@ -86,11 +86,8 @@ async def save_upload_file(upload_file: UploadFile) -> str:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Для SQLite создаем таблицы автоматически, для PostgreSQL используем только миграции
-    database_url = os.getenv("DATABASE_URL", "")
-    if not database_url.startswith("postgresql"):
-        async with engine.begin() as conn:
-            await conn.run_sync(Base.metadata.create_all)
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
 
     bot_task = None
     if os.getenv("START_BOT", "true").lower() == "true":

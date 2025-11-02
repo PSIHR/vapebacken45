@@ -4,7 +4,7 @@ expertMode = true
 
 [nix]
 channel = "stable-25_05"
-packages = ["cacert", "glibcLocales", "libxcrypt", "postgresql", "util-linux"]
+packages = ["cacert", "glibcLocales", "libxcrypt", "util-linux"]
 
 [workflows]
 runButton = "Project"
