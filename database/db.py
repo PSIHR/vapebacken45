@@ -7,6 +7,8 @@ import os
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 connect_args = {}
+pool_settings = {}
+
 if DATABASE_URL:
     # Convert postgres:// or postgresql:// to postgresql+asyncpg://
     if DATABASE_URL.startswith("postgres://"):
@@ -24,13 +26,26 @@ if DATABASE_URL:
         # Rebuild URL without sslmode
         new_query = urlencode({k: v[0] for k, v in query_params.items()})
         DATABASE_URL = urlunparse(parsed._replace(query=new_query))
-        # asyncpg uses SSL by default with require mode, so we don't need to specify it
-        connect_args = {"ssl": "require"}
+    
+    # PostgreSQL pool settings for reliability
+    pool_settings = {
+        "pool_size": 10,
+        "max_overflow": 20,
+        "pool_pre_ping": True,
+        "pool_recycle": 3600,
+    }
+    # SSL is handled by asyncpg automatically with Neon/Replit PostgreSQL
+    connect_args = {"server_settings": {"application_name": "telegram_miniapp"}}
 else:
     # Fallback to SQLite for local development
     DATABASE_URL = "sqlite+aiosqlite:///./database.db"
 
-engine = create_async_engine(DATABASE_URL, echo=False, connect_args=connect_args)
+engine = create_async_engine(
+    DATABASE_URL, 
+    echo=False, 
+    connect_args=connect_args,
+    **pool_settings
+)
 AsyncSessionLocal = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 

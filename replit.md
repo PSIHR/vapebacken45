@@ -32,6 +32,15 @@ The application follows a client-server architecture with a clear separation bet
 
 ## Recent Changes
 
+- **2025-11-02**: Fixed PostgreSQL connection pool stability issues
+  - **Critical Fix**: Added proper connection pool configuration to prevent "connection is closed" errors
+  - Configured pool settings: pool_size=10, max_overflow=20, pool_pre_ping=True, pool_recycle=3600
+  - Removed problematic SSL connect_args that caused connection drops
+  - SSL is now handled automatically by asyncpg with Neon/Replit PostgreSQL
+  - Added application_name to server_settings for better connection tracking
+  - **Result**: Products now sync reliably between database and frontend application
+  - API endpoints (/items/, /categories/) now return stable 200 OK responses
+  - Fixed "Request failed with status code 500" error in frontend
 - **2025-11-02**: Added Google Docs automatic import system for products
   - Created `utils/google_docs_parser.py` for parsing Google Docs with multi-format support
   - Supports 4 product types: одноразки (disposables), жижи (liquids), снюс (snus), расходники (accessories)
