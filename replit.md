@@ -32,11 +32,11 @@ The application follows a client-server architecture with a clear separation bet
 
 ## Recent Changes
 
-- **2025-11-02**: Removed loading screen and fallback for immediate app rendering
-  - Removed 1.5s loading screen delay - app renders instantly
-  - Removed Telegram fallback screen - app works in any environment
-  - App.jsx simplified: only registration and cart count updates on user availability
-  - Frontend now loads immediately without checks or delays
+- **2025-11-02**: Fixed preview white screen - added fallback for non-Telegram environments
+  - Added mock user (id: 123456789) for preview/testing when Telegram WebApp unavailable
+  - Added safe fallbacks: showAlert → console.log, showConfirm → window.confirm
+  - App now works in both preview and Telegram without errors
+  - No loading screen or delays - immediate rendering
   - Ready for production deployment via git commit + redeploy
 - **2025-11-02**: Complete production deployment fixes and unified workflow
   - Removed separate frontend workflow - backend now serves built SPA on port 5000
