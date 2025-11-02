@@ -32,6 +32,14 @@ The application follows a client-server architecture with a clear separation bet
 
 ## Recent Changes
 
+- **2025-11-02**: Fixed database conflict - removed duplicate database file
+  - CRITICAL FIX: Discovered two SQLite database files in different locations causing data inconsistency
+  - Removed duplicate database at `app/database.db` (newer, incorrectly created)
+  - Kept original database at `database.db` (root directory) with all existing data
+  - Verified all code uses correct path: `sqlite+aiosqlite:///./database.db` (points to root)
+  - Added detailed logging in category creation flow (save_photo and process_category_image functions)
+  - Backend and bot now consistently use single source of truth database
+  - Issue: Bot showed different categories on repeated commands due to accessing different DB files
 - **2025-11-02**: Redesigned navigation with category-first approach
   - Created new Home page (Home.jsx) displaying category cards with images and names
   - Added quick links to Telegram channel (t.me/vapplugg) and reviews (t.me/vapepluggcommunity) at top of Home page
