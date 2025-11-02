@@ -1,0 +1,157 @@
+2025-11-02 15:18:22.74
+73a751da
+User
+ERROR: Traceback (most recent call last):
+2025-11-02 15:18:22.74
+73a751da
+User
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/starlette/routing.py", line 694, in lifespan
+2025-11-02 15:18:22.74
+73a751da
+User
+async with self.lifespan_context(app) as maybe_state:
+2025-11-02 15:18:22.74
+73a751da
+User
+File "/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/contextlib.py", line 210, in __aenter__
+
+2025-11-02 15:18:22.74
+73a751da
+User
+return await anext(self.gen)
+2025-11-02 15:18:22.74
+73a751da
+User
+^^^^^^^^^^^^^^^^^^^^^
+2025-11-02 15:18:22.74
+73a751da
+User
+File "/home/runner/workspace/app/main.py", line 89, in lifespan
+2025-11-02 15:18:22.74
+73a751da
+User
+async with engine.begin() as conn:
+2025-11-02 15:18:22.74
+73a751da
+User
+File "/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/contextlib.py", line 210, in __aenter__
+2025-11-02 15:18:22.74
+73a751da
+User
+return await anext(self.gen)
+2025-11-02 15:18:22.74
+73a751da
+User
+^^^^^^^^^^^^^^^^^^^^^
+2025-11-02 15:18:22.74
+73a751da
+User
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/ext/asyncio/engine.py", line 1066, in begin
+2025-11-02 15:18:22.74
+73a751da
+User
+async with conn:
+2025-11-02 15:18:22.74
+73a751da
+User
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/ext/asyncio/base.py", line 121, in __aenter__
+2025-11-02 15:18:22.74
+73a751da
+User
+return await self.start(is_ctxmanager=True)
+2025-11-02 15:18:22.74
+73a751da
+User
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2025-11-02 15:18:22.74
+73a751da
+User
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/ext/asyncio/engine.py", line 274, in start
+2025-11-02 15:18:22.74
+73a751da
+User
+await greenlet_spawn(self.sync_engine.connect)
+2025-11-02 15:18:22.74
+73a751da
+User
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/_concurrency_py3k.py", line 201, in greenlet_spawn
+2025-11-02 15:18:22.74
+73a751da
+User
+result = context.throw(*sys.exc_info())
+2025-11-02 15:18:22.74
+73a751da
+User
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2025-11-02 15:18:22.74
+73a751da
+User
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 3273, in connect
+2025-11-02 15:18:22.74
+73a751da
+User
+return self._connection_cls(self)
+2025-11-02 15:18:22.74
+73a751da
+User
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+2025-11-02 15:18:22.74
+73a751da
+User
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 145, in __init__
+2025-11-02 15:18:22.74
+73a751da
+User
+self._dbapi_connection = engine.raw_connection()
+2025-11-02 15:18:22.74
+73a751da
+User
+^^^^^^^^^^^^^^^^^^^^^^^
+2025-11-02 15:18:22.74
+73a751da
+User
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 3297, in raw_connection
+2025-11-02 15:18:22.74
+73a751da
+User
+return self.pool.connect()
+2025-11-02 15:18:22.74
+73a751da
+User
+^^^^^^^^^^^^^^^^^^^
+2025-11-02 15:18:22.74
+73a751da
+User
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+2025-11-02 15:18:22.74
+73a751da
+User
+return _ConnectionFairy._checkout(self)
+2025-11-02 15:18:22.74
+73a751da
+User
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2025-11-02 15:18:22.74
+73a751da
+User
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/pool/base.py", line 1264, in _checkout
+2025-11-02 15:18:22.74
+73a751da
+User
+fairy = _ConnectionRecord.checkout(pool)
+2025-11-02 15:18:22.74
+73a751da
+User
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2025-11-02 15:18:22.74
+73a751da
+User
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/pool/base.py", line 713, in checkout
+2025-11-02 15:18:22.74
+73a751da
+User
+rec = pool._do_get()
+2025-11-02 15:18:22.74
+73a751da
+User
+^^^^^^^^^^^^^^
