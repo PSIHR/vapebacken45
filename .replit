@@ -27,7 +27,7 @@ outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "PYTHONPATH=/home/runner/workspace:$PYTHONPATH python app/main.py"
+args = "START_BOT=false PYTHONPATH=/home/runner/workspace:$PYTHONPATH python app/main.py"
 waitForPort = 5000
 
 [[ports]]
@@ -37,10 +37,6 @@ externalPort = 3000
 [[ports]]
 localPort = 5000
 externalPort = 80
-
-[[ports]]
-localPort = 45915
-externalPort = 3001
 
 [deployment]
 deploymentTarget = "vm"

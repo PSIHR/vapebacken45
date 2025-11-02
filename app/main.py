@@ -94,15 +94,18 @@ async def lifespan(app: FastAPI):
     if os.path.exists("frontend/dist/assets"):
         app.mount("/assets", StaticFiles(directory="frontend/dist/assets"), name="assets")
 
-    bot_task = asyncio.create_task(dp.start_polling(bot))
+    bot_task = None
+    if os.getenv("START_BOT", "true").lower() == "true":
+        bot_task = asyncio.create_task(dp.start_polling(bot))
 
     yield
 
-    bot_task.cancel()
-    try:
-        await bot_task
-    except asyncio.CancelledError:
-        pass
+    if bot_task:
+        bot_task.cancel()
+        try:
+            await bot_task
+        except asyncio.CancelledError:
+            pass
     await engine.dispose()
 
 

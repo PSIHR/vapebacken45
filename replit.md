@@ -43,8 +43,10 @@ The application follows a client-server architecture with a clear separation bet
     - Single workflow on port 5000 (webview)
     - Build script builds frontend to `frontend/dist`
     - Backend serves static files and handles SPA routing
+    - Bot URL changed to `https://defivaultpro.com` (configurable via WEBAPP_URL env var)
+    - Added START_BOT env var to control bot startup (false in development, true in production)
   - Production ready for defivaultpro.com
-  - Note: Only run ONE instance at a time to avoid Telegram bot conflicts
+  - Note: Development runs with START_BOT=false to avoid bot conflicts with production
 - **2025-11-02**: Fixed production deployment configuration
   - Created `build.sh` script to properly build frontend in correct directory
   - Build command: `bash build.sh` (changes to frontend dir, runs npm install & build)
