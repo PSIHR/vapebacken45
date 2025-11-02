@@ -23,6 +23,7 @@ from fastapi import (
     UploadFile,
     status,
 )
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy import delete, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -90,9 +91,8 @@ async def lifespan(app: FastAPI):
 
     app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
     
-    if os.path.exists("frontend/dist"):
+    if os.path.exists("frontend/dist/assets"):
         app.mount("/assets", StaticFiles(directory="frontend/dist/assets"), name="assets")
-        app.mount("/", StaticFiles(directory="frontend/dist", html=True), name="frontend")
 
     bot_task = asyncio.create_task(dp.start_polling(bot))
 
@@ -121,6 +121,8 @@ app.add_middleware(BannedUserMiddleware)
 
 @app.get("/")
 async def root():
+    if os.path.exists("frontend/dist/index.html"):
+        return FileResponse("frontend/dist/index.html")
     return {"message": "hello world"}
 
 
@@ -1625,6 +1627,13 @@ async def analytics_completed_orders(
         orders_count=len(sales_payload),
         sales=sales_payload,
     )
+
+
+@app.get("/{full_path:path}")
+async def spa_fallback(full_path: str):
+    if os.path.exists("frontend/dist/index.html"):
+        return FileResponse("frontend/dist/index.html")
+    raise HTTPException(status_code=404, detail="Not found")
 
 
 async def main():
