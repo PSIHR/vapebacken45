@@ -24,11 +24,15 @@ class BannedUserMiddleware:
         if cached and now - cached[1] < self.cache_ttl:
             return cached[0]
 
-        result = await db.execute(select(DBUser.is_banned).where(DBUser.id == user_id))
+        try:
+            user_id_int = int(user_id)
+        except (ValueError, TypeError):
+            return False
+
+        result = await db.execute(select(DBUser.is_banned).where(DBUser.id == user_id_int))
         row = result.scalar_one_or_none()
         is_banned = bool(row)
         self.banned_cache[user_id] = (is_banned, now)
-        print(result)
         return is_banned
 
     async def __call__(self, scope: Scope, receive: Receive, send: Send):
