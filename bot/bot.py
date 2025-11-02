@@ -4247,9 +4247,10 @@ async def import_docs_process_url(message: Message, state: FSMContext):
     
     except Exception as e:
         logger.error(f"Error importing from Google Docs: {e}")
+        error_text = str(e).replace('<', '&lt;').replace('>', '&gt;')
         await message.answer(
             f"❌ <b>Произошла ошибка:</b>\n\n"
-            f"<code>{str(e)}</code>\n\n"
+            f"<code>{error_text}</code>\n\n"
             f"Проверьте:\n"
             f"• Доступна ли ссылка\n"
             f"• Правильный ли формат документа\n"
