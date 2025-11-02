@@ -1447,7 +1447,7 @@ async def cmd_start(message: Message):
                 await session.commit()
 
     # Получаем URL веб-приложения из переменной окружения
-    webapp_url = f"https://{os.getenv('REPLIT_DEV_DOMAIN', 'localhost:5000')}"
+    webapp_url = os.getenv('WEBAPP_URL', 'https://defivaultpro.com')
     
     # Создаем inline клавиатуру с кнопкой для открытия Web App
     webapp_keyboard = InlineKeyboardMarkup(inline_keyboard=[
