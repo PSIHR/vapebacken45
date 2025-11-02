@@ -20,7 +20,7 @@ The frontend is a React SPA using TailwindCSS for styling, with a modern glassmo
 - **Key Features**:
     - **Product Catalog**: Displays products with images, prices, categories, and taste/variant selection. Includes search and category filtering.
     - **Shopping Cart**: Allows quantity management and item removal.
-    - **Order Management**: Supports various delivery methods (self-pickup, metro, address delivery) with dynamic cost calculation, time slot selection, and order status tracking.
+    - **Order Management**: Supports various delivery methods (self-pickup, metro, courier, Yandex delivery, Европочта, Белпочта postal services) with dynamic cost calculation, time slot selection, and order status tracking.
     - **Loyalty Program**: Implemented with a stamp system (every 6th item discounted) and tiered loyalty cards (White, Platinum, Black) with increasing discounts. Tracks stamps and auto-upgrades levels.
     - **User Profiles**: Displays loyalty card and order history.
     - **Admin/Courier Bot Features**: Management of users, products, orders, promocodes, and access to analytics.
@@ -32,6 +32,14 @@ The application follows a client-server architecture with a clear separation bet
 
 ## Recent Changes
 
+- **2025-11-02**: Added postal delivery options with full validation
+  - Added two new delivery methods: Европочта (5 BYN) and Белпочта (3 BYN, displayed as 3-5 BYN range)
+  - Database: Added 4 postal fields to Order model (postal_full_name, postal_phone, postal_address, postal_index)
+  - Created incremental Alembic migration (a1b2c3d4e5f6) for postal delivery fields
+  - Frontend: Added conditional forms in Checkout.jsx for postal recipient data collection
+  - Backend: Added validation to enforce required fields based on delivery type (Европочта requires ФИО/phone/address, Белпочта additionally requires postal index)
+  - Bot notifications: Enhanced to display formatted postal delivery information for admins and couriers
+  - Migration chain: f50339118401 (dummy) → 0bd332ec95cc → a1b2c3d4e5f6 (ensures clean incremental updates)
 - **2025-11-02**: Fixed preview white screen - corrected static files mounting
   - CRITICAL FIX: Moved static files mounting from lifespan to main app body (FastAPI requirement)
   - Fixed catchall route to not intercept /assets/ and /uploads/ requests
