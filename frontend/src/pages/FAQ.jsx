@@ -75,8 +75,11 @@ function FAQ() {
           <p className="text-white/70 mb-2">
             Не нашли ответ на свой вопрос?
           </p>
-          <p className="text-white font-medium">
+          <p className="text-white font-medium mb-3">
             Напишите нам в поддержку через Telegram бот!
+          </p>
+          <p className="text-white/90 font-semibold">
+            Менеджер: @VapeTochkaManager
           </p>
         </div>
       </div>

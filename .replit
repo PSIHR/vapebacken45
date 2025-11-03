@@ -7,7 +7,7 @@ channel = "stable-25_05"
 packages = ["cacert", "glibcLocales", "libxcrypt", "util-linux"]
 
 [workflows]
-runButton = "Full Stack"
+runButton = "Project"
 
 [[workflows.workflow]]
 name = "Project"
@@ -18,17 +18,21 @@ author = "agent"
 task = "workflow.run"
 args = "backend"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "frontend"
+
 [[workflows.workflow]]
 name = "backend"
 author = "agent"
 
 [workflows.workflow.metadata]
-outputType = "webview"
+outputType = "console"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "START_BOT=false PYTHONPATH=/home/runner/workspace:$PYTHONPATH python app/main.py"
-waitForPort = 5000
+waitForPort = 3000
 
 [[workflows.workflow]]
 name = "Start Bot"
@@ -52,6 +56,18 @@ args = "PYTHONPATH=/home/runner/workspace:$PYTHONPATH python -m bot.bot"
 task = "shell.exec"
 args = "START_BOT=false PYTHONPATH=/home/runner/workspace:$PYTHONPATH python app/main.py"
 
+[[workflows.workflow]]
+name = "frontend"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd frontend && npm run dev"
+waitForPort = 5000
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
 [[ports]]
 localPort = 3000
 externalPort = 3000
@@ -59,6 +75,10 @@ externalPort = 3000
 [[ports]]
 localPort = 5000
 externalPort = 80
+
+[[ports]]
+localPort = 33087
+externalPort = 3001
 
 [deployment]
 deploymentTarget = "vm"

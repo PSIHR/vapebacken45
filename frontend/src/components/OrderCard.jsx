@@ -38,12 +38,12 @@ const OrderCard = ({ order }) => {
         {order.discount > 0 && (
           <div className="flex justify-between items-center mb-2">
             <span className="text-white/80">Скидка:</span>
-            <span className="text-red-300">-{formatPrice(order.discount)}</span>
+            <span className="text-white/90">-{formatPrice(order.discount)}</span>
           </div>
         )}
         <div className="flex justify-between items-center font-bold text-lg border-t border-white/20 pt-2">
           <span className="text-white">Итого:</span>
-          <span className="text-green-300">{formatPrice(order.total_price)}</span>
+          <span className="text-white font-bold">{formatPrice(order.total_price)}</span>
         </div>
       </div>
     </div>

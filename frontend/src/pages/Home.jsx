@@ -65,18 +65,18 @@ const Home = () => {
       <div className="container mx-auto px-4 py-6">
         <div className="mb-6 flex gap-2">
           <button
-            onClick={() => handleLinkClick('https://t.me/vapplugg')}
+            onClick={() => handleLinkClick('https://t.me/VapeTochkaBY')}
             className="flex-1 glass-panel p-3 rounded-lg flex items-center justify-center gap-2 hover:bg-white/30 transition-all"
           >
             <ExternalLink size={16} className="text-white" />
             <span className="text-white font-medium text-sm">Канал</span>
           </button>
           <button
-            onClick={() => handleLinkClick('https://t.me/vapepluggcommunity')}
+            onClick={() => handleLinkClick('https://t.me/+4lp4Y_KmFRZjYzcy')}
             className="flex-1 glass-panel p-3 rounded-lg flex items-center justify-center gap-2 hover:bg-white/30 transition-all"
           >
             <ExternalLink size={16} className="text-white" />
-            <span className="text-white font-medium text-sm">Отзывы</span>
+            <span className="text-white font-medium text-sm">Беседа</span>
           </button>
         </div>
 
@@ -104,7 +104,7 @@ const Home = () => {
                 onClick={() => handleCategoryClick(category.id)}
                 className="glass-panel rounded-2xl overflow-hidden cursor-pointer transform transition-all hover:scale-105 hover:shadow-2xl active:scale-95"
               >
-                <div className="aspect-square relative overflow-hidden bg-gradient-to-br from-purple-500/20 to-pink-500/20">
+                <div className="aspect-square relative overflow-hidden bg-gradient-to-br from-gray-800/40 to-gray-900/60">
                   {category.image ? (
                     <img
                       src={category.image}

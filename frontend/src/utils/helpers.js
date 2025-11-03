@@ -26,11 +26,11 @@ export const getStatusText = (status) => {
 
 export const getStatusColor = (status) => {
   const colorMap = {
-    waiting_for_courier: 'text-yellow-600',
-    in_delivery: 'text-blue-600',
-    delivered: 'text-green-600',
-    completed: 'text-gray-600',
-    canceled: 'text-red-600',
+    waiting_for_courier: 'text-white/80',
+    in_delivery: 'text-white/90',
+    delivered: 'text-white',
+    completed: 'text-gray-400',
+    canceled: 'text-gray-500',
   };
   return colorMap[status] || 'text-gray-600';
 };

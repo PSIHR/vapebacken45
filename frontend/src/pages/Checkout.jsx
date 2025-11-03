@@ -196,7 +196,7 @@ const Checkout = () => {
             📍 Доставка по Минску, Беларусь
           </p>
           <p className="text-white/80 text-sm mt-2">
-            💬 Вопросы: <a href="https://t.me/vapepluggmanager" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">@vapepluggmanager</a>
+            💬 Вопросы: <a href="https://t.me/VapeTochkaManager" target="_blank" rel="noopener noreferrer" className="text-white hover:text-white/70 underline">@VapeTochkaManager</a>
           </p>
         </div>
 
@@ -244,12 +244,12 @@ const Checkout = () => {
                 onChange={handleChange}
                 className="w-full px-3 py-2 pr-10 border border-white/30 bg-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
               >
-                <option value="Курьером" className="bg-purple-600">Курьером до адреса</option>
-                <option value="Самовывоз" className="bg-purple-600">Самовывоз</option>
-                <option value="По метро" className="bg-purple-600">До станции метро</option>
-                <option value="Яндекс доставка" className="bg-purple-600">Яндекс доставка</option>
-                <option value="Европочта" className="bg-purple-600">Европочта (5 BYN)</option>
-                <option value="Белпочта" className="bg-purple-600">Белпочта (3-5 BYN)</option>
+                <option value="Курьером" className="bg-gray-800">Курьером до адреса</option>
+                <option value="Самовывоз" className="bg-gray-800">Самовывоз</option>
+                <option value="По метро" className="bg-gray-800">До станции метро</option>
+                <option value="Яндекс доставка" className="bg-gray-800">Яндекс доставка</option>
+                <option value="Европочта" className="bg-gray-800">Европочта (5 BYN)</option>
+                <option value="Белпочта" className="bg-gray-800">Белпочта (3-5 BYN)</option>
               </select>
               <button
                 type="button"
@@ -265,7 +265,7 @@ const Checkout = () => {
             <>
               <div className="mb-4">
                 <label className="block text-white font-medium mb-2">
-                  Линия метро <span className="text-red-300">*</span>
+                  Линия метро <span className="text-white">*</span>
                 </label>
                 <select
                   name="metro_line"
@@ -274,9 +274,9 @@ const Checkout = () => {
                   className="w-full px-3 py-2 border border-white/30 bg-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
                   required
                 >
-                  <option value="" className="bg-purple-600">Выберите линию метро</option>
+                  <option value="" className="bg-gray-800">Выберите линию метро</option>
                   {Object.keys(metroLines).map((line) => (
-                    <option key={line} value={line} className="bg-purple-600">
+                    <option key={line} value={line} className="bg-gray-800">
                       {line}
                     </option>
                   ))}
@@ -286,7 +286,7 @@ const Checkout = () => {
               {formData.metro_line && (
                 <div className="mb-4">
                   <label className="block text-white font-medium mb-2">
-                    Станция метро <span className="text-red-300">*</span>
+                    Станция метро <span className="text-white">*</span>
                   </label>
                   <select
                     name="metro_station"
@@ -295,9 +295,9 @@ const Checkout = () => {
                     className="w-full px-3 py-2 border border-white/30 bg-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
                     required
                   >
-                    <option value="" className="bg-purple-600">Выберите станцию</option>
+                    <option value="" className="bg-gray-800">Выберите станцию</option>
                     {availableStations.map((station) => (
-                      <option key={station} value={station} className="bg-purple-600">
+                      <option key={station} value={station} className="bg-gray-800">
                         {station}
                       </option>
                     ))}
@@ -307,7 +307,7 @@ const Checkout = () => {
 
               <div className="mb-4">
                 <label className="block text-white font-medium mb-2">
-                  Предпочтительное время <span className="text-red-300">*</span>
+                  Предпочтительное время <span className="text-white">*</span>
                 </label>
                 <input
                   type="text"
@@ -340,7 +340,7 @@ const Checkout = () => {
 
               <div className="mb-4">
                 <label className="block text-white font-medium mb-2">
-                  Предпочтительное время <span className="text-red-300">*</span>
+                  Предпочтительное время <span className="text-white">*</span>
                 </label>
                 <input
                   type="text"
@@ -362,7 +362,7 @@ const Checkout = () => {
             <>
               <div className="mb-4">
                 <label className="block text-white font-medium mb-2">
-                  Адрес доставки <span className="text-red-300">*</span>
+                  Адрес доставки <span className="text-white">*</span>
                 </label>
                 <textarea
                   name="address"
@@ -378,7 +378,7 @@ const Checkout = () => {
               {formData.delivery === 'Курьером' && (
                 <div className="mb-4">
                   <label className="block text-white font-medium mb-2">
-                    Временной промежуток <span className="text-red-300">*</span>
+                    Временной промежуток <span className="text-white">*</span>
                   </label>
                   <select
                     name="time_slot"
@@ -387,9 +387,9 @@ const Checkout = () => {
                     className="w-full px-3 py-2 border border-white/30 bg-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
                     required
                   >
-                    <option value="" className="bg-purple-600">Выберите время</option>
-                    <option value="14:00-16:00" className="bg-purple-600">14:00-16:00 (дневной)</option>
-                    <option value="18:00-21:30" className="bg-purple-600">18:00-21:30 (вечерний)</option>
+                    <option value="" className="bg-gray-800">Выберите время</option>
+                    <option value="14:00-16:00" className="bg-gray-800">14:00-16:00 (дневной)</option>
+                    <option value="18:00-21:30" className="bg-gray-800">18:00-21:30 (вечерний)</option>
                   </select>
                   <p className="text-white/60 text-xs mt-1">
                     Точное время зависит от маршрута курьера
@@ -403,7 +403,7 @@ const Checkout = () => {
             <>
               <div className="mb-4">
                 <label className="block text-white font-medium mb-2">
-                  ФИО получателя <span className="text-red-300">*</span>
+                  ФИО получателя <span className="text-white">*</span>
                 </label>
                 <input
                   type="text"
@@ -418,7 +418,7 @@ const Checkout = () => {
 
               <div className="mb-4">
                 <label className="block text-white font-medium mb-2">
-                  Номер телефона <span className="text-red-300">*</span>
+                  Номер телефона <span className="text-white">*</span>
                 </label>
                 <input
                   type="tel"
@@ -433,7 +433,7 @@ const Checkout = () => {
 
               <div className="mb-4">
                 <label className="block text-white font-medium mb-2">
-                  Адрес пункта выдачи или номер ОПС <span className="text-red-300">*</span>
+                  Адрес пункта выдачи или номер ОПС <span className="text-white">*</span>
                 </label>
                 <textarea
                   name="postal_address"
@@ -455,7 +455,7 @@ const Checkout = () => {
             <>
               <div className="mb-4">
                 <label className="block text-white font-medium mb-2">
-                  ФИО получателя <span className="text-red-300">*</span>
+                  ФИО получателя <span className="text-white">*</span>
                 </label>
                 <input
                   type="text"
@@ -470,7 +470,7 @@ const Checkout = () => {
 
               <div className="mb-4">
                 <label className="block text-white font-medium mb-2">
-                  Номер телефона <span className="text-red-300">*</span>
+                  Номер телефона <span className="text-white">*</span>
                 </label>
                 <input
                   type="tel"
@@ -485,7 +485,7 @@ const Checkout = () => {
 
               <div className="mb-4">
                 <label className="block text-white font-medium mb-2">
-                  Полный адрес <span className="text-red-300">*</span>
+                  Полный адрес <span className="text-white">*</span>
                 </label>
                 <textarea
                   name="postal_address"
@@ -500,7 +500,7 @@ const Checkout = () => {
 
               <div className="mb-4">
                 <label className="block text-white font-medium mb-2">
-                  Почтовый индекс <span className="text-red-300">*</span>
+                  Почтовый индекс <span className="text-white">*</span>
                 </label>
                 <input
                   type="text"
@@ -528,9 +528,9 @@ const Checkout = () => {
               onChange={handleChange}
               className="w-full px-3 py-2 border border-white/30 bg-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent"
             >
-              <option value="Наличные" className="bg-purple-600">Наличные</option>
-              <option value="Карта" className="bg-purple-600">Карта</option>
-              <option value="USDT" className="bg-purple-600">USDT</option>
+              <option value="Наличные" className="bg-gray-800">Наличные</option>
+              <option value="Карта" className="bg-gray-800">Карта</option>
+              <option value="USDT" className="bg-gray-800">USDT</option>
             </select>
           </div>
 

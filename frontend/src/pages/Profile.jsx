@@ -47,10 +47,10 @@ const Profile = () => {
 
   const getStatusColor = (status) => {
     const colorMap = {
-      waiting_for_courier: 'bg-yellow-500/20 text-yellow-300',
-      in_delivery: 'bg-blue-500/20 text-blue-300',
-      delivered: 'bg-green-500/20 text-green-300',
-      cancelled: 'bg-red-500/20 text-red-300'
+      waiting_for_courier: 'bg-white/20 text-white/90',
+      in_delivery: 'bg-white/30 text-white',
+      delivered: 'bg-white/40 text-white',
+      cancelled: 'bg-gray-600/30 text-gray-300'
     };
     return colorMap[status] || 'bg-gray-500/20 text-gray-300';
   };

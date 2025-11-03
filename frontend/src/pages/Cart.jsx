@@ -66,7 +66,7 @@ const Cart = ({ onCartUpdate }) => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="animate-spin text-blue-600" size={48} />
+        <Loader2 className="animate-spin text-white" size={48} />
       </div>
     );
   }

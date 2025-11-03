@@ -41,10 +41,10 @@ const Orders = () => {
       <div className="min-h-screen bg-gray-900">
         <div className="container mx-auto px-4 py-12">
           <div className="text-center glass-panel p-12 rounded-lg shadow-xl">
-            <Package className="mx-auto text-vape-plug-accent mb-4" size={64} />
+            <Package className="mx-auto text-white/60 mb-4" size={64} />
             <h2 className="text-3xl font-bold text-white mb-2">Ваши заказы</h2>
             <p className="text-white/80 text-lg">У вас пока нет оформленных заказов. Свяжитесь с нами для консультации.</p>
-            <p className="text-white/70 mt-4">По вопросам: @vapepluggmanager</p>
+            <p className="text-white/70 mt-4">По вопросам: @VapeTochkaManager</p>
             <p className="text-white/70">Находимся в Беларуси, Минск.</p>
           </div>
         </div>
@@ -62,7 +62,7 @@ const Orders = () => {
           ))}
         </div>
         <div className="mt-8 text-center">
-          <p className="text-white/80">По вопросам: @vapepluggmanager</p>
+          <p className="text-white/80">По вопросам: @VapeTochkaManager</p>
           <p className="text-white/70">Находимся в Беларуси, Минск.</p>
         </div>
       </div>

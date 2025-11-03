@@ -46,7 +46,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
               </span>
               <button
                 onClick={() => onRemove(item.id)}
-                className="text-white/80 hover:text-red-300 transition-colors"
+                className="text-white/80 hover:text-white transition-colors"
               >
                 <Trash2 size={20} />
               </button>

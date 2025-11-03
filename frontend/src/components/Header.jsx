@@ -8,7 +8,7 @@ const Header = () => {
         <div className="flex flex-col items-center gap-3">
           <Link to="/" className="flex items-center gap-2">
             <span className="text-xl font-semibold text-white">
-              VAPE PLUG
+              VAPE TOCHKA
             </span>
           </Link>
           

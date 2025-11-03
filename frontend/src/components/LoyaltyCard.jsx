@@ -7,32 +7,32 @@ const LoyaltyCard = ({ loyaltyData }) => {
     White: {
       gradient: 'from-gray-200 via-gray-300 to-gray-400',
       icon: Sparkles,
-      iconColor: 'text-gray-600',
+      iconColor: 'text-gray-700',
       title: 'White Card',
-      textColor: 'text-gray-800',
-      stampColor: 'bg-gray-600',
+      textColor: 'text-gray-900',
+      stampColor: 'bg-gray-700',
       stampEmptyColor: 'bg-gray-300',
       shadow: 'shadow-gray-400/50'
     },
     Platinum: {
-      gradient: 'from-purple-300 via-pink-300 to-purple-400',
+      gradient: 'from-gray-400 via-gray-500 to-gray-600',
       icon: Crown,
-      iconColor: 'text-purple-700',
+      iconColor: 'text-white',
       title: 'Platinum Card',
-      textColor: 'text-purple-900',
-      stampColor: 'bg-purple-600',
-      stampEmptyColor: 'bg-purple-200',
-      shadow: 'shadow-purple-400/50'
+      textColor: 'text-white',
+      stampColor: 'bg-white',
+      stampEmptyColor: 'bg-gray-300',
+      shadow: 'shadow-gray-600/50'
     },
     Black: {
-      gradient: 'from-yellow-400 via-yellow-500 to-amber-600',
+      gradient: 'from-gray-800 via-gray-900 to-black',
       icon: Gem,
-      iconColor: 'text-amber-900',
+      iconColor: 'text-white',
       title: 'Black Card',
-      textColor: 'text-amber-900',
-      stampColor: 'bg-amber-900',
-      stampEmptyColor: 'bg-amber-200',
-      shadow: 'shadow-amber-500/50'
+      textColor: 'text-white',
+      stampColor: 'bg-white',
+      stampEmptyColor: 'bg-gray-600',
+      shadow: 'shadow-black/50'
     }
   };
 
@@ -51,7 +51,7 @@ const LoyaltyCard = ({ loyaltyData }) => {
           key={i}
           className={`w-10 h-10 rounded-full ${
             i < stamps ? config.stampColor : config.stampEmptyColor
-          } ${isDiscountStamp ? 'ring-4 ring-yellow-400 scale-110 animate-pulse' : ''} flex items-center justify-center text-white font-bold text-sm transition-all duration-300`}
+          } ${isDiscountStamp ? 'ring-4 ring-white scale-110 animate-pulse' : ''} flex items-center justify-center ${i < stamps && loyalty_level === 'White' ? 'text-white' : i < stamps ? 'text-black' : 'text-gray-600'} font-bold text-sm transition-all duration-300`}
         >
           {i < stamps ? '✓' : i + 1}
         </div>
