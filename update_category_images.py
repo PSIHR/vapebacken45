@@ -13,18 +13,19 @@ async def update_category_images():
         
         # Маппинг имен категорий на файлы изображений
         image_mapping = {
-            "Жидкости": "uploads/zhidkosti.jpg",
-            "Одноразки": "uploads/odnorazki.jpg",
-            "Устройства": "uploads/ustroystva.jpg",
-            "Поды": "uploads/pody.jpg",
+            "Жидкости": "/uploads/zhidkosti.jpg",
+            "Одноразки": "/uploads/odnorazki.jpg",
+            "Устройства": "/uploads/ustroystva.jpg",
+            "Поды": "/uploads/pody.jpg",
         }
         
         updated = 0
         for category in categories:
             if category.name in image_mapping:
+                old_image = category.image
                 category.image = image_mapping[category.name]
                 updated += 1
-                print(f"✅ Обновлена категория '{category.name}' -> {category.image}")
+                print(f"✅ Обновлена категория '{category.name}': {old_image} -> {category.image}")
         
         await session.commit()
         print(f"\n✅ Всего обновлено категорий: {updated}")
