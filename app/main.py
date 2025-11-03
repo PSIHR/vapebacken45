@@ -30,7 +30,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 from starlette.middleware.cors import CORSMiddleware
 
-from bot.bot import ADMINS, COURIERS, bot, dp, format_order_info, get_courier_keyboard
 from database.db import engine, get_db
 from database.models import (
     Base,
@@ -59,6 +58,16 @@ from typization.models import (
 
 if not load_dotenv("./config/.env.local"):
     raise Exception("Failed to load .env file")
+
+# Условный импорт бота только если нужно его запускать
+START_BOT = os.getenv("START_BOT", "true").lower() == "true"
+if START_BOT:
+    from bot.bot import ADMINS, COURIERS, bot, dp, format_order_info, get_courier_keyboard
+else:
+    bot = None
+    dp = None
+    ADMINS = []
+    COURIERS = []
 
 router = APIRouter()
 
@@ -90,7 +99,7 @@ async def lifespan(app: FastAPI):
         await conn.run_sync(Base.metadata.create_all)
 
     bot_task = None
-    if os.getenv("START_BOT", "true").lower() == "true":
+    if START_BOT and bot and dp:
         bot_task = asyncio.create_task(dp.start_polling(bot))
 
     yield
