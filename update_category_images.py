@@ -15,6 +15,7 @@ async def update_category_images():
         image_mapping = {
             "Жидкости": "/uploads/zhidkosti.jpg",
             "Одноразки": "/uploads/odnorazki.jpg",
+            "Одноразовые электронные сигареты": "/uploads/odnorazki.jpg",
             "Устройства": "/uploads/ustroystva.jpg",
             "Поды": "/uploads/pody.jpg",
         }
