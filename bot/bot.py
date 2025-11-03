@@ -1582,8 +1582,8 @@ async def cmd_start(message: Message):
 <b>📍 Мы находимся:</b>
 • Минск, Беларусь
 
-<b>📞 По всем вопросам:</b>
-@vapepluggmanager""",
+<b>📞 Менеджер:</b>
+@VapeTochkaManager""",
             parse_mode="HTML",
             reply_markup=webapp_keyboard,
         )
