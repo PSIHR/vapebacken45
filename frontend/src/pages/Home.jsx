@@ -19,7 +19,12 @@ const Home = () => {
     try {
       setLoading(true);
       const response = await categoriesAPI.getAll();
-      setCategories(response.data.categories || []);
+      const cats = response.data.categories || [];
+      console.log('Loaded categories:', cats);
+      cats.forEach(cat => {
+        console.log(`Category ${cat.name}: image = ${cat.image}`);
+      });
+      setCategories(cats);
     } catch (error) {
       console.error('Error loading categories:', error);
       showAlert('Ошибка загрузки категорий');
