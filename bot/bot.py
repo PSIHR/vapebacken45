@@ -53,14 +53,17 @@ logger = logging.getLogger(__name__)
 # Конфигурация
 IMAGES_DIR = "uploads"
 
-# Проверка наличия необходимых переменных окружения
-required_env = ['TOKEN', 'ADMINS', 'COURIERS', 'WEBAPP_URL']
-for var in required_env:
-    if not os.getenv(var):
-        raise Exception(f"Missing required environment variable: {var}")
+# Получаем переменные окружения с безопасными значениями по умолчанию
+TOKEN = os.getenv("TOKEN", "")
+ADMINS = list(map(int, os.getenv("ADMINS", "0").replace(" ", "").split(","))) if os.getenv("ADMINS") else []
+COURIERS = list(map(int, os.getenv("COURIERS", "0").replace(" ", "").split(","))) if os.getenv("COURIERS") else []
 
-ADMINS = list(map(int, os.getenv("ADMINS").replace(" ", "").split(",")))
-COURIERS = list(map(int, os.getenv("COURIERS").replace(" ", "").split(",")))
+# Проверка только если бот будет запускаться
+def check_required_env():
+    required_env = ['TOKEN', 'ADMINS', 'COURIERS', 'WEBAPP_URL']
+    for var in required_env:
+        if not os.getenv(var):
+            raise Exception(f"Missing required environment variable: {var}")
 
 os.makedirs(IMAGES_DIR, exist_ok=True)
 
