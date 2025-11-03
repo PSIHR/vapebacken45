@@ -114,7 +114,7 @@ const Checkout = () => {
     // Set address for pickup and metro if not provided
     let orderAddress = formData.address;
     if (formData.delivery === 'Самовывоз') {
-      orderAddress = 'пр. Дзержинского 26, подъезд 4 (Самовывоз)';
+      orderAddress = 'ст. м. Якуба Коласа (Самовывоз)';
     } else if (formData.delivery === 'По метро') {
       orderAddress = `${formData.metro_line} - ${formData.metro_station} (Метро)`;
     }
@@ -333,7 +333,7 @@ const Checkout = () => {
                 </label>
                 <div className="glass-card p-3">
                   <p className="text-white text-sm">
-                    пр. Дзержинского 26, подъезд 4
+                    ст. м. Якуба Коласа
                   </p>
                 </div>
               </div>
