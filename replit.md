@@ -11,7 +11,7 @@ Do not make changes to the file Y.
 ## System Architecture
 
 ### UI/UX Decisions
-The frontend is a React SPA using TailwindCSS for styling, with a modern glassmorphism design incorporating `Unbounded` font from Google Fonts. It adopts a minimalist Telegram-like aesthetic with dark gradient backgrounds and translucent elements. Key UI components include responsive product cards, a bottom navigation bar, and accessible elements like an accordion-based FAQ. The design prioritizes mobile UX within the Telegram environment.
+The frontend is a React SPA using TailwindCSS for styling, with a modern glassmorphism design incorporating `Unbounded` font from Google Fonts. It adopts a minimalist Telegram-like aesthetic with **strict black-and-white monochrome color scheme** - dark gradient backgrounds (black to gray) and translucent elements using only grayscale palette. The brand is **VAPE TOCHKA** with social presence at t.me/VapeTochkaBY (channel) and t.me/+4lp4Y_KmFRZjYzcy (community chat). Key UI components include responsive product cards, a bottom navigation bar, and accessible elements like an accordion-based FAQ. The design prioritizes mobile UX within the Telegram environment.
 
 ### Technical Implementations
 - **Backend**: FastAPI serves a REST API, integrated with `aiogram` for Telegram bot functionalities. It uses `SQLAlchemy` with `aiosqlite` for asynchronous database operations and `Alembic` for migrations.
@@ -32,6 +32,19 @@ The application follows a client-server architecture with a clear separation bet
 
 ## Recent Changes
 
+- **2025-11-03**: Complete rebrand from "VAPE PLUG" to "VAPE TOCHKA" with black-and-white monochrome design
+  - Brand name changed throughout entire frontend (components, pages, page title)
+  - Updated all social media links: Channel (https://t.me/VapeTochkaBY), renamed "Отзывы" to "Беседа" (https://t.me/+4lp4Y_KmFRZjYzcy)
+  - Added manager contact @VapeTochkaManager in FAQ, Checkout, and Orders pages
+  - Complete color scheme conversion to strict black-and-white monochrome (no colored accents)
+  - Removed all purple/pink/blue gradients, replaced with grayscale gradients
+  - Updated glassmorphism styles to use only gray/white/black palette
+  - Converted loyalty cards (White, Platinum, Black) to monochrome gradients
+  - Changed order status colors from colored (yellow, blue, green, red) to neutral grayscale
+  - Fixed bottom navigation with pure gray background
+  - All Tailwind color classes (text-purple, bg-blue, etc.) replaced with gray/white equivalents
+  - Page title updated to "VAPE TOCHKA - Минск"
+  - Workflows running correctly: backend on port 3000, frontend on port 5000
 - **2025-11-02**: Fixed database conflict - removed duplicate database file
   - CRITICAL FIX: Discovered two SQLite database files in different locations causing data inconsistency
   - Removed duplicate database at `app/database.db` (newer, incorrectly created)
@@ -42,7 +55,7 @@ The application follows a client-server architecture with a clear separation bet
   - Issue: Bot showed different categories on repeated commands due to accessing different DB files
 - **2025-11-02**: Redesigned navigation with category-first approach
   - Created new Home page (Home.jsx) displaying category cards with images and names
-  - Added quick links to Telegram channel (t.me/vapplugg) and reviews (t.me/vapepluggcommunity) at top of Home page
+  - Added quick links to Telegram channel and community chat at top of Home page (updated during rebrand)
   - Catalog page (Catalog.jsx) now shows products of selected category with "Back to categories" button
   - Implemented category filtering: users select category → see only that category's products
   - Updated routing: / (Home with categories), /catalog (all products), /catalog/:categoryId (category products)
