@@ -62,7 +62,7 @@ const Catalog = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="animate-spin text-white" size={48} />
+        <Loader2 className="animate-spin text-pink-500" size={48} />
       </div>
     );
   }
@@ -72,35 +72,35 @@ const Catalog = () => {
       <div className="container mx-auto px-4 py-6">
         <button
           onClick={() => navigate('/')}
-          className="mb-4 flex items-center gap-2 glass-panel px-4 py-2 rounded-lg hover:bg-white/30 transition-all"
+          className="mb-4 flex items-center gap-2 glass-panel px-4 py-2 rounded-lg hover:bg-pink-100 transition-all"
         >
-          <ArrowLeft size={20} className="text-white" />
-          <span className="text-white font-medium">Назад к категориям</span>
+          <ArrowLeft size={20} className="text-gray-800" />
+          <span className="text-gray-800 font-medium">Назад к категориям</span>
         </button>
 
         {category && (
           <div className="mb-6 glass-panel p-4 rounded-2xl">
-            <h1 className="text-2xl font-bold text-white">{category.name}</h1>
+            <h1 className="text-2xl font-bold text-gray-800">{category.name}</h1>
             {category.description && (
-              <p className="text-white/70 mt-2">{category.description}</p>
+              <p className="text-gray-600 mt-2">{category.description}</p>
             )}
           </div>
         )}
 
         <div className="mb-6 relative backdrop-blur-sm rounded-lg">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white z-10" size={20} />
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 z-10" size={20} />
           <input
             type="text"
             placeholder="Поиск товаров..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all relative z-10"
+            className="w-full pl-12 pr-4 py-3 rounded-lg bg-white border border-pink-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-300 transition-all relative z-10"
           />
         </div>
 
         {filteredProducts.length === 0 ? (
           <div className="text-center py-16 glass-panel">
-            <p className="text-white/80 text-lg">Товары не найдены</p>
+            <p className="text-gray-600 text-lg">Товары не найдены</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-4">

@@ -11,7 +11,7 @@ Do not make changes to the file Y.
 ## System Architecture
 
 ### UI/UX Decisions
-The frontend is a React SPA using TailwindCSS for styling, with a modern glassmorphism design incorporating `Unbounded` font from Google Fonts. It adopts a minimalist Telegram-like aesthetic with **strict black-and-white monochrome color scheme** - dark gradient backgrounds (black to gray) and translucent elements using only grayscale palette. The brand is **VAPE TOCHKA** with social presence at t.me/VapeTochkaBY (channel) and t.me/+4lp4Y_KmFRZjYzcy (community chat). Key UI components include responsive product cards, a bottom navigation bar, and accessible elements like an accordion-based FAQ. The design prioritizes mobile UX within the Telegram environment.
+The frontend is a React SPA using TailwindCSS for styling, with a modern glassmorphism design incorporating `Unbounded` font from Google Fonts. It adopts a minimalist Telegram-like aesthetic with **white and pink color scheme** - light gradient backgrounds (white to soft pink) and translucent elements using white/pink palette. The brand is **BASTER SHOP** with social presence at https://t.me/+yTWUCNVQIsJjZDUy (channel). Manager contact: @baster_mks. Key UI components include responsive product cards, a bottom navigation bar, and accessible elements like an accordion-based FAQ. The design prioritizes mobile UX within the Telegram environment with predominantly white backgrounds and pink accents.
 
 ### Technical Implementations
 - **Backend**: FastAPI serves a REST API, integrated with `aiogram` for Telegram bot functionalities. It uses `SQLAlchemy` with `aiosqlite` for asynchronous database operations and `Alembic` for migrations.
@@ -32,6 +32,23 @@ The application follows a client-server architecture with a clear separation bet
 
 ## Recent Changes
 
+- **2025-11-04**: Complete rebrand from "VAPE TOCHKA" to "BASTER SHOP" with white and pink design
+  - Brand name changed from "VAPE TOCHKA" to "BASTER SHOP" throughout entire application
+  - Manager contact updated to @baster_mks (was @VapeTochkaManager)
+  - Updated channel link to https://t.me/+yTWUCNVQIsJjZDUy
+  - Removed "Беседа" (community chat) link, now only showing main channel
+  - Complete color scheme conversion from black-and-white to white and pink
+  - Light gradient backgrounds: white (#ffffff) to soft pink (#fff0f5 and #ffe4f0)
+  - All text changed from white to dark gray (#1f2937, #374151)
+  - Pink accents (#ec4899, #f472b6, #fbbf24) for buttons, links, and highlights
+  - Loyalty cards redesigned with pink gradients (White: pink-100 to pink-300, Platinum: pink-300 to pink-500, Black: pink-500 to pink-700)
+  - Glassmorphism updated: white/transparent backgrounds with pink borders
+  - Bottom navigation with white background and pink active states
+  - All buttons changed to pink (#ec4899) with white text
+  - Product cards with pink backgrounds and accents
+  - Order status colors changed to pink variations
+  - Page title updated to "BASTER SHOP - Минск"
+  - Form inputs with pink borders and focus rings
 - **2025-11-03**: Complete rebrand from "VAPE PLUG" to "VAPE TOCHKA" with black-and-white monochrome design
   - Brand name changed throughout entire frontend (components, pages, page title)
   - Updated all social media links: Channel (https://t.me/VapeTochkaBY), renamed "Отзывы" to "Беседа" (https://t.me/+4lp4Y_KmFRZjYzcy)

@@ -5,34 +5,34 @@ const LoyaltyCard = ({ loyaltyData }) => {
 
   const cardConfig = {
     White: {
-      gradient: 'from-gray-200 via-gray-300 to-gray-400',
+      gradient: 'from-pink-100 via-pink-200 to-pink-300',
       icon: Sparkles,
-      iconColor: 'text-gray-700',
+      iconColor: 'text-pink-600',
       title: 'White Card',
-      textColor: 'text-gray-900',
-      stampColor: 'bg-gray-700',
-      stampEmptyColor: 'bg-gray-300',
-      shadow: 'shadow-gray-400/50'
+      textColor: 'text-gray-800',
+      stampColor: 'bg-pink-500',
+      stampEmptyColor: 'bg-pink-200',
+      shadow: 'shadow-pink-300/50'
     },
     Platinum: {
-      gradient: 'from-gray-400 via-gray-500 to-gray-600',
+      gradient: 'from-pink-300 via-pink-400 to-pink-500',
       icon: Crown,
       iconColor: 'text-white',
       title: 'Platinum Card',
       textColor: 'text-white',
       stampColor: 'bg-white',
-      stampEmptyColor: 'bg-gray-300',
-      shadow: 'shadow-gray-600/50'
+      stampEmptyColor: 'bg-pink-200',
+      shadow: 'shadow-pink-400/50'
     },
     Black: {
-      gradient: 'from-gray-800 via-gray-900 to-black',
+      gradient: 'from-pink-500 via-pink-600 to-pink-700',
       icon: Gem,
       iconColor: 'text-white',
       title: 'Black Card',
       textColor: 'text-white',
       stampColor: 'bg-white',
-      stampEmptyColor: 'bg-gray-600',
-      shadow: 'shadow-black/50'
+      stampEmptyColor: 'bg-pink-300',
+      shadow: 'shadow-pink-600/50'
     }
   };
 
@@ -51,7 +51,7 @@ const LoyaltyCard = ({ loyaltyData }) => {
           key={i}
           className={`w-10 h-10 rounded-full ${
             i < stamps ? config.stampColor : config.stampEmptyColor
-          } ${isDiscountStamp ? 'ring-4 ring-white scale-110 animate-pulse' : ''} flex items-center justify-center ${i < stamps && loyalty_level === 'White' ? 'text-white' : i < stamps ? 'text-black' : 'text-gray-600'} font-bold text-sm transition-all duration-300`}
+          } ${isDiscountStamp ? 'ring-4 ring-pink-400 scale-110 animate-pulse' : ''} flex items-center justify-center ${i < stamps && loyalty_level === 'White' ? 'text-white' : i < stamps ? 'text-pink-800' : 'text-pink-400'} font-bold text-sm transition-all duration-300`}
         >
           {i < stamps ? '✓' : i + 1}
         </div>
@@ -108,8 +108,8 @@ const LoyaltyCard = ({ loyaltyData }) => {
         </div>
 
         {/* Decorative corner elements */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-bl-full"></div>
-        <div className="absolute bottom-0 left-0 w-24 h-24 bg-black/10 rounded-tr-full"></div>
+        <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-bl-full"></div>
+        <div className="absolute bottom-0 left-0 w-24 h-24 bg-pink-900/10 rounded-tr-full"></div>
       </div>
     </div>
   );

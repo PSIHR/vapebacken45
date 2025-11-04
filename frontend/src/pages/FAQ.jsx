@@ -14,12 +14,12 @@ function FAQ() {
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 glass-card rounded-full mb-4">
-            <HelpCircle className="w-8 h-8 text-white" />
+            <HelpCircle className="w-8 h-8 text-pink-600" />
           </div>
-          <h1 className="text-3xl font-bold text-white mb-2">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">
             Часто задаваемые вопросы
           </h1>
-          <p className="text-white/70">
+          <p className="text-gray-600">
             Найдите ответы на самые популярные вопросы о нашей продукции
           </p>
         </div>
@@ -34,19 +34,19 @@ function FAQ() {
               >
                 <button
                   onClick={() => toggleQuestion(item.id)}
-                  className="w-full px-5 py-4 flex items-center justify-between text-left hover:bg-white/5 transition-colors"
+                  className="w-full px-5 py-4 flex items-center justify-between text-left hover:bg-pink-50 transition-colors"
                   aria-expanded={isOpen}
                   aria-controls={`faq-answer-${item.id}`}
                   id={`faq-question-${item.id}`}
                 >
-                  <span className="text-white font-medium text-lg pr-4">
+                  <span className="text-gray-800 font-medium text-lg pr-4">
                     {item.question}
                   </span>
                   <div className="flex-shrink-0">
                     {isOpen ? (
-                      <ChevronUp className="w-5 h-5 text-white" />
+                      <ChevronUp className="w-5 h-5 text-pink-600" />
                     ) : (
-                      <ChevronDown className="w-5 h-5 text-white" />
+                      <ChevronDown className="w-5 h-5 text-pink-600" />
                     )}
                   </div>
                 </button>
@@ -60,8 +60,8 @@ function FAQ() {
                   aria-labelledby={`faq-question-${item.id}`}
                   aria-hidden={!isOpen}
                 >
-                  <div className="px-5 pb-4 pt-2 border-t border-white/10">
-                    <p className="text-white/80 whitespace-pre-line leading-relaxed">
+                  <div className="px-5 pb-4 pt-2 border-t border-pink-200">
+                    <p className="text-gray-700 whitespace-pre-line leading-relaxed">
                       {item.answer}
                     </p>
                   </div>
@@ -72,14 +72,14 @@ function FAQ() {
         </div>
 
         <div className="mt-8 glass-card p-6 text-center">
-          <p className="text-white/70 mb-2">
+          <p className="text-gray-600 mb-2">
             Не нашли ответ на свой вопрос?
           </p>
-          <p className="text-white font-medium mb-3">
+          <p className="text-gray-800 font-medium mb-3">
             Напишите нам в поддержку через Telegram бот!
           </p>
-          <p className="text-white/90 font-semibold">
-            Менеджер: @VapeTochkaManager
+          <p className="text-pink-600 font-semibold text-lg">
+            Менеджер: @baster_mks
           </p>
         </div>
       </div>

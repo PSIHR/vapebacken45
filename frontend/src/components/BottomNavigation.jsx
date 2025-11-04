@@ -50,14 +50,14 @@ const BottomNavigation = ({ cartCount }) => {
                 aria-current={active ? 'page' : undefined}
                 className={`flex flex-col items-center justify-center gap-1 px-6 py-2 rounded-2xl transition-all relative ${
                   active
-                    ? 'bg-white/30 text-white'
-                    : 'text-white/70 hover:text-white/90 hover:bg-white/5'
+                    ? 'bg-pink-100 text-pink-600'
+                    : 'text-gray-600 hover:text-pink-600 hover:bg-pink-50'
                 }`}
               >
                 <div className="relative">
                   <Icon size={24} strokeWidth={active ? 2.5 : 2} />
                   {item.badge && (
-                    <span className="absolute -top-1 -right-1 bg-white text-black text-xs font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
+                    <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-xs font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
                       {item.badge}
                     </span>
                   )}

@@ -5,7 +5,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
   return (
     <div className="glass-panel p-4">
       <div className="flex gap-3">
-        <div className="w-20 h-20 rounded-lg bg-white/10 flex-shrink-0 overflow-hidden">
+        <div className="w-20 h-20 rounded-lg bg-pink-50 flex-shrink-0 overflow-hidden">
           {item.image ? (
             <img
               src={item.image}
@@ -13,40 +13,40 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
               className="w-full h-full object-contain"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-white/40">
+            <div className="w-full h-full flex items-center justify-center text-gray-800/40">
               <Trash2 size={24} />
             </div>
           )}
         </div>
         <div className="flex-1">
-          <h4 className="font-semibold text-white">{item.name}</h4>
+          <h4 className="font-semibold text-gray-800">{item.name}</h4>
           {item.selected_taste && (
-            <p className="text-sm text-white/80">Вкус: {item.selected_taste}</p>
+            <p className="text-sm text-gray-800/80">Вкус: {item.selected_taste}</p>
           )}
           <div className="flex items-center justify-between mt-2">
             <div className="flex items-center gap-2">
               <button
                 onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
-                className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors"
+                className="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center hover:bg-pink-200 transition-colors"
                 disabled={item.quantity <= 1}
               >
-                <Minus size={16} className="text-white" />
+                <Minus size={16} className="text-gray-800" />
               </button>
-              <span className="w-8 text-center font-semibold text-white">{item.quantity}</span>
+              <span className="w-8 text-center font-semibold text-gray-800">{item.quantity}</span>
               <button
                 onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
-                className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors"
+                className="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center hover:bg-pink-200 transition-colors"
               >
-                <Plus size={16} className="text-white" />
+                <Plus size={16} className="text-gray-800" />
               </button>
             </div>
             <div className="flex items-center gap-3">
-              <span className="font-bold text-white">
+              <span className="font-bold text-gray-800">
                 {formatPrice(item.price * item.quantity)}
               </span>
               <button
                 onClick={() => onRemove(item.id)}
-                className="text-white/80 hover:text-white transition-colors"
+                className="text-gray-800/80 hover:text-gray-800 transition-colors"
               >
                 <Trash2 size={20} />
               </button>

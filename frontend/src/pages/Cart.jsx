@@ -66,7 +66,7 @@ const Cart = ({ onCartUpdate }) => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="animate-spin text-white" size={48} />
+        <Loader2 className="animate-spin text-pink-500" size={48} />
       </div>
     );
   }
@@ -76,14 +76,14 @@ const Cart = ({ onCartUpdate }) => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center p-8">
           <div className="glass-panel p-12">
-            <ShoppingBag className="mx-auto text-white/60 mb-6" size={64} />
-            <h2 className="text-2xl font-bold text-white mb-3">
+            <ShoppingBag className="mx-auto text-pink-300 mb-6" size={64} />
+            <h2 className="text-2xl font-bold text-gray-800 mb-3">
               Корзина пуста
             </h2>
-            <p className="text-white/80 mb-6">Добавьте товары из каталога</p>
+            <p className="text-gray-600 mb-6">Добавьте товары из каталога</p>
             <button
               onClick={() => navigate('/')}
-              className="bg-white/30 hover:bg-white/40 text-white px-6 py-3 rounded-lg font-medium transition-all backdrop-blur-sm"
+              className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-lg font-medium transition-all"
             >
               Перейти в каталог
             </button>
@@ -96,7 +96,7 @@ const Cart = ({ onCartUpdate }) => {
   return (
     <div className="min-h-screen">
       <div className="container mx-auto px-4 py-6 pb-32">
-        <h1 className="text-2xl font-bold mb-6 text-white">
+        <h1 className="text-2xl font-bold mb-6 text-gray-800">
           Корзина
         </h1>
 
@@ -112,21 +112,21 @@ const Cart = ({ onCartUpdate }) => {
         </div>
 
         <div className="glass-panel p-4 mb-4 sticky bottom-20">
-          <div className="flex justify-between items-center mb-3 text-white/90">
+          <div className="flex justify-between items-center mb-3 text-gray-700">
             <span className="text-base font-medium">Товаров:</span>
-            <span className="text-base font-semibold text-white">
+            <span className="text-base font-semibold text-gray-800">
               {cartItems.length}
             </span>
           </div>
-          <div className="flex justify-between items-center mb-4 text-xl font-bold border-t border-white/20 pt-3">
-            <span className="text-white">Итого:</span>
-            <span className="text-white">
+          <div className="flex justify-between items-center mb-4 text-xl font-bold border-t border-pink-200 pt-3">
+            <span className="text-gray-800">Итого:</span>
+            <span className="text-pink-600">
               {formatPrice(totalPrice)}
             </span>
           </div>
           <button
             onClick={handleCheckout}
-            className="w-full bg-white/30 hover:bg-white/40 text-white py-3 rounded-lg font-medium transition-all backdrop-blur-sm"
+            className="w-full bg-pink-500 hover:bg-pink-600 text-white py-3 rounded-lg font-medium transition-all"
           >
             Оформить заказ
           </button>

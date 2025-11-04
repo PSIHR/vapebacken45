@@ -47,18 +47,18 @@ const Profile = () => {
 
   const getStatusColor = (status) => {
     const colorMap = {
-      waiting_for_courier: 'bg-white/20 text-white/90',
-      in_delivery: 'bg-white/30 text-white',
-      delivered: 'bg-white/40 text-white',
-      cancelled: 'bg-gray-600/30 text-gray-300'
+      waiting_for_courier: 'bg-pink-100 text-pink-600',
+      in_delivery: 'bg-pink-200 text-pink-700',
+      delivered: 'bg-pink-300 text-pink-800',
+      cancelled: 'bg-gray-200 text-gray-600'
     };
-    return colorMap[status] || 'bg-gray-500/20 text-gray-300';
+    return colorMap[status] || 'bg-gray-100 text-gray-600';
   };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="animate-spin text-white" size={48} />
+        <Loader2 className="animate-spin text-pink-500" size={48} />
       </div>
     );
   }
@@ -68,8 +68,8 @@ const Profile = () => {
       <div className="container mx-auto px-4 py-6">
         {/* User Info */}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-white mb-2">Профиль</h1>
-          <p className="text-white/60">@{user?.username || 'Пользователь'}</p>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">Профиль</h1>
+          <p className="text-gray-600">@{user?.username || 'Пользователь'}</p>
         </div>
 
         {/* Loyalty Card */}
@@ -77,21 +77,21 @@ const Profile = () => {
 
         {/* Orders Section */}
         <div className="mt-8">
-          <h2 className="text-2xl font-bold text-white mb-4">Мои заказы</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">Мои заказы</h2>
           
           {orders.length === 0 ? (
             <div className="glass-panel text-center py-16">
-              <Package className="mx-auto mb-4 text-white/40" size={64} />
-              <p className="text-white/60 text-lg">У вас пока нет заказов</p>
+              <Package className="mx-auto mb-4 text-pink-300" size={64} />
+              <p className="text-gray-600 text-lg">У вас пока нет заказов</p>
             </div>
           ) : (
             <div className="space-y-4">
               {orders.map((order) => (
-                <div key={order.id} className="glass-panel p-4 hover:bg-white/10 transition-all">
+                <div key={order.id} className="glass-panel p-4 hover:bg-pink-50 transition-all">
                   <div className="flex justify-between items-start mb-3">
                     <div>
-                      <h3 className="text-white font-bold text-lg">Заказ №{order.id}</h3>
-                      <div className="flex items-center gap-2 text-white/60 text-sm mt-1">
+                      <h3 className="text-gray-800 font-bold text-lg">Заказ №{order.id}</h3>
+                      <div className="flex items-center gap-2 text-gray-600 text-sm mt-1">
                         <Calendar size={14} />
                         <span>{new Date(order.created_at).toLocaleDateString('ru-RU')}</span>
                       </div>
@@ -105,12 +105,12 @@ const Profile = () => {
                   <div className="mb-3 space-y-2">
                     {order.items?.map((item, idx) => (
                       <div key={idx} className="flex justify-between text-sm">
-                        <span className="text-white/80">
+                        <span className="text-gray-700">
                           {item.name} 
                           {item.selected_taste && ` (${item.selected_taste})`}
                           {' '}x{item.quantity}
                         </span>
-                        <span className="text-white font-medium">
+                        <span className="text-gray-800 font-medium">
                           {formatPrice(item.total_price)} BYN
                         </span>
                       </div>
@@ -118,15 +118,15 @@ const Profile = () => {
                   </div>
 
                   {/* Delivery Info */}
-                  <div className="flex items-start gap-2 text-white/60 text-sm mb-3">
+                  <div className="flex items-start gap-2 text-gray-600 text-sm mb-3">
                     <MapPin size={14} className="mt-0.5 flex-shrink-0" />
                     <span>{order.address}</span>
                   </div>
 
                   {/* Total */}
-                  <div className="pt-3 border-t border-white/10 flex justify-between items-center">
-                    <span className="text-white/80">Итого:</span>
-                    <span className="text-white font-bold text-xl">
+                  <div className="pt-3 border-t border-pink-200 flex justify-between items-center">
+                    <span className="text-gray-700">Итого:</span>
+                    <span className="text-gray-800 font-bold text-xl">
                       {formatPrice(order.total_price)} BYN
                     </span>
                   </div>
