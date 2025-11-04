@@ -5,8 +5,6 @@ aiohttp==3.12.14
 aiosignal==1.4.0
 aiosqlite==0.21.0
 alembic==1.16.4
-asyncpg==0.29.0
-psycopg2-binary==2.9.9
 annotated-types==0.7.0
 anyio==4.9.0
 attrs==25.3.0

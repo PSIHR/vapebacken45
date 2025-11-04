@@ -4,18 +4,9 @@ from sqlalchemy.pool import NullPool
 from database.models import Base
 from alembic import context
 import asyncio
-import os
 
 
 config = context.config
-
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///./database.db")
-if DATABASE_URL.startswith("postgres://"):
-    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+asyncpg://", 1)
-elif DATABASE_URL.startswith("postgresql://"):
-    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://", 1)
-
-config.set_main_option("sqlalchemy.url", DATABASE_URL)
 
 
 # Конфигурация логгирования
