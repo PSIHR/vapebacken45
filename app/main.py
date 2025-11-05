@@ -120,8 +120,20 @@ app.add_middleware(
 
 app.add_middleware(BannedUserMiddleware)
 
-# Mount static files
-app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+# Serve uploads with no-cache headers to prevent image caching issues
+@app.get("/uploads/{filename:path}")
+async def serve_upload(filename: str):
+    file_path = os.path.join("uploads", filename)
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail="File not found")
+    return FileResponse(
+        file_path,
+        headers={
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            "Pragma": "no-cache",
+            "Expires": "0"
+        }
+    )
 
 if os.path.exists("frontend/dist/assets"):
     app.mount("/assets", StaticFiles(directory="frontend/dist/assets"), name="assets")
