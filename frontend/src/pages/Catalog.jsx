@@ -74,13 +74,13 @@ const Catalog = () => {
           onClick={() => navigate('/')}
           className="mb-4 flex items-center gap-2 glass-panel px-4 py-2 rounded-lg hover:bg-pink-100 transition-all"
         >
-          <ArrowLeft size={20} className="text-gray-800" />
-          <span className="text-gray-800 font-medium">Назад к категориям</span>
+          <ArrowLeft size={20} className="text-white" />
+          <span className="text-white font-medium">Назад к категориям</span>
         </button>
 
         {category && (
           <div className="mb-6 glass-panel p-4 rounded-2xl">
-            <h1 className="text-2xl font-bold text-gray-800">{category.name}</h1>
+            <h1 className="text-2xl font-bold text-white">{category.name}</h1>
             {category.description && (
               <p className="text-white/60 mt-2">{category.description}</p>
             )}
@@ -94,7 +94,7 @@ const Catalog = () => {
             placeholder="Поиск товаров..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 rounded-lg bg-white border border-pink-200 text-gray-800 placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-pink-300 transition-all relative z-10"
+            className="w-full pl-12 pr-4 py-3 rounded-lg bg-white border border-pink-200 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-pink-300 transition-all relative z-10"
           />
         </div>
 

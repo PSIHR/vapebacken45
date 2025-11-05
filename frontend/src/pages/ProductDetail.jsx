@@ -71,7 +71,7 @@ const ProductDetail = ({ onCartUpdate }) => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-gray-800">Загрузка...</div>
+        <div className="text-white">Загрузка...</div>
       </div>
     );
   }
@@ -85,7 +85,7 @@ const ProductDetail = ({ onCartUpdate }) => {
       <div className="container mx-auto px-4 py-6 pb-32">
         <button
           onClick={() => navigate('/')}
-          className="flex items-center gap-2 text-gray-800 mb-4 hover:text-gray-800/80"
+          className="flex items-center gap-2 text-white mb-4 hover:text-white/80"
         >
           <ArrowLeft size={20} />
           <span className="font-medium">Назад</span>
@@ -100,7 +100,7 @@ const ProductDetail = ({ onCartUpdate }) => {
                 className="w-full h-full object-contain"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-gray-800/40">
+              <div className="w-full h-full flex items-center justify-center text-white/40">
                 <ShoppingCart size={80} />
               </div>
             )}
@@ -108,18 +108,18 @@ const ProductDetail = ({ onCartUpdate }) => {
 
           <div className="p-6">
             {product.category && (
-              <span className="inline-block px-3 py-1 text-sm font-medium text-gray-800 bg-pink-100 rounded-full mb-3">
+              <span className="inline-block px-3 py-1 text-sm font-medium text-white bg-pink-100 rounded-full mb-3">
                 {product.category.name}
               </span>
             )}
 
-            <h1 className="text-3xl font-bold text-gray-800 mb-4">
+            <h1 className="text-3xl font-bold text-white mb-4">
               {product.name}
             </h1>
 
             {product.tastes && product.tastes.length > 0 && (
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                <h3 className="text-lg font-semibold text-white mb-3">
                   Выберите вкус:
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
@@ -134,11 +134,11 @@ const ProductDetail = ({ onCartUpdate }) => {
                       }`}
                     >
                       <div className="flex items-center justify-between">
-                        <span className="font-medium text-gray-800">
+                        <span className="font-medium text-white">
                           {taste.name}
                         </span>
                         {selectedTaste?.id === taste.id && (
-                          <Check size={20} className="text-gray-800" />
+                          <Check size={20} className="text-white" />
                         )}
                       </div>
                     </button>
@@ -149,17 +149,17 @@ const ProductDetail = ({ onCartUpdate }) => {
 
             {product.description && (
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                <h3 className="text-lg font-semibold text-white mb-2">
                   Описание:
                 </h3>
                 <div className="relative">
-                  <p className={`text-gray-800/80 ${!isDescriptionExpanded ? 'line-clamp-3' : ''}`}>
+                  <p className={`text-white/80 ${!isDescriptionExpanded ? 'line-clamp-3' : ''}`}>
                     {product.description}
                   </p>
                   {product.description.length > 150 && (
                     <button
                       onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
-                      className="mt-2 text-gray-800/60 hover:text-gray-800 flex items-center gap-1 transition-colors"
+                      className="mt-2 text-white/60 hover:text-white flex items-center gap-1 transition-colors"
                     >
                       {isDescriptionExpanded ? (
                         <>
@@ -178,32 +178,32 @@ const ProductDetail = ({ onCartUpdate }) => {
 
             {(product.strength || product.puffs || product.vg_pg || product.tank_volume) && (
               <div className="mb-6 bg-white/5 rounded-lg p-4">
-                <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                <h3 className="text-lg font-semibold text-white mb-3">
                   Характеристики:
                 </h3>
                 <div className="space-y-2">
                   {product.strength && (
                     <div className="flex justify-between items-center py-2 border-b border-white/10">
-                      <span className="text-gray-800/60">Крепкость:</span>
-                      <span className="text-gray-800 font-medium">{product.strength}</span>
+                      <span className="text-white/60">Крепкость:</span>
+                      <span className="text-white font-medium">{product.strength}</span>
                     </div>
                   )}
                   {product.puffs && (
                     <div className="flex justify-between items-center py-2 border-b border-white/10">
-                      <span className="text-gray-800/60">Количество тяг:</span>
-                      <span className="text-gray-800 font-medium">{product.puffs}</span>
+                      <span className="text-white/60">Количество тяг:</span>
+                      <span className="text-white font-medium">{product.puffs}</span>
                     </div>
                   )}
                   {product.vg_pg && (
                     <div className="flex justify-between items-center py-2 border-b border-white/10">
-                      <span className="text-gray-800/60">VG/PG:</span>
-                      <span className="text-gray-800 font-medium">{product.vg_pg}</span>
+                      <span className="text-white/60">VG/PG:</span>
+                      <span className="text-white font-medium">{product.vg_pg}</span>
                     </div>
                   )}
                   {product.tank_volume && (
                     <div className="flex justify-between items-center py-2">
-                      <span className="text-gray-800/60">Объем бака:</span>
-                      <span className="text-gray-800 font-medium">{product.tank_volume}</span>
+                      <span className="text-white/60">Объем бака:</span>
+                      <span className="text-white font-medium">{product.tank_volume}</span>
                     </div>
                   )}
                 </div>
@@ -212,8 +212,8 @@ const ProductDetail = ({ onCartUpdate }) => {
 
             <div className="border-t border-white/20 pt-6">
               <div className="flex items-center justify-between mb-6">
-                <span className="text-lg text-gray-800/80">Цена:</span>
-                <span className="text-4xl font-bold text-gray-800">
+                <span className="text-lg text-white/80">Цена:</span>
+                <span className="text-4xl font-bold text-white">
                   {formatPrice(product.price)}
                 </span>
               </div>
@@ -221,7 +221,7 @@ const ProductDetail = ({ onCartUpdate }) => {
               <button
                 onClick={handleAddToCart}
                 disabled={adding}
-                className="w-full bg-pink-500 hover:bg-pink-600 text-gray-800 py-4 rounded-lg font-medium text-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 backdrop-blur-sm"
+                className="w-full bg-pink-500 hover:bg-pink-600 text-white py-4 rounded-lg font-medium text-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 backdrop-blur-sm"
               >
                 {adding ? (
                   'Добавление...'

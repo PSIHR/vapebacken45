@@ -32,14 +32,15 @@ The application uses a client-server architecture. The Telegram bot serves as an
 
 ## Recent Changes
 
-- **2025-11-05**: Enhanced glassmorphism styling across the application
+- **2025-11-05**: Enhanced glassmorphism styling and white text hierarchy
   - Improved glass-card with enhanced blur (26px), white borders (0.3 opacity), and sophisticated inset shadows
   - Upgraded navbar (glass-bottom-nav) with premium glassmorphism effects and gradient top edge
   - Added new glass-button class for all interactive buttons with glassmorphism effects
-  - Changed all text colors from gray to white for better contrast on dark background
-  - Updated placeholders to white/50 opacity
-  - All components now use consistent white text hierarchy (white, white/80, white/70)
+  - Changed ALL text colors from gray to white across entire application (text-gray-* → text-white/text-white/80/text-white/70)
+  - Updated all placeholders to white/50 opacity
+  - All components now use consistent white text hierarchy: white (headers), white/80 (primary), white/70 (secondary), white/60 (tertiary)
   - Enhanced visual depth with ::before and ::after pseudo-elements creating light gradients
+  - Added Cache-Control headers to disable image caching (fixes image update issues)
 - **2025-11-05**: Updated product category names to uppercase short forms
   - Changed category names in database: "ОДНОРАЗКИ", "ЖИЖИ", "РАСХОДНИКИ", "СНЮС"
   - Previous names: "Одноразовые электронные сигареты" → "ОДНОРАЗКИ", "Жидкости" → "ЖИЖИ", "Поды" → "РАСХОДНИКИ", "Устройства" → "СНЮС"

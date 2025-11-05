@@ -42,8 +42,8 @@ const Orders = () => {
         <div className="container mx-auto px-4 py-12">
           <div className="text-center glass-panel p-12 rounded-lg shadow-xl">
             <Package className="mx-auto text-pink-300 mb-4" size={64} />
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">Ваши заказы</h2>
-            <p className="text-gray-700 text-lg">У вас пока нет оформленных заказов. Свяжитесь с нами для консультации.</p>
+            <h2 className="text-3xl font-bold text-white mb-2">Ваши заказы</h2>
+            <p className="text-white/50 text-lg">У вас пока нет оформленных заказов. Свяжитесь с нами для консультации.</p>
             <p className="text-white/60 mt-4">По вопросам: @baster_mks</p>
             <p className="text-white/60">Находимся в Беларуси, Минск.</p>
           </div>
@@ -55,14 +55,14 @@ const Orders = () => {
   return (
     <div className="min-h-screen">
       <div className="container mx-auto px-4 py-6">
-        <h1 className="text-3xl font-bold mb-6 text-gray-800">Мои заказы</h1>
+        <h1 className="text-3xl font-bold mb-6 text-white">Мои заказы</h1>
         <div>
           {orders.map((order) => (
             <OrderCard key={order.id} order={order} />
           ))}
         </div>
         <div className="mt-8 text-center">
-          <p className="text-gray-700">По вопросам: @baster_mks</p>
+          <p className="text-white/50">По вопросам: @baster_mks</p>
           <p className="text-white/60">Находимся в Беларуси, Минск.</p>
         </div>
       </div>

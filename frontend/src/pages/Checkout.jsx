@@ -314,7 +314,7 @@ const Checkout = () => {
                   name="preferred_time"
                   value={formData.preferred_time}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-white placeholder-white/50/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
                   placeholder="Например: 15:00-16:00"
                   required
                 />
@@ -347,7 +347,7 @@ const Checkout = () => {
                   name="preferred_time"
                   value={formData.preferred_time}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-white placeholder-white/50/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
                   placeholder="Например: 14:00"
                   required
                 />
@@ -368,7 +368,7 @@ const Checkout = () => {
                   name="address"
                   value={formData.address}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-white placeholder-white/50/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
                   rows="3"
                   placeholder="Улица, дом, квартира"
                   required
@@ -410,7 +410,7 @@ const Checkout = () => {
                   name="postal_full_name"
                   value={formData.postal_full_name}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-white placeholder-white/50/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
                   placeholder="Иванов Иван Иванович"
                   required
                 />
@@ -425,7 +425,7 @@ const Checkout = () => {
                   name="postal_phone"
                   value={formData.postal_phone}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-white placeholder-white/50/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
                   placeholder="+375 (29) 123-45-67"
                   required
                 />
@@ -439,7 +439,7 @@ const Checkout = () => {
                   name="postal_address"
                   value={formData.postal_address}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-white placeholder-white/50/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
                   rows="3"
                   placeholder="Адрес пункта выдачи Европочты или номер ОПС"
                   required
@@ -462,7 +462,7 @@ const Checkout = () => {
                   name="postal_full_name"
                   value={formData.postal_full_name}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-white placeholder-white/50/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
                   placeholder="Иванов Иван Иванович"
                   required
                 />
@@ -477,7 +477,7 @@ const Checkout = () => {
                   name="postal_phone"
                   value={formData.postal_phone}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-white placeholder-white/50/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
                   placeholder="+375 (29) 123-45-67"
                   required
                 />
@@ -491,7 +491,7 @@ const Checkout = () => {
                   name="postal_address"
                   value={formData.postal_address}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-white placeholder-white/50/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
                   rows="3"
                   placeholder="Город/поселок, улица, дом, квартира"
                   required
@@ -507,7 +507,7 @@ const Checkout = () => {
                   name="postal_index"
                   value={formData.postal_index}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-white placeholder-white/50/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
                   placeholder="220000"
                   required
                 />
@@ -543,7 +543,7 @@ const Checkout = () => {
               name="promocode"
               value={formData.promocode}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
+              className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-white placeholder-white/50/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
               placeholder="Введите промокод"
             />
           </div>
@@ -572,14 +572,14 @@ const Checkout = () => {
               onClick={() => setShowInfoModal(false)}
               className="absolute top-4 right-4 p-2 hover:bg-pink-100 rounded-full transition-colors"
             >
-              <X className="w-5 h-5 text-gray-800" />
+              <X className="w-5 h-5 text-white" />
             </button>
             
-            <h3 className="text-xl font-bold text-gray-800 mb-4 pr-10">
+            <h3 className="text-xl font-bold text-white mb-4 pr-10">
               {currentDeliveryInfo.title}
             </h3>
             
-            <div className="text-gray-700 whitespace-pre-line text-sm leading-relaxed">
+            <div className="text-white/50 whitespace-pre-line text-sm leading-relaxed">
               {currentDeliveryInfo.content}
             </div>
 

@@ -29,8 +29,8 @@ export const getStatusColor = (status) => {
     waiting_for_courier: 'text-white/80',
     in_delivery: 'text-white/90',
     delivered: 'text-white',
-    completed: 'text-gray-400',
-    canceled: 'text-gray-500',
+    completed: 'text-white/80',
+    canceled: 'text-white/70',
   };
-  return colorMap[status] || 'text-gray-600';
+  return colorMap[status] || 'text-white/60';
 };

@@ -68,7 +68,7 @@ const Profile = () => {
       <div className="container mx-auto px-4 py-6">
         {/* User Info */}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Профиль</h1>
+          <h1 className="text-3xl font-bold text-white mb-2">Профиль</h1>
           <p className="text-white/60">@{user?.username || 'Пользователь'}</p>
         </div>
 
@@ -77,7 +77,7 @@ const Profile = () => {
 
         {/* Orders Section */}
         <div className="mt-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Мои заказы</h2>
+          <h2 className="text-2xl font-bold text-white mb-4">Мои заказы</h2>
           
           {orders.length === 0 ? (
             <div className="glass-panel text-center py-16">
@@ -90,7 +90,7 @@ const Profile = () => {
                 <div key={order.id} className="glass-panel p-4 hover:bg-pink-50 transition-all">
                   <div className="flex justify-between items-start mb-3">
                     <div>
-                      <h3 className="text-gray-800 font-bold text-lg">Заказ №{order.id}</h3>
+                      <h3 className="text-white font-bold text-lg">Заказ №{order.id}</h3>
                       <div className="flex items-center gap-2 text-white/60 text-sm mt-1">
                         <Calendar size={14} />
                         <span>{new Date(order.created_at).toLocaleDateString('ru-RU')}</span>
@@ -105,12 +105,12 @@ const Profile = () => {
                   <div className="mb-3 space-y-2">
                     {order.items?.map((item, idx) => (
                       <div key={idx} className="flex justify-between text-sm">
-                        <span className="text-gray-700">
+                        <span className="text-white/50">
                           {item.name} 
                           {item.selected_taste && ` (${item.selected_taste})`}
                           {' '}x{item.quantity}
                         </span>
-                        <span className="text-gray-800 font-medium">
+                        <span className="text-white font-medium">
                           {formatPrice(item.total_price)} BYN
                         </span>
                       </div>
@@ -125,8 +125,8 @@ const Profile = () => {
 
                   {/* Total */}
                   <div className="pt-3 border-t border-pink-200 flex justify-between items-center">
-                    <span className="text-gray-700">Итого:</span>
-                    <span className="text-gray-800 font-bold text-xl">
+                    <span className="text-white/50">Итого:</span>
+                    <span className="text-white font-bold text-xl">
                       {formatPrice(order.total_price)} BYN
                     </span>
                   </div>
