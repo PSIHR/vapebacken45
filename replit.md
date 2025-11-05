@@ -32,6 +32,14 @@ The application uses a client-server architecture. The Telegram bot serves as an
 
 ## Recent Changes
 
+- **2025-11-05**: Updated bot welcome button URL to production store
+  - Changed "Открыть магазин" button link from Replit dev URL to https://vaultroi.com
+  - Bot now directs users to production store instead of development environment
+- **2025-11-05**: Fixed text contrast on product detail page
+  - Changed category badge text from white to black for better readability on bg-pink-100
+  - Changed selected taste button text from white to black when bg-pink-100 is active
+  - Unselected taste buttons keep white text on transparent background
+  - Improved border color to pink-400 for selected taste buttons
 - **2025-11-05**: Enhanced glassmorphism styling and white text hierarchy
   - Improved glass-card with enhanced blur (26px), white borders (0.3 opacity), and sophisticated inset shadows
   - Upgraded navbar (glass-bottom-nav) with premium glassmorphism effects and gradient top edge

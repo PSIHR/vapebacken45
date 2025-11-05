@@ -1487,7 +1487,7 @@ async def cmd_start(message: Message):
                 await session.commit()
 
     # Получаем URL веб-приложения из переменной окружения
-    webapp_url = os.getenv('WEBAPP_URL', 'https://9a02821a-3af6-4416-941c-a89dcc83c0be-00-1x080ax1mynub.spock.replit.dev/')
+    webapp_url = os.getenv('WEBAPP_URL', 'https://vaultroi.com')
     
     # Создаем inline клавиатуру с кнопкой для открытия Web App
     webapp_keyboard = InlineKeyboardMarkup(inline_keyboard=[
