@@ -108,7 +108,7 @@ const ProductDetail = ({ onCartUpdate }) => {
 
           <div className="p-6">
             {product.category && (
-              <span className="inline-block px-3 py-1 text-sm font-medium text-white bg-pink-100 rounded-full mb-3">
+              <span className="inline-block px-3 py-1 text-sm font-medium text-black bg-pink-100 rounded-full mb-3">
                 {product.category.name}
               </span>
             )}
@@ -129,16 +129,20 @@ const ProductDetail = ({ onCartUpdate }) => {
                       onClick={() => setSelectedTaste(taste)}
                       className={`p-4 rounded-lg border-2 transition-all ${
                         selectedTaste?.id === taste.id
-                          ? 'border-white bg-pink-100'
+                          ? 'border-pink-400 bg-pink-100'
                           : 'border-white/30 hover:border-white/50'
                       }`}
                     >
                       <div className="flex items-center justify-between">
-                        <span className="font-medium text-white">
+                        <span className={`font-medium ${
+                          selectedTaste?.id === taste.id 
+                            ? 'text-black' 
+                            : 'text-white'
+                        }`}>
                           {taste.name}
                         </span>
                         {selectedTaste?.id === taste.id && (
-                          <Check size={20} className="text-white" />
+                          <Check size={20} className="text-black" />
                         )}
                       </div>
                     </button>
