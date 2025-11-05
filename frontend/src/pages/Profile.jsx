@@ -50,9 +50,9 @@ const Profile = () => {
       waiting_for_courier: 'bg-pink-100 text-pink-600',
       in_delivery: 'bg-pink-200 text-pink-700',
       delivered: 'bg-pink-300 text-pink-800',
-      cancelled: 'bg-gray-200 text-gray-600'
+      cancelled: 'bg-gray-200 text-white/60'
     };
-    return colorMap[status] || 'bg-gray-100 text-gray-600';
+    return colorMap[status] || 'bg-gray-100 text-white/60';
   };
 
   if (loading) {
@@ -69,7 +69,7 @@ const Profile = () => {
         {/* User Info */}
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">Профиль</h1>
-          <p className="text-gray-600">@{user?.username || 'Пользователь'}</p>
+          <p className="text-white/60">@{user?.username || 'Пользователь'}</p>
         </div>
 
         {/* Loyalty Card */}
@@ -82,7 +82,7 @@ const Profile = () => {
           {orders.length === 0 ? (
             <div className="glass-panel text-center py-16">
               <Package className="mx-auto mb-4 text-pink-300" size={64} />
-              <p className="text-gray-600 text-lg">У вас пока нет заказов</p>
+              <p className="text-white/60 text-lg">У вас пока нет заказов</p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -91,7 +91,7 @@ const Profile = () => {
                   <div className="flex justify-between items-start mb-3">
                     <div>
                       <h3 className="text-gray-800 font-bold text-lg">Заказ №{order.id}</h3>
-                      <div className="flex items-center gap-2 text-gray-600 text-sm mt-1">
+                      <div className="flex items-center gap-2 text-white/60 text-sm mt-1">
                         <Calendar size={14} />
                         <span>{new Date(order.created_at).toLocaleDateString('ru-RU')}</span>
                       </div>
@@ -118,7 +118,7 @@ const Profile = () => {
                   </div>
 
                   {/* Delivery Info */}
-                  <div className="flex items-start gap-2 text-gray-600 text-sm mb-3">
+                  <div className="flex items-start gap-2 text-white/60 text-sm mb-3">
                     <MapPin size={14} className="mt-0.5 flex-shrink-0" />
                     <span>{order.address}</span>
                   </div>

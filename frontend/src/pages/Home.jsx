@@ -71,17 +71,17 @@ const Home = () => {
         <div className="mb-6 grid grid-cols-2 gap-3">
           <button
             onClick={() => handleLinkClick('https://t.me/vapplugg')}
-            className="glass-panel p-3 rounded-lg flex items-center justify-center gap-2 hover:bg-cyan-500/20 transition-all"
+            className="glass-button p-3 rounded-lg flex items-center justify-center gap-2 hover:scale-105 transition-all"
           >
-            <ExternalLink size={16} className="text-cyan-400" />
-            <span className="text-white font-medium text-sm">Канал</span>
+            <ExternalLink size={16} className="text-cyan-400 z-10" />
+            <span className="text-white font-medium text-sm z-10">Канал</span>
           </button>
           <button
             onClick={() => handleLinkClick('https://t.me/vapepluggcommunity')}
-            className="glass-panel p-3 rounded-lg flex items-center justify-center gap-2 hover:bg-purple-500/20 transition-all"
+            className="glass-button p-3 rounded-lg flex items-center justify-center gap-2 hover:scale-105 transition-all"
           >
-            <ExternalLink size={16} className="text-purple-400" />
-            <span className="text-white font-medium text-sm">Беседа</span>
+            <ExternalLink size={16} className="text-purple-400 z-10" />
+            <span className="text-white font-medium text-sm z-10">Беседа</span>
           </button>
         </div>
 
@@ -93,13 +93,13 @@ const Home = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-            className="w-full pl-12 pr-4 py-3 rounded-lg bg-black/40 border border-cyan-500/30 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400 transition-all relative z-10"
+            className="w-full pl-12 pr-4 py-3 rounded-lg bg-black/40 border border-cyan-500/30 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400 transition-all relative z-10"
           />
         </div>
 
         {filteredCategories.length === 0 ? (
           <div className="text-center py-16 glass-panel">
-            <p className="text-gray-400 text-lg">Категории не найдены</p>
+            <p className="text-white/80 text-lg">Категории не найдены</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-4">
@@ -131,7 +131,7 @@ const Home = () => {
                     {category.name}
                   </h3>
                   {category.description && (
-                    <p className="text-gray-400 text-sm text-center mt-1 line-clamp-2">
+                    <p className="text-white/80 text-sm text-center mt-1 line-clamp-2">
                       {category.description}
                     </p>
                   )}

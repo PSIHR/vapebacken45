@@ -80,7 +80,7 @@ const Cart = ({ onCartUpdate }) => {
             <h2 className="text-2xl font-bold text-gray-800 mb-3">
               Корзина пуста
             </h2>
-            <p className="text-gray-600 mb-6">Добавьте товары из каталога</p>
+            <p className="text-white/60 mb-6">Добавьте товары из каталога</p>
             <button
               onClick={() => navigate('/')}
               className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-lg font-medium transition-all"

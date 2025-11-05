@@ -33,7 +33,7 @@ const ProductCard = ({ product }) => {
           )}
         </div>
         <h3 className="text-xl font-bold text-white mb-1">{product.name}</h3>
-        <p className="text-sm text-gray-400 mb-3 line-clamp-2">
+        <p className="text-sm text-white/80 mb-3 line-clamp-2">
           {product.description}
         </p>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">

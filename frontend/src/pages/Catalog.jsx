@@ -82,25 +82,25 @@ const Catalog = () => {
           <div className="mb-6 glass-panel p-4 rounded-2xl">
             <h1 className="text-2xl font-bold text-gray-800">{category.name}</h1>
             {category.description && (
-              <p className="text-gray-600 mt-2">{category.description}</p>
+              <p className="text-white/60 mt-2">{category.description}</p>
             )}
           </div>
         )}
 
         <div className="mb-6 relative backdrop-blur-sm rounded-lg">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 z-10" size={20} />
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/70 z-10" size={20} />
           <input
             type="text"
             placeholder="Поиск товаров..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 rounded-lg bg-white border border-pink-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-300 transition-all relative z-10"
+            className="w-full pl-12 pr-4 py-3 rounded-lg bg-white border border-pink-200 text-gray-800 placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-pink-300 transition-all relative z-10"
           />
         </div>
 
         {filteredProducts.length === 0 ? (
           <div className="text-center py-16 glass-panel">
-            <p className="text-gray-600 text-lg">Товары не найдены</p>
+            <p className="text-white/60 text-lg">Товары не найдены</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-4">

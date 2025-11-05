@@ -19,7 +19,7 @@ function FAQ() {
           <h1 className="text-3xl font-bold text-white mb-2">
             Часто задаваемые вопросы
           </h1>
-          <p className="text-gray-400">
+          <p className="text-white/80">
             Найдите ответы на самые популярные вопросы о нашей продукции
           </p>
         </div>
@@ -61,7 +61,7 @@ function FAQ() {
                   aria-hidden={!isOpen}
                 >
                   <div className="px-5 pb-4 pt-2 border-t border-cyan-500/20">
-                    <p className="text-gray-300 whitespace-pre-line leading-relaxed">
+                    <p className="text-white whitespace-pre-line leading-relaxed">
                       {item.answer}
                     </p>
                   </div>
@@ -72,7 +72,7 @@ function FAQ() {
         </div>
 
         <div className="mt-8 glass-card p-6 text-center">
-          <p className="text-gray-400 mb-2">
+          <p className="text-white/80 mb-2">
             Не нашли ответ на свой вопрос?
           </p>
           <p className="text-white font-medium mb-3">

@@ -192,10 +192,10 @@ const Checkout = () => {
         </h1>
         
         <div className="glass-panel p-4 mb-4">
-          <p className="text-gray-300 text-sm">
+          <p className="text-white text-sm">
             📍 Доставка по Минску, Беларусь
           </p>
-          <p className="text-gray-300 text-sm mt-2">
+          <p className="text-white text-sm mt-2">
             💬 Вопросы: <a href="https://t.me/vapepluggmanager" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 underline">@vapepluggmanager</a>
           </p>
         </div>
@@ -206,7 +206,7 @@ const Checkout = () => {
           </h3>
           {cartItems.map((item) => (
             <div key={item.id} className="flex justify-between mb-2 text-sm">
-              <span className="text-gray-300">
+              <span className="text-white">
                 {item.name} <span className="text-white font-medium">x{item.quantity}</span>
               </span>
               <span className="font-semibold text-white">
@@ -216,12 +216,12 @@ const Checkout = () => {
           ))}
           <div className="border-t border-cyan-500/20 mt-3 pt-3">
             <div className="flex justify-between text-base mb-1">
-              <span className="text-gray-300">Товары:</span>
+              <span className="text-white">Товары:</span>
               <span className="text-white">{formatPrice(totalPrice)}</span>
             </div>
             {deliveryCost > 0 && (
               <div className="flex justify-between text-base mb-1">
-                <span className="text-gray-300">Доставка:</span>
+                <span className="text-white">Доставка:</span>
                 <span className="text-white">{formatPrice(deliveryCost)}</span>
               </div>
             )}
@@ -318,7 +318,7 @@ const Checkout = () => {
                   placeholder="Например: 15:00-16:00"
                   required
                 />
-                <p className="text-gray-600 text-xs mt-1">
+                <p className="text-white/60 text-xs mt-1">
                   Укажите удобное для вас время доставки
                 </p>
               </div>
@@ -351,7 +351,7 @@ const Checkout = () => {
                   placeholder="Например: 14:00"
                   required
                 />
-                <p className="text-gray-600 text-xs mt-1">
+                <p className="text-white/60 text-xs mt-1">
                   Работаем: 13:00-20:00. Уведомляйте менеджера за 15 минут
                 </p>
               </div>
@@ -391,7 +391,7 @@ const Checkout = () => {
                     <option value="14:00-16:00" className="bg-gray-800">14:00-16:00 (дневной)</option>
                     <option value="18:00-21:30" className="bg-gray-800">18:00-21:30 (вечерний)</option>
                   </select>
-                  <p className="text-gray-600 text-xs mt-1">
+                  <p className="text-white/60 text-xs mt-1">
                     Точное время зависит от маршрута курьера
                   </p>
                 </div>
@@ -444,7 +444,7 @@ const Checkout = () => {
                   placeholder="Адрес пункта выдачи Европочты или номер ОПС"
                   required
                 />
-                <p className="text-gray-600 text-xs mt-1">
+                <p className="text-white/60 text-xs mt-1">
                   Стоимость пересылки: 5 BYN. Наложенный платеж (оплата при получении)
                 </p>
               </div>
@@ -511,7 +511,7 @@ const Checkout = () => {
                   placeholder="220000"
                   required
                 />
-                <p className="text-gray-600 text-xs mt-1">
+                <p className="text-white/60 text-xs mt-1">
                   Стоимость пересылки: 3-5 BYN (определяет почта). Наложенный платеж (оплата при получении)
                 </p>
               </div>

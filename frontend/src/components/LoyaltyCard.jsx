@@ -51,7 +51,7 @@ const LoyaltyCard = ({ loyaltyData }) => {
           key={i}
           className={`w-10 h-10 rounded-full ${
             i < stamps ? config.stampColor : config.stampEmptyColor
-          } ${isDiscountStamp ? 'ring-4 ring-cyan-400 scale-110 animate-pulse' : ''} flex items-center justify-center ${i < stamps ? 'text-white' : 'text-gray-500'} font-bold text-sm transition-all duration-300`}
+          } ${isDiscountStamp ? 'ring-4 ring-cyan-400 scale-110 animate-pulse' : ''} flex items-center justify-center ${i < stamps ? 'text-white' : 'text-white/70'} font-bold text-sm transition-all duration-300`}
         >
           {i < stamps ? '✓' : i + 1}
         </div>
