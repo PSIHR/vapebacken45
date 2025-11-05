@@ -114,7 +114,7 @@ const Checkout = () => {
     // Set address for pickup and metro if not provided
     let orderAddress = formData.address;
     if (formData.delivery === 'Самовывоз') {
-      orderAddress = 'ст. м. Аэродромная (Самовывоз)';
+      orderAddress = 'ст. м. Грушевка (Самовывоз)';
     } else if (formData.delivery === 'По метро') {
       orderAddress = `${formData.metro_line} - ${formData.metro_station} (Метро)`;
     }
@@ -177,7 +177,7 @@ const Checkout = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="animate-spin text-pink-500" size={48} />
+        <Loader2 className="animate-spin text-cyan-400" size={48} />
       </div>
     );
   }
@@ -187,54 +187,54 @@ const Checkout = () => {
   return (
     <div className="min-h-screen">
       <div className="container mx-auto px-4 py-6 pb-24">
-        <h1 className="text-2xl font-bold mb-6 text-gray-800">
+        <h1 className="text-2xl font-bold mb-6 text-white">
           Оформление заказа
         </h1>
         
         <div className="glass-panel p-4 mb-4">
-          <p className="text-gray-700 text-sm">
+          <p className="text-gray-300 text-sm">
             📍 Доставка по Минску, Беларусь
           </p>
-          <p className="text-gray-700 text-sm mt-2">
-            💬 Вопросы: <a href="https://t.me/baster_mks" target="_blank" rel="noopener noreferrer" className="text-pink-600 hover:text-pink-700 underline">@baster_mks</a>
+          <p className="text-gray-300 text-sm mt-2">
+            💬 Вопросы: <a href="https://t.me/vapepluggmanager" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 underline">@vapepluggmanager</a>
           </p>
         </div>
 
         <div className="glass-panel p-4 mb-4">
-          <h3 className="font-semibold text-lg mb-3 text-gray-800">
+          <h3 className="font-semibold text-lg mb-3 text-white">
             Ваш заказ:
           </h3>
           {cartItems.map((item) => (
             <div key={item.id} className="flex justify-between mb-2 text-sm">
-              <span className="text-gray-700">
-                {item.name} <span className="text-gray-800 font-medium">x{item.quantity}</span>
+              <span className="text-gray-300">
+                {item.name} <span className="text-white font-medium">x{item.quantity}</span>
               </span>
-              <span className="font-semibold text-gray-800">
+              <span className="font-semibold text-white">
                 {formatPrice(item.price * item.quantity)}
               </span>
             </div>
           ))}
-          <div className="border-t border-pink-200 mt-3 pt-3">
+          <div className="border-t border-cyan-500/20 mt-3 pt-3">
             <div className="flex justify-between text-base mb-1">
-              <span className="text-gray-700">Товары:</span>
-              <span className="text-gray-800">{formatPrice(totalPrice)}</span>
+              <span className="text-gray-300">Товары:</span>
+              <span className="text-white">{formatPrice(totalPrice)}</span>
             </div>
             {deliveryCost > 0 && (
               <div className="flex justify-between text-base mb-1">
-                <span className="text-gray-700">Доставка:</span>
-                <span className="text-gray-800">{formatPrice(deliveryCost)}</span>
+                <span className="text-gray-300">Доставка:</span>
+                <span className="text-white">{formatPrice(deliveryCost)}</span>
               </div>
             )}
-            <div className="flex justify-between font-bold text-lg mt-2 pt-2 border-t border-pink-200">
-              <span className="text-gray-800">Итого:</span>
-              <span className="text-pink-600">{formatPrice(finalTotal)}</span>
+            <div className="flex justify-between font-bold text-lg mt-2 pt-2 border-t border-cyan-500/20">
+              <span className="text-white">Итого:</span>
+              <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">{formatPrice(finalTotal)}</span>
             </div>
           </div>
         </div>
 
         <form onSubmit={handleSubmit} className="glass-panel p-4">
           <div className="mb-4">
-            <label className="block text-gray-800 font-medium mb-2">
+            <label className="block text-white font-medium mb-2">
               Способ доставки
             </label>
             <div className="relative">
@@ -242,7 +242,7 @@ const Checkout = () => {
                 name="delivery"
                 value={formData.delivery}
                 onChange={handleChange}
-                className="w-full px-3 py-2 pr-10 border border-pink-200 bg-white text-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+                className="w-full px-3 py-2 pr-10 border border-cyan-500/30 bg-black/40 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
               >
                 <option value="Курьером" className="bg-gray-800">Курьером до адреса</option>
                 <option value="Самовывоз" className="bg-gray-800">Самовывоз</option>
@@ -264,14 +264,14 @@ const Checkout = () => {
           {formData.delivery === 'По метро' && (
             <>
               <div className="mb-4">
-                <label className="block text-gray-800 font-medium mb-2">
+                <label className="block text-white font-medium mb-2">
                   Линия метро <span className="text-white">*</span>
                 </label>
                 <select
                   name="metro_line"
                   value={formData.metro_line}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-pink-200 bg-white text-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-cyan-500/30 bg-black/40 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
                   required
                 >
                   <option value="" className="bg-gray-800">Выберите линию метро</option>
@@ -285,14 +285,14 @@ const Checkout = () => {
 
               {formData.metro_line && (
                 <div className="mb-4">
-                  <label className="block text-gray-800 font-medium mb-2">
+                  <label className="block text-white font-medium mb-2">
                     Станция метро <span className="text-white">*</span>
                   </label>
                   <select
                     name="metro_station"
                     value={formData.metro_station}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border border-pink-200 bg-white text-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-cyan-500/30 bg-black/40 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
                     required
                   >
                     <option value="" className="bg-gray-800">Выберите станцию</option>
@@ -306,7 +306,7 @@ const Checkout = () => {
               )}
 
               <div className="mb-4">
-                <label className="block text-gray-800 font-medium mb-2">
+                <label className="block text-white font-medium mb-2">
                   Предпочтительное время <span className="text-white">*</span>
                 </label>
                 <input
@@ -314,7 +314,7 @@ const Checkout = () => {
                   name="preferred_time"
                   value={formData.preferred_time}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-pink-200 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
                   placeholder="Например: 15:00-16:00"
                   required
                 />
@@ -328,18 +328,18 @@ const Checkout = () => {
           {formData.delivery === 'Самовывоз' && (
             <>
               <div className="mb-4">
-                <label className="block text-gray-800 font-medium mb-2">
+                <label className="block text-white font-medium mb-2">
                   Адрес самовывоза
                 </label>
                 <div className="glass-card p-3">
-                  <p className="text-gray-800 text-sm font-medium">
-                    ст. м. Аэродромная
+                  <p className="text-white text-sm font-medium">
+                    ст. м. Грушевка
                   </p>
                 </div>
               </div>
 
               <div className="mb-4">
-                <label className="block text-gray-800 font-medium mb-2">
+                <label className="block text-white font-medium mb-2">
                   Предпочтительное время <span className="text-white">*</span>
                 </label>
                 <input
@@ -347,7 +347,7 @@ const Checkout = () => {
                   name="preferred_time"
                   value={formData.preferred_time}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-pink-200 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
                   placeholder="Например: 14:00"
                   required
                 />
@@ -361,14 +361,14 @@ const Checkout = () => {
           {(formData.delivery === 'Курьером' || formData.delivery === 'Яндекс доставка') && (
             <>
               <div className="mb-4">
-                <label className="block text-gray-800 font-medium mb-2">
+                <label className="block text-white font-medium mb-2">
                   Адрес доставки <span className="text-white">*</span>
                 </label>
                 <textarea
                   name="address"
                   value={formData.address}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-pink-200 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
                   rows="3"
                   placeholder="Улица, дом, квартира"
                   required
@@ -377,14 +377,14 @@ const Checkout = () => {
 
               {formData.delivery === 'Курьером' && (
                 <div className="mb-4">
-                  <label className="block text-gray-800 font-medium mb-2">
+                  <label className="block text-white font-medium mb-2">
                     Временной промежуток <span className="text-white">*</span>
                   </label>
                   <select
                     name="time_slot"
                     value={formData.time_slot}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border border-pink-200 bg-white text-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-cyan-500/30 bg-black/40 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
                     required
                   >
                     <option value="" className="bg-gray-800">Выберите время</option>
@@ -402,7 +402,7 @@ const Checkout = () => {
           {formData.delivery === 'Европочта' && (
             <>
               <div className="mb-4">
-                <label className="block text-gray-800 font-medium mb-2">
+                <label className="block text-white font-medium mb-2">
                   ФИО получателя <span className="text-white">*</span>
                 </label>
                 <input
@@ -410,14 +410,14 @@ const Checkout = () => {
                   name="postal_full_name"
                   value={formData.postal_full_name}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-pink-200 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
                   placeholder="Иванов Иван Иванович"
                   required
                 />
               </div>
 
               <div className="mb-4">
-                <label className="block text-gray-800 font-medium mb-2">
+                <label className="block text-white font-medium mb-2">
                   Номер телефона <span className="text-white">*</span>
                 </label>
                 <input
@@ -425,21 +425,21 @@ const Checkout = () => {
                   name="postal_phone"
                   value={formData.postal_phone}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-pink-200 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
                   placeholder="+375 (29) 123-45-67"
                   required
                 />
               </div>
 
               <div className="mb-4">
-                <label className="block text-gray-800 font-medium mb-2">
+                <label className="block text-white font-medium mb-2">
                   Адрес пункта выдачи или номер ОПС <span className="text-white">*</span>
                 </label>
                 <textarea
                   name="postal_address"
                   value={formData.postal_address}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-pink-200 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
                   rows="3"
                   placeholder="Адрес пункта выдачи Европочты или номер ОПС"
                   required
@@ -454,7 +454,7 @@ const Checkout = () => {
           {formData.delivery === 'Белпочта' && (
             <>
               <div className="mb-4">
-                <label className="block text-gray-800 font-medium mb-2">
+                <label className="block text-white font-medium mb-2">
                   ФИО получателя <span className="text-white">*</span>
                 </label>
                 <input
@@ -462,14 +462,14 @@ const Checkout = () => {
                   name="postal_full_name"
                   value={formData.postal_full_name}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-pink-200 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
                   placeholder="Иванов Иван Иванович"
                   required
                 />
               </div>
 
               <div className="mb-4">
-                <label className="block text-gray-800 font-medium mb-2">
+                <label className="block text-white font-medium mb-2">
                   Номер телефона <span className="text-white">*</span>
                 </label>
                 <input
@@ -477,21 +477,21 @@ const Checkout = () => {
                   name="postal_phone"
                   value={formData.postal_phone}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-pink-200 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
                   placeholder="+375 (29) 123-45-67"
                   required
                 />
               </div>
 
               <div className="mb-4">
-                <label className="block text-gray-800 font-medium mb-2">
+                <label className="block text-white font-medium mb-2">
                   Полный адрес <span className="text-white">*</span>
                 </label>
                 <textarea
                   name="postal_address"
                   value={formData.postal_address}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-pink-200 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
                   rows="3"
                   placeholder="Город/поселок, улица, дом, квартира"
                   required
@@ -499,7 +499,7 @@ const Checkout = () => {
               </div>
 
               <div className="mb-4">
-                <label className="block text-gray-800 font-medium mb-2">
+                <label className="block text-white font-medium mb-2">
                   Почтовый индекс <span className="text-white">*</span>
                 </label>
                 <input
@@ -507,7 +507,7 @@ const Checkout = () => {
                   name="postal_index"
                   value={formData.postal_index}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-pink-200 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
                   placeholder="220000"
                   required
                 />
@@ -519,14 +519,14 @@ const Checkout = () => {
           )}
 
           <div className="mb-4">
-            <label className="block text-gray-800 font-medium mb-2">
+            <label className="block text-white font-medium mb-2">
               Способ оплаты
             </label>
             <select
               name="payment"
               value={formData.payment}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-pink-200 bg-white text-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+              className="w-full px-3 py-2 border border-cyan-500/30 bg-black/40 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
             >
               <option value="Наличные" className="bg-gray-800">Наличные</option>
               <option value="Карта" className="bg-gray-800">Карта</option>
@@ -535,7 +535,7 @@ const Checkout = () => {
           </div>
 
           <div className="mb-6">
-            <label className="block text-gray-800 font-medium mb-2">
+            <label className="block text-white font-medium mb-2">
               Промокод
             </label>
             <input
@@ -543,7 +543,7 @@ const Checkout = () => {
               name="promocode"
               value={formData.promocode}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-pink-200 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+              className="w-full px-3 py-2 border border-cyan-500/30 bg-white/10 text-gray-800 placeholder-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
               placeholder="Введите промокод"
             />
           </div>

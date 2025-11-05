@@ -60,7 +60,7 @@ const Home = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="animate-spin text-pink-500" size={48} />
+        <Loader2 className="animate-spin text-cyan-400" size={48} />
       </div>
     );
   }
@@ -68,31 +68,38 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       <div className="container mx-auto px-4 py-6">
-        <div className="mb-6">
+        <div className="mb-6 grid grid-cols-2 gap-3">
           <button
-            onClick={() => handleLinkClick('https://t.me/+yTWUCNVQIsJjZDUy')}
-            className="w-full glass-panel p-3 rounded-lg flex items-center justify-center gap-2 hover:bg-pink-100 transition-all"
+            onClick={() => handleLinkClick('https://t.me/vapplugg')}
+            className="glass-panel p-3 rounded-lg flex items-center justify-center gap-2 hover:bg-cyan-500/20 transition-all"
           >
-            <ExternalLink size={16} className="text-gray-800" />
-            <span className="text-gray-800 font-medium text-sm">Канал</span>
+            <ExternalLink size={16} className="text-cyan-400" />
+            <span className="text-white font-medium text-sm">Канал</span>
+          </button>
+          <button
+            onClick={() => handleLinkClick('https://t.me/vapepluggcommunity')}
+            className="glass-panel p-3 rounded-lg flex items-center justify-center gap-2 hover:bg-purple-500/20 transition-all"
+          >
+            <ExternalLink size={16} className="text-purple-400" />
+            <span className="text-white font-medium text-sm">Беседа</span>
           </button>
         </div>
 
         <div className="mb-6 relative backdrop-blur-sm rounded-lg">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 z-10" size={20} />
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-cyan-400 z-10" size={20} />
           <input
             type="text"
             placeholder="Поиск категорий и товаров..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-            className="w-full pl-12 pr-4 py-3 rounded-lg bg-white border border-pink-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-300 transition-all relative z-10"
+            className="w-full pl-12 pr-4 py-3 rounded-lg bg-black/40 border border-cyan-500/30 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400 transition-all relative z-10"
           />
         </div>
 
         {filteredCategories.length === 0 ? (
           <div className="text-center py-16 glass-panel">
-            <p className="text-gray-600 text-lg">Категории не найдены</p>
+            <p className="text-gray-400 text-lg">Категории не найдены</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-4">
@@ -100,9 +107,9 @@ const Home = () => {
               <div
                 key={category.id}
                 onClick={() => handleCategoryClick(category.id)}
-                className="glass-panel rounded-2xl overflow-hidden cursor-pointer transform transition-all hover:scale-105 hover:shadow-2xl active:scale-95"
+                className="glass-panel rounded-2xl overflow-hidden cursor-pointer transform transition-all hover:scale-105 hover:shadow-2xl hover:border-cyan-400/40 active:scale-95"
               >
-                <div className="aspect-square relative overflow-hidden bg-gradient-to-br from-pink-50 to-pink-100">
+                <div className="aspect-square relative overflow-hidden bg-gradient-to-br from-cyan-500/10 via-purple-500/10 to-pink-500/10">
                   {category.image ? (
                     <img
                       src={category.image}
@@ -114,17 +121,17 @@ const Home = () => {
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <span className="text-6xl text-pink-300">📦</span>
+                      <span className="text-6xl text-cyan-400/50">📦</span>
                     </div>
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-pink-200/60 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 </div>
                 <div className="p-4">
-                  <h3 className="text-gray-800 font-bold text-lg text-center">
+                  <h3 className="text-white font-bold text-lg text-center">
                     {category.name}
                   </h3>
                   {category.description && (
-                    <p className="text-gray-600 text-sm text-center mt-1 line-clamp-2">
+                    <p className="text-gray-400 text-sm text-center mt-1 line-clamp-2">
                       {category.description}
                     </p>
                   )}
