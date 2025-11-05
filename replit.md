@@ -30,6 +30,23 @@ The frontend is a React SPA styled with TailwindCSS, featuring a modern glassmor
 ### System Design Choices
 The application uses a client-server architecture. The Telegram bot serves as an entry point for customers and for administrative tasks. The database schema supports a comprehensive e-commerce flow, including product variations, user baskets, orders, and promotional mechanics. Configuration is managed via environment variables. The system is designed for a dual workflow, with the backend and a served static frontend operating on a unified port in production for Telegram Web App integration. It supports full-screen mode and swipe-lock for an immersive Telegram Mini App experience.
 
+## Recent Changes
+
+- **2025-11-05**: Updated product category names to uppercase short forms
+  - Changed category names in database: "ОДНОРАЗКИ", "ЖИЖИ", "РАСХОДНИКИ", "СНЮС"
+  - Previous names: "Одноразовые электронные сигареты" → "ОДНОРАЗКИ", "Жидкости" → "ЖИЖИ", "Поды" → "РАСХОДНИКИ", "Устройства" → "СНЮС"
+  - Category images kept the same (will be replaced manually via admin panel)
+  - Bot admin panel automatically displays new category names from database
+- **2025-11-05**: Complete rebrand from "BASTER SHOP" to "VAPE PLUG" with cyberpunk design
+  - Brand name changed to "VAPE PLUG" throughout application
+  - Manager contact: @vapepluggmanager
+  - Channel: https://t.me/vapplugg
+  - Community chat: https://t.me/vapepluggcommunity
+  - Pickup address: ст.м Грушевка
+  - Black background (#000000) with gradient accents (cyan, purple, pink)
+  - Glassmorphism with gradient borders and effects
+  - All UI elements updated to cyberpunk aesthetic
+
 ## External Dependencies
 
 - **FastAPI**: Backend web framework.
