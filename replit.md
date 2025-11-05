@@ -1,7 +1,7 @@
 # Telegram Mini App - Full Stack
 
 ## Overview
-This project is a full-stack Telegram Mini App combining a FastAPI backend with an aiogram Telegram bot, a React SPA frontend with TailwindCSS, and an SQLite database. It aims to provide a comprehensive e-commerce solution within Telegram, featuring a product catalog, shopping cart, order management, and a loyalty program. The application is designed for both customer-facing interactions via the Mini App and administrative/courier functionalities through the Telegram bot.
+This project is a full-stack Telegram Mini App providing a comprehensive e-commerce solution within Telegram. It features a FastAPI backend, an aiogram Telegram bot, and a React SPA frontend with TailwindCSS, all backed by an SQLite database. The app includes a product catalog, shopping cart, order management with various delivery options, and a loyalty program. It supports both customer interactions via the Mini App and administrative/courier functionalities through the Telegram bot. The brand is "VAPE PLUG," adopting a cyberpunk-inspired aesthetic.
 
 ## User Preferences
 I prefer detailed explanations.
@@ -11,142 +11,24 @@ Do not make changes to the file Y.
 ## System Architecture
 
 ### UI/UX Decisions
-The frontend is a React SPA using TailwindCSS for styling, with a modern glassmorphism design incorporating `Unbounded` font from Google Fonts. It adopts a cyberpunk-inspired aesthetic with **black background and gradient accents** - dark black (#000000) base with holographic cyan, purple, and pink gradient elements. The brand is **VAPE PLUG** with social presence at https://t.me/vapplugg (channel) and https://t.me/vapepluggcommunity (community chat/беседа). Manager contact: @vapepluggmanager. Key UI components include responsive product cards, a bottom navigation bar, and accessible elements like an accordion-based FAQ. The design prioritizes mobile UX within the Telegram environment with predominantly black backgrounds and vibrant gradient accents.
+The frontend is a React SPA styled with TailwindCSS, featuring a modern glassmorphism design and the `Unbounded` font. It follows a cyberpunk aesthetic with a black background and holographic cyan, purple, and pink gradient accents. Key UI components include responsive product cards, a bottom navigation bar, and accessible elements like an accordion-based FAQ, prioritizing mobile UX within the Telegram environment.
 
 ### Technical Implementations
-- **Backend**: FastAPI serves a REST API, integrated with `aiogram` for Telegram bot functionalities. It uses `SQLAlchemy` with `aiosqlite` for asynchronous database operations and `Alembic` for migrations.
-- **Frontend**: Built with React 18 and Vite, it utilizes the official Telegram Web App script for integration with full-screen mode support. `Axios` handles API requests, and `React Router DOM` manages navigation.
-- **Database**: SQLite is used for persistent data storage, including models for users, products, categories, orders, and loyalty program data.
+- **Backend**: FastAPI for REST API, integrated with `aiogram` for Telegram bot functionalities. Uses `SQLAlchemy` with `aiosqlite` for async database operations and `Alembic` for migrations.
+- **Frontend**: React 18 with Vite, utilizing the official Telegram Web App script for full-screen mode integration. `Axios` handles API requests, and `React Router DOM` manages navigation.
+- **Database**: SQLite for persistent storage of users, products, categories, orders, and loyalty data.
 - **Key Features**:
-    - **Product Catalog**: Displays products with images, prices, categories, and taste/variant selection. Includes search and category filtering.
+    - **Product Catalog**: Displays products with images, prices, categories, taste/variant selection, search, and filtering.
     - **Shopping Cart**: Allows quantity management and item removal.
-    - **Order Management**: Supports various delivery methods (self-pickup, metro, courier, Yandex delivery, Европочта, Белпочта postal services) with dynamic cost calculation, time slot selection, and order status tracking.
-    - **Loyalty Program**: Implemented with a stamp system (every 6th item discounted) and tiered loyalty cards (White, Platinum, Black) with increasing discounts. Tracks stamps and auto-upgrades levels.
+    - **Order Management**: Supports various delivery methods (self-pickup, metro, courier, Yandex, postal services) with dynamic cost, time slot selection, and status tracking.
+    - **Loyalty Program**: Stamp system (every 6th item discounted) and tiered loyalty cards (White, Platinum, Black) with increasing discounts.
     - **User Profiles**: Displays loyalty card and order history.
-    - **Admin/Courier Bot Features**: Management of users, products, orders, promocodes, and access to analytics.
-    - **Notifications**: Backend sends notifications to couriers and admins about new orders with full details.
-    - **Accessibility**: Implemented ARIA-compliant components like the FAQ accordion.
+    - **Admin/Courier Bot Features**: Management of users, products, orders, promocodes, and analytics access.
+    - **Notifications**: Backend sends detailed order notifications to couriers and admins.
+    - **Accessibility**: Implemented ARIA-compliant components.
 
 ### System Design Choices
-The application follows a client-server architecture with a clear separation between frontend and backend. The Telegram bot acts as an interface for both customer entry points (via Web App button) and administrative tasks. The database schema supports a comprehensive e-commerce flow, including product variations (tastes), user baskets, orders, and promotional mechanics. Environment variables manage configuration for both backend and frontend. The system is designed for dual workflows, with the backend running on an internal port (3000) and the frontend on a public webview port (5000), utilizing a Vite proxy for API communication in development.
-
-## Recent Changes
-
-- **2025-11-04**: Complete rebrand from "VAPE TOCHKA" to "BASTER SHOP" with white and pink design
-  - Brand name changed from "VAPE TOCHKA" to "BASTER SHOP" throughout entire application
-  - Manager contact updated to @baster_mks (was @VapeTochkaManager)
-  - Updated channel link to https://t.me/+yTWUCNVQIsJjZDUy
-  - Removed "Беседа" (community chat) link, now only showing main channel
-  - Complete color scheme conversion from black-and-white to white and pink
-  - Light gradient backgrounds: white (#ffffff) to soft pink (#fff0f5 and #ffe4f0)
-  - All text changed from white to dark gray (#1f2937, #374151)
-  - Pink accents (#ec4899, #f472b6, #fbbf24) for buttons, links, and highlights
-  - Loyalty cards redesigned with pink gradients (White: pink-100 to pink-300, Platinum: pink-300 to pink-500, Black: pink-500 to pink-700)
-  - Glassmorphism updated: white/transparent backgrounds with pink borders
-  - Bottom navigation with white background and pink active states
-  - All buttons changed to pink (#ec4899) with white text
-  - Product cards with pink backgrounds and accents
-  - Order status colors changed to pink variations
-  - Page title updated to "BASTER SHOP - Минск"
-  - Form inputs with pink borders and focus rings
-- **2025-11-03**: Complete rebrand from "VAPE PLUG" to "VAPE TOCHKA" with black-and-white monochrome design
-  - Brand name changed throughout entire frontend (components, pages, page title)
-  - Updated all social media links: Channel (https://t.me/VapeTochkaBY), renamed "Отзывы" to "Беседа" (https://t.me/+4lp4Y_KmFRZjYzcy)
-  - Added manager contact @VapeTochkaManager in FAQ, Checkout, and Orders pages
-  - Complete color scheme conversion to strict black-and-white monochrome (no colored accents)
-  - Removed all purple/pink/blue gradients, replaced with grayscale gradients
-  - Updated glassmorphism styles to use only gray/white/black palette
-  - Converted loyalty cards (White, Platinum, Black) to monochrome gradients
-  - Changed order status colors from colored (yellow, blue, green, red) to neutral grayscale
-  - Fixed bottom navigation with pure gray background
-  - All Tailwind color classes (text-purple, bg-blue, etc.) replaced with gray/white equivalents
-  - Page title updated to "VAPE TOCHKA - Минск"
-  - Workflows running correctly: backend on port 3000, frontend on port 5000
-- **2025-11-02**: Fixed database conflict - removed duplicate database file
-  - CRITICAL FIX: Discovered two SQLite database files in different locations causing data inconsistency
-  - Removed duplicate database at `app/database.db` (newer, incorrectly created)
-  - Kept original database at `database.db` (root directory) with all existing data
-  - Verified all code uses correct path: `sqlite+aiosqlite:///./database.db` (points to root)
-  - Added detailed logging in category creation flow (save_photo and process_category_image functions)
-  - Backend and bot now consistently use single source of truth database
-  - Issue: Bot showed different categories on repeated commands due to accessing different DB files
-- **2025-11-02**: Redesigned navigation with category-first approach
-  - Created new Home page (Home.jsx) displaying category cards with images and names
-  - Added quick links to Telegram channel and community chat at top of Home page (updated during rebrand)
-  - Catalog page (Catalog.jsx) now shows products of selected category with "Back to categories" button
-  - Implemented category filtering: users select category → see only that category's products
-  - Updated routing: / (Home with categories), /catalog (all products), /catalog/:categoryId (category products)
-  - Category cards display with glassmorphism design, gradient backgrounds, and fallback emoji when no image
-  - Search on Home page allows searching both categories and products
-  - Bot already supports adding images to categories via admin panel
-  - Fixed category state management: properly resets when navigating between views
-- **2025-11-02**: Added postal delivery options with full validation
-  - Added two new delivery methods: Европочта (5 BYN) and Белпочта (3 BYN, displayed as 3-5 BYN range)
-  - Database: Added 4 postal fields to Order model (postal_full_name, postal_phone, postal_address, postal_index)
-  - Created incremental Alembic migration (a1b2c3d4e5f6) for postal delivery fields
-  - Frontend: Added conditional forms in Checkout.jsx for postal recipient data collection
-  - Backend: Added validation to enforce required fields based on delivery type (Европочта requires ФИО/phone/address, Белпочта additionally requires postal index)
-  - Bot notifications: Enhanced to display formatted postal delivery information for admins and couriers
-  - Migration chain: f50339118401 (dummy) → 0bd332ec95cc → a1b2c3d4e5f6 (ensures clean incremental updates)
-- **2025-11-02**: Fixed preview white screen - corrected static files mounting
-  - CRITICAL FIX: Moved static files mounting from lifespan to main app body (FastAPI requirement)
-  - Fixed catchall route to not intercept /assets/ and /uploads/ requests
-  - Added mock user (id: 123456789) for preview/testing when Telegram WebApp unavailable
-  - Added safe fallbacks: showAlert → console.log, showConfirm → window.confirm
-  - App fully functional in both preview and Telegram
-  - Products display correctly with images, categories work, navigation works
-  - Ready for production deployment via git commit + redeploy
-- **2025-11-02**: Complete production deployment fixes and unified workflow
-  - Removed separate frontend workflow - backend now serves built SPA on port 5000
-  - Single workflow on port 5000 (webview)
-  - Build script builds frontend to `frontend/dist`
-  - Backend serves static files and handles SPA routing
-  - Bot URL changed to `https://defivaultpro.com` (configurable via WEBAPP_URL env var)
-  - Added START_BOT env var to control bot startup (false in development, true in production)
-  - Production ready for defivaultpro.com
-  - Note: Development runs with START_BOT=false to avoid bot conflicts with production
-  - Important: VM deployment uses git commits, not workspace files - must commit changes before redeploy
-- **2025-11-02**: Fixed production deployment configuration
-  - Created `build.sh` script to properly build frontend in correct directory
-  - Build command: `bash build.sh` (changes to frontend dir, runs npm install & build)
-  - Run command: `bash -c "PYTHONPATH=/home/runner/workspace:$PYTHONPATH python app/main.py"`
-  - Backend serves static files from `frontend/dist` when built (SPA fallback pattern)
-  - Backend uses PORT environment variable (defaults to 5000 in production)
-- **2025-11-01**: Added responsive "Выбрать" button to product cards
-  - Mobile: Button is full-width below price for better UX
-  - Desktop: Button appears inline next to price
-  - Glassmorphism design with hover animations and chevron icon
-- **2025-11-01**: Added product characteristics system
-  - Database: Added 4 new nullable fields to Item model (strength, puffs, vg_pg, tank_volume)
-  - Created Alembic migration for schema update
-  - Bot admin panel: Added 4 new FSM states to collect characteristics during item creation
-  - Characteristics are optional - admin can skip any field by entering "нет"
-  - API: GET /items/ endpoint now returns all characteristics fields
-  - Frontend ProductDetail improvements:
-    - Moved tastes section ABOVE description for better UX flow
-    - Made description collapsible with "Подробнее/Свернуть" button (auto-collapses after 3 lines if text >150 chars)
-    - Added dedicated characteristics section displaying: крепкость, количество тяг, VG/PG, объем бака
-    - Characteristics only display when present (handles nullable fields gracefully)
-  - Full end-to-end flow: bot creation → database → API → frontend display
-- **2025-11-01**: Added admin command to manually manage user loyalty profiles
-  - New command `/set_loyalty` for admins to update loyalty data for any user
-  - Allows setting: loyalty level (White/Platinum/Black), stamps (0-5), total items purchased
-  - Interactive menu with buttons for easy management
-  - Shows current loyalty status before making changes
-  - Useful for migrating existing customers with established loyalty cards
-- **2025-11-01**: Improved loyalty program UX with clearer messaging
-  - Changed text from "6 покупок до скидки" to "5 покупок для скидки на 6-й заказ" (more logical)
-  - When 5 stamps collected, shows animated message "🎉 На эту покупку у вас скидка!"
-  - 6th circle gets golden ring highlight and pulse animation when discount is active
-  - Added proper Russian pluralization (покупка/покупки) for better readability
-- **2025-11-01**: Added full-screen mode and swipe-lock for Telegram Mini App
-  - Implemented `requestFullscreen()` in `useTelegram` hook for immersive experience
-  - App now automatically expands to full screen on launch, removing Telegram's header and bottom bars
-  - Added `disableVerticalSwipes()` to prevent closing app by swiping down on content
-  - Users can only close app via header swipe or close button (prevents accidental exits)
-  - Full-screen mode provides better UX for product browsing and checkout
-  - Falls back gracefully if features are not available on older Telegram clients
-  - Added safe-area padding at top for devices with notches/Dynamic Island
+The application uses a client-server architecture. The Telegram bot serves as an entry point for customers and for administrative tasks. The database schema supports a comprehensive e-commerce flow, including product variations, user baskets, orders, and promotional mechanics. Configuration is managed via environment variables. The system is designed for a dual workflow, with the backend and a served static frontend operating on a unified port in production for Telegram Web App integration. It supports full-screen mode and swipe-lock for an immersive Telegram Mini App experience.
 
 ## External Dependencies
 
@@ -154,12 +36,12 @@ The application follows a client-server architecture with a clear separation bet
 - **aiogram**: Telegram Bot API library.
 - **React**: Frontend JavaScript library.
 - **Vite**: Frontend build tool.
-- **TailwindCSS**: CSS framework for styling.
+- **TailwindCSS**: CSS framework.
 - **SQLAlchemy**: Python ORM.
 - **aiosqlite**: Async SQLite driver.
 - **Alembic**: Database migration tool.
 - **Uvicorn**: ASGI web server.
-- **Axios**: Promise-based HTTP client for the browser and Node.js.
+- **Axios**: HTTP client.
 - **Lucide React**: Icon library.
-- **Telegram Web App API**: Official Telegram script for Mini App integration with full-screen support.
+- **Telegram Web App API**: Official Telegram script for Mini App integration.
 - **Google Fonts**: For `Unbounded` typography.
