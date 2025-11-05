@@ -16,8 +16,8 @@ async def update_category_images():
             "Жидкости": "/uploads/zhidkosti.jpg",
             "Одноразки": "/uploads/odnorazki.jpg",
             "Одноразовые электронные сигареты": "/uploads/odnorazki.jpg",
-            "Устройства": "/uploads/snus.jpg",
-            "Расходники": "/uploads/pody.jpg",
+            "Устройства": "/uploads/ustroystva.jpg",
+            "Поды": "/uploads/pody.jpg",
         }
         
         updated = 0
