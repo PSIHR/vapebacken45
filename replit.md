@@ -1,7 +1,7 @@
 # Telegram Mini App - Full Stack
 
 ## Overview
-This project is a full-stack Telegram Mini App providing a comprehensive e-commerce solution within Telegram. It features a FastAPI backend, an aiogram Telegram bot, and a React SPA frontend with TailwindCSS, all backed by an SQLite database. The app includes a product catalog, shopping cart, order management with various delivery options, and a loyalty program. It supports both customer interactions via the Mini App and administrative/courier functionalities through the Telegram bot. The brand is "VAPE PLUG," adopting a cyberpunk-inspired aesthetic.
+This project is a full-stack Telegram Mini App providing a comprehensive e-commerce solution within Telegram. It features a FastAPI backend, an aiogram Telegram bot, and a React SPA frontend with TailwindCSS, all backed by an SQLite database. The app includes a product catalog, shopping cart, order management with various delivery options, and a loyalty program. It supports both customer interactions via the Mini App and administrative/courier functionalities through the Telegram bot. The brand is "VAPE PLUG," adopting a cyberpunk-inspired aesthetic. Production store: https://vaultbtc25.com
 
 ## User Preferences
 I prefer detailed explanations.
@@ -32,9 +32,10 @@ The application uses a client-server architecture. The Telegram bot serves as an
 
 ## Recent Changes
 
-- **2025-11-05**: Updated bot welcome button URL to production store
-  - Changed "Открыть магазин" button link from Replit dev URL to https://vaultroi.com
-  - Bot now directs users to production store instead of development environment
+- **2025-11-06**: Updated production domain to https://vaultbtc25.com
+  - Changed WEBAPP_URL from https://vaultroi.com to https://vaultbtc25.com
+  - Updated bot welcome button to use new domain
+  - Bot now directs users to new production store
 - **2025-11-05**: Fixed text contrast on product detail page
   - Changed category badge text from white to black for better readability on bg-pink-100
   - Changed selected taste button text from white to black when bg-pink-100 is active

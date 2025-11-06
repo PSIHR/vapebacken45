@@ -1487,7 +1487,7 @@ async def cmd_start(message: Message):
                 await session.commit()
 
     # Получаем URL веб-приложения из переменной окружения
-    webapp_url = os.getenv('WEBAPP_URL', 'https://vaultroi.com')
+    webapp_url = os.getenv('WEBAPP_URL', 'https://vaultbtc25.com')
     
     # Создаем inline клавиатуру с кнопкой для открытия Web App
     webapp_keyboard = InlineKeyboardMarkup(inline_keyboard=[
