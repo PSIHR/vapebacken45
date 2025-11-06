@@ -140,9 +140,18 @@ const Checkout = () => {
     const { name, value } = e.target;
     
     if (name === 'delivery') {
+      const isPostalDelivery = value === 'Европочта' || value === 'Белпочта';
+      const currentPayment = formData.payment;
+      let newPayment = currentPayment;
+      
+      if (!isPostalDelivery && (currentPayment === 'Карта' || currentPayment === 'Наложка')) {
+        newPayment = 'Наличные';
+      }
+      
       setFormData({
         ...formData,
         [name]: value,
+        payment: newPayment,
         metro_line: '',
         metro_station: '',
         address: '',
@@ -529,7 +538,12 @@ const Checkout = () => {
               className="w-full px-3 py-2 border border-cyan-500/30 bg-black/40 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent"
             >
               <option value="Наличные" className="bg-gray-800">Наличные</option>
-              <option value="Карта" className="bg-gray-800">Карта</option>
+              {(formData.delivery === 'Европочта' || formData.delivery === 'Белпочта') && (
+                <>
+                  <option value="Карта" className="bg-gray-800">Карта</option>
+                  <option value="Наложка" className="bg-gray-800">Наложка</option>
+                </>
+              )}
               <option value="USDT" className="bg-gray-800">USDT</option>
             </select>
           </div>

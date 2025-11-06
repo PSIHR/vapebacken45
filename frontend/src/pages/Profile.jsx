@@ -87,7 +87,7 @@ const Profile = () => {
           ) : (
             <div className="space-y-4">
               {orders.map((order) => (
-                <div key={order.id} className="glass-panel p-4 hover:bg-pink-50 transition-all">
+                <div key={order.id} className="glass-panel p-4 transition-all">
                   <div className="flex justify-between items-start mb-3">
                     <div>
                       <h3 className="text-white font-bold text-lg">Заказ №{order.id}</h3>

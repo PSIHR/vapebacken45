@@ -167,8 +167,6 @@ async def get_user_orders(
     for order in orders:
         order_items = []
         for item in order.items:
-            tastes = item.tastes.split(", ") if item.tastes else []
-
             order_items.append(
                 {
                     "id": item.id,
@@ -177,7 +175,7 @@ async def get_user_orders(
                     "quantity": item.quantity,
                     "price_per_item": item.price_per_item,
                     "total_price": item.total_price,
-                    "tastes": tastes,
+                    "selected_taste": item.selected_taste,
                 }
             )
 

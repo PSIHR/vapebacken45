@@ -88,13 +88,13 @@ const Catalog = () => {
         )}
 
         <div className="mb-6 relative backdrop-blur-sm rounded-lg">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/70 z-10" size={20} />
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-black/70 z-10" size={20} />
           <input
             type="text"
             placeholder="Поиск товаров..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 rounded-lg bg-white border border-pink-200 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-pink-300 transition-all relative z-10"
+            className="w-full pl-12 pr-4 py-3 rounded-lg bg-white border border-pink-200 text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-pink-300 transition-all relative z-10"
           />
         </div>
 

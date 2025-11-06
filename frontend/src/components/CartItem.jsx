@@ -30,14 +30,14 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
                 className="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center hover:bg-pink-200 transition-colors"
                 disabled={item.quantity <= 1}
               >
-                <Minus size={16} className="text-white" />
+                <Minus size={16} className="text-black" />
               </button>
               <span className="w-8 text-center font-semibold text-white">{item.quantity}</span>
               <button
                 onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
                 className="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center hover:bg-pink-200 transition-colors"
               >
-                <Plus size={16} className="text-white" />
+                <Plus size={16} className="text-black" />
               </button>
             </div>
             <div className="flex items-center gap-3">
