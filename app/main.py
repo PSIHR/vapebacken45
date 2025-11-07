@@ -48,6 +48,7 @@ from database.models import (
 from middlewares.ban import BannedUserMiddleware
 from typization.models import (
     BasketItemCreate,
+    BasketItemUpdate,
     BasketResponse,
     OrderFromBasketCreate,
     OrderResponse,
@@ -521,6 +522,59 @@ async def remove_from_basket(
     await db.delete(basket_item)
     await db.commit()
     return await create_or_get_basket(user_id, db)
+
+
+@app.patch("/basket/{user_id}/items/{basket_item_id}", response_model=BasketResponse)
+async def update_basket_item_quantity(
+    user_id: int = Path(..., gt=0),
+    basket_item_id: int = Path(..., gt=0),
+    update_data: BasketItemUpdate = Body(...),
+    db: AsyncSession = Depends(get_db),
+):
+    try:
+        if update_data.quantity < 1:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Количество должно быть больше 0",
+            )
+
+        basket = await db.scalar(
+            select(Basket)
+            .where(Basket.user_id == user_id)
+            .options(selectinload(Basket.items))
+        )
+
+        if not basket:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Корзина не найдена",
+            )
+
+        basket_item = await db.get(BasketItem, basket_item_id)
+
+        if not basket_item or basket_item.basket_id != basket.id:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Товар не найден в корзине",
+            )
+
+        basket_item.quantity = update_data.quantity
+
+        basket.total_price = sum(item.quantity * item.price for item in basket.items)
+
+        await db.commit()
+        await db.refresh(basket)
+
+        return await create_or_get_basket(user_id, db)
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        await db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Ошибка при обновлении количества: {str(e)}",
+        )
 
 
 @app.get("/items/")

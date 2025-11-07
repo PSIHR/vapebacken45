@@ -37,6 +37,7 @@ export const basketAPI = {
   get: (userId) => api.post(`/basket/${userId}`),
   addItem: (userId, itemData) => api.post(`/basket/${userId}/items`, itemData),
   removeItem: (userId, itemId) => api.delete(`/basket/${userId}/items/${itemId}`),
+  updateItemQuantity: (userId, basketItemId, quantity) => api.patch(`/basket/${userId}/items/${basketItemId}`, { quantity }),
 };
 
 export const ordersAPI = {

@@ -24,6 +24,10 @@ class BasketItemCreate(BaseModel):
     selected_taste: Optional[str] = None
 
 
+class BasketItemUpdate(BaseModel):
+    quantity: int
+
+
 class BasketItemResponse(BaseModel):
     id: int
     item_id: int

@@ -37,11 +37,24 @@ const Cart = ({ onCartUpdate }) => {
   const handleUpdateQuantity = async (itemId, newQuantity) => {
     if (newQuantity < 1) return;
 
+    const previousItems = cartItems;
+    const previousTotal = totalPrice;
+
     const updatedItems = cartItems.map(item =>
       item.id === itemId ? { ...item, quantity: newQuantity } : item
     );
     setCartItems(updatedItems);
     setTotalPrice(updatedItems.reduce((sum, item) => sum + item.price * item.quantity, 0));
+
+    try {
+      await basketAPI.updateItemQuantity(user.id, itemId, newQuantity);
+      await loadCart();
+    } catch (error) {
+      console.error('Error updating quantity:', error);
+      setCartItems(previousItems);
+      setTotalPrice(previousTotal);
+      showAlert('Ошибка обновления количества');
+    }
   };
 
   const handleRemoveItem = async (itemId) => {
