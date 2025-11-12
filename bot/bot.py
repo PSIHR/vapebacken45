@@ -1407,6 +1407,167 @@ async def save_photo(file_id: str) -> str:
         raise
 
 
+async def _handle_item_image(message: Message, state: FSMContext, file_id: str):
+    """Helper function for processing item images (both photo and document)"""
+    try:
+        image_path = await save_photo(file_id)
+        await state.update_data(image_path=image_path)
+        await state.set_state(ItemStates.waiting_for_tastes)
+        await message.answer(
+            "🍓 Введите вкусы товара через запятую (если это под, испаритель или товар без вкуса введи нет, 0 или без вкусов):"
+        )
+    except Exception as e:
+        logger.error(f"Error saving image: {e}")
+        await message.answer(
+            "❌ Ошибка при сохранении изображения. Попробуйте еще раз."
+        )
+        await state.set_state(ItemStates.waiting_for_image)
+
+
+async def _handle_taste_image(message: Message, state: FSMContext, file_id: str):
+    """Helper function for processing taste images (both photo and document)"""
+    try:
+        image_path = await save_photo(file_id)
+    except Exception as e:
+        logger.error(f"Error saving photo: {e}")
+        await message.answer(
+            "❌ Ошибка при сохранении изображения. Попробуйте еще раз."
+        )
+        await state.set_state(TasteStates.waiting_for_taste_image)
+        return
+
+    data = await state.get_data()
+    item_id = data.get("item_id")
+    taste_name = data.get("taste_name")
+
+    if not item_id:
+        await message.answer("Ошибка: не найден ID товара. Попробуйте заново.")
+        await state.clear()
+        return
+
+    async with AsyncSessionLocal() as session:
+        existing_taste = (
+            (await session.execute(select(Taste).where(Taste.name == taste_name)))
+            .scalars()
+            .first()
+        )
+
+        if existing_taste:
+            await state.set_state(TasteStates.waiting_for_taste_name)
+            await message.answer(
+                f"Вкус «{taste_name}» уже существует. Попробуйте другое название:"
+            )
+            return
+
+        new_taste = Taste(name=taste_name, image=image_path)
+        session.add(new_taste)
+        await session.flush()
+
+        await session.execute(
+            insert(item_taste_association).values(
+                item_id=item_id,
+                taste_id=new_taste.id,
+            )
+        )
+
+        await session.commit()
+
+        item = (
+            (await session.execute(select(Item).where(Item.id == item_id)))
+            .scalars()
+            .first()
+        )
+
+        if item:
+            await message.answer(f"✅ Вкус «{taste_name}» добавлен к товару {item.name}!")
+        else:
+            await message.answer(f"✅ Вкус «{taste_name}» создан!")
+
+    await state.clear()
+
+
+async def _handle_item_edit_image(message: Message, state: FSMContext, file_id: str):
+    """Helper function for editing item images (both photo and document)"""
+    try:
+        image_path = await save_photo(file_id)
+        data = await state.get_data()
+
+        item_id = data.get("item_id")
+        if not item_id:
+            await message.answer("❌ Ошибка: не найден ID товара. Попробуйте заново.")
+            await state.clear()
+            return
+
+        async with AsyncSessionLocal() as session:
+            result = await session.execute(select(Item).where(Item.id == item_id))
+            item = result.scalar_one_or_none()
+
+            if not item:
+                await message.answer("❌ Товар не найден.")
+                await state.clear()
+                return
+
+            if item.image:
+                old_path = item.image.lstrip("/")
+                if os.path.exists(old_path):
+                    try:
+                        os.remove(old_path)
+                    except Exception:
+                        pass
+
+            item.image = image_path
+            await session.commit()
+
+            await message.answer("✅ Фото товара успешно обновлено!")
+            await state.clear()
+
+    except Exception as e:
+        await message.answer(f"⚠️ Ошибка при обновлении фото: {e}")
+        await state.clear()
+
+
+async def _handle_category_image(message: Message, state: FSMContext, file_id: str):
+    """Helper function for processing category images (both photo and document)"""
+    try:
+        logger.info("[_handle_category_image] Starting category image processing")
+        image_path = await save_photo(file_id)
+        logger.info(f"[_handle_category_image] Image saved at: {image_path}")
+        
+        data = await state.get_data()
+        category_name = data.get("name", "Unknown")
+        logger.info(f"[_handle_category_image] Category name from state: {category_name}")
+
+        async with AsyncSessionLocal() as session:
+            async with session.begin():
+                logger.info(f"[_handle_category_image] Checking if category '{category_name}' exists")
+                existing_category = (
+                    await session.execute(
+                        select(Category).where(Category.name == category_name)
+                    )
+                ).scalar_one_or_none()
+
+                if existing_category:
+                    logger.warning(f"[_handle_category_image] Category '{category_name}' already exists")
+                    await message.answer("ℹ️ Категория с таким названием уже существует")
+                    await state.clear()
+                    return
+
+                logger.info(f"[_handle_category_image] Creating new category: {category_name}")
+                new_category = Category(name=category_name, image=image_path)
+                session.add(new_category)
+                logger.info(f"[_handle_category_image] Category added to session, committing...")
+                
+            logger.info(f"[_handle_category_image] Category '{category_name}' committed successfully!")
+            await message.answer(f"✅ Категория '{category_name}' успешно создана!")
+
+    except Exception as e:
+        logger.error(f"[_handle_category_image] ERROR: {type(e).__name__}: {e}", exc_info=True)
+        await message.answer(f"❌ Произошла ошибка при создании категории: {type(e).__name__}")
+    finally:
+        await state.clear()
+        logger.info("[_handle_category_image] State cleared")
+
+
 @dp.callback_query(F.data.startswith("cancel_delivered_"))
 async def cancel_delivered_order(callback: CallbackQuery, state: FSMContext):
     """Обработка отмены доставленного заказа"""
@@ -1672,21 +1833,21 @@ async def process_item_category(callback: CallbackQuery, state: FSMContext):
 
 @dp.message(ItemStates.waiting_for_image, F.photo)
 async def process_item_image(message: Message, state: FSMContext):
-    """Обработка изображения товара"""
-    try:
-        photo = message.photo[-1]
-        image_path = await save_photo(photo.file_id)
-        await state.update_data(image_path=image_path)
-        await state.set_state(ItemStates.waiting_for_tastes)
+    """Обработка изображения товара (фото)"""
+    photo = message.photo[-1]
+    await _handle_item_image(message, state, photo.file_id)
+
+
+@dp.message(ItemStates.waiting_for_image, F.document)
+async def process_item_image_document(message: Message, state: FSMContext):
+    """Обработка изображения товара (документ)"""
+    if not message.document.mime_type or not message.document.mime_type.startswith('image/'):
         await message.answer(
-            "🍓 Введите вкусы товара через запятую (если это под, испаритель или товар без вкуса введи нет, 0 или без вкусов):"
+            "❌ Пожалуйста, отправьте изображение (PNG, JPG, JPEG)."
         )
-    except Exception as e:
-        logger.error(f"Error saving photo: {e}")
-        await message.answer(
-            "❌ Ошибка при сохранении изображения. Попробуйте еще раз."
-        )
-        await state.set_state(ItemStates.waiting_for_image)
+        return
+    
+    await _handle_item_image(message, state, message.document.file_id)
 
 
 @dp.message(ItemStates.waiting_for_tastes)
@@ -2748,65 +2909,22 @@ async def create_new_taste_process(message: Message, state: FSMContext):
 
 
 @dp.message(TasteStates.waiting_for_taste_image, F.photo)
-async def process_item_image(message: Message, state: FSMContext):
-    try:
-        photo = message.photo[-1]
-        image_path = await save_photo(photo.file_id)
+async def process_taste_image(message: Message, state: FSMContext):
+    """Обработка изображения вкуса (фото)"""
+    photo = message.photo[-1]
+    await _handle_taste_image(message, state, photo.file_id)
 
-    except Exception as e:
-        logger.error(f"Error saving photo: {e}")
+
+@dp.message(TasteStates.waiting_for_taste_image, F.document)
+async def process_taste_image_document(message: Message, state: FSMContext):
+    """Обработка изображения вкуса (документ)"""
+    if not message.document.mime_type or not message.document.mime_type.startswith('image/'):
         await message.answer(
-            "❌ Ошибка при сохранении изображения. Попробуйте еще раз."
+            "❌ Пожалуйста, отправьте изображение (PNG, JPG, JPEG)."
         )
-        await state.set_state(TasteStates.waiting_for_taste_image)
-
-    data = await state.get_data()
-    item_id = data.get("item_id")
-    taste_name = data.get("taste_name")
-
-    if not item_id:
-        await message.answer("Ошибка: не найден ID товара. Попробуйте заново.")
-        await state.clear()
         return
-
-    async with AsyncSessionLocal() as session:
-        # Проверяем, не существует ли уже вкус с таким названием
-        existing_taste = (
-            (await session.execute(select(Taste).where(Taste.name == taste_name)))
-            .scalars()
-            .first()
-        )
-
-        if existing_taste:
-            await message.answer(
-                f"Вкус «{taste_name}» уже существует. Попробуйте другое название:"
-            )
-            return
-
-        new_taste = Taste(name=taste_name, image=image_path)
-        session.add(new_taste)
-        await session.flush()
-
-        await session.execute(
-            insert(item_taste_association).values(
-                item_id=item_id,
-                taste_id=new_taste.id,
-            )
-        )
-
-        await session.commit()
-
-        item = (
-            (await session.execute(select(Item).where(Item.id == item_id)))
-            .scalars()
-            .first()
-        )
-
-        item_name = item.name if item else f"товар ID {item_id}"
-
-        await message.answer(
-            f"✅ Вкус «{taste_name}» создан и добавлен к товару «{item_name}»"
-        )
+    
+    await _handle_taste_image(message, state, message.document.file_id)
 
 
 @dp.callback_query(F.data.startswith("search_taste_"))
@@ -3119,43 +3237,21 @@ async def edit_item_photo(callback: CallbackQuery, state: FSMContext):
 
 @dp.message(ItemImageEditStates.waiting_for_item_image, F.photo)
 async def process_item_photo(message: Message, state: FSMContext):
-    try:
-        photo = message.photo[-1]
-        image_path = await save_photo(photo.file_id)
-        data = await state.get_data()
+    """Обработка изменения фото товара (фото)"""
+    photo = message.photo[-1]
+    await _handle_item_edit_image(message, state, photo.file_id)
 
-        item_id = data.get("item_id")
-        if not item_id:
-            await message.answer("❌ Ошибка: не найден ID товара. Попробуйте заново.")
-            await state.clear()
-            return
 
-        async with AsyncSessionLocal() as session:
-            result = await session.execute(select(Item).where(Item.id == item_id))
-            item = result.scalar_one_or_none()
-
-            if not item:
-                await message.answer("❌ Товар не найден.")
-                await state.clear()
-                return
-
-            if item.image:
-                old_path = item.image.lstrip("/")
-                if os.path.exists(old_path):
-                    try:
-                        os.remove(old_path)
-                    except Exception:
-                        pass
-
-            item.image = image_path
-            await session.commit()
-
-            await message.answer("✅ Фото товара успешно обновлено!")
-            await state.clear()
-
-    except Exception as e:
-        await message.answer(f"⚠️ Ошибка при обновлении фото: {e}")
-        await state.clear()
+@dp.message(ItemImageEditStates.waiting_for_item_image, F.document)
+async def process_item_photo_document(message: Message, state: FSMContext):
+    """Обработка изменения фото товара (документ)"""
+    if not message.document.mime_type or not message.document.mime_type.startswith('image/'):
+        await message.answer(
+            "❌ Пожалуйста, отправьте изображение (PNG, JPG, JPEG)."
+        )
+        return
+    
+    await _handle_item_edit_image(message, state, message.document.file_id)
 
 
 @dp.callback_query(F.data.startswith("edit_item_price_"))
@@ -3449,51 +3545,21 @@ async def process_category_name(message: Message, state: FSMContext):
 
 @dp.message(CategoryStates.waiting_for_image, F.photo)
 async def process_category_image(message: Message, state: FSMContext):
-    """Обработка изображения категории"""
-    try:
-        logger.info("[process_category_image] Starting category image processing")
-        photo = message.photo[-1]
-        logger.info(f"[process_category_image] Photo file_id: {photo.file_id}")
-        
-        image_path = await save_photo(photo.file_id)
-        logger.info(f"[process_category_image] Image saved at: {image_path}")
-        
-        data = await state.get_data()
-        category_name = data.get("name", "Unknown")
-        logger.info(f"[process_category_image] Category name from state: {category_name}")
+    """Обработка изображения категории (фото)"""
+    photo = message.photo[-1]
+    await _handle_category_image(message, state, photo.file_id)
 
-        async with AsyncSessionLocal() as session:
-            async with session.begin():
-                logger.info(f"[process_category_image] Checking if category '{category_name}' exists")
-                # Проверяем, существует ли категория с таким именем
-                existing_category = (
-                    await session.execute(
-                        select(Category).where(Category.name == category_name)
-                    )
-                ).scalar_one_or_none()
 
-                if existing_category:
-                    logger.warning(f"[process_category_image] Category '{category_name}' already exists")
-                    await message.answer("ℹ️ Категория с таким названием уже существует")
-                    await state.clear()
-                    return
-
-                # Создаем новую категорию
-                logger.info(f"[process_category_image] Creating new category: {category_name}")
-                new_category = Category(name=category_name, image=image_path)
-                session.add(new_category)
-                logger.info(f"[process_category_image] Category added to session, committing...")
-                
-            # session.begin() auto-commits on exit
-            logger.info(f"[process_category_image] Category '{category_name}' committed successfully!")
-            await message.answer(f"✅ Категория '{category_name}' успешно создана!")
-
-    except Exception as e:
-        logger.error(f"[process_category_image] ERROR: {type(e).__name__}: {e}", exc_info=True)
-        await message.answer(f"❌ Произошла ошибка при создании категории: {type(e).__name__}")
-    finally:
-        await state.clear()
-        logger.info("[process_category_image] State cleared")
+@dp.message(CategoryStates.waiting_for_image, F.document)
+async def process_category_image_document(message: Message, state: FSMContext):
+    """Обработка изображения категории (документ)"""
+    if not message.document.mime_type or not message.document.mime_type.startswith('image/'):
+        await message.answer(
+            "❌ Пожалуйста, отправьте изображение (PNG, JPG, JPEG)."
+        )
+        return
+    
+    await _handle_category_image(message, state, message.document.file_id)
 
 
 # Просмотр товаров и категорий
