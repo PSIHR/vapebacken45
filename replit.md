@@ -32,6 +32,20 @@ The application uses a client-server architecture. The Telegram bot serves as an
 
 ## Recent Changes
 
+- **2025-11-12**: Implemented PNG transparency support throughout the application
+  - Fixed bot's `save_photo` function to preserve file extensions (PNG, JPG) instead of forcing .jpg
+  - Removed background colors from image containers across frontend (ProductCard, Home, ProductDetail, CartItem)
+  - Transparent PNG images now "float" on the cyberpunk background without obstruction
+  - Alpha channel is fully preserved from bot upload to frontend display
+- **2025-11-12**: Fixed cart quantity synchronization with backend
+  - Created PATCH endpoint `/basket/{user_id}/items/{basket_item_id}` for updating item quantities
+  - Cart quantity changes now persist to backend immediately with optimistic UI updates
+  - Checkout page now displays correct quantities and prices from synchronized backend data
+  - Added rollback mechanism for failed quantity updates
+- **2025-11-12**: Fixed payment options in checkout
+  - Removed "Карта" payment option from non-postal delivery methods (Самовывоз, Курьером, По метро, Яндекс)
+  - Added "Карта" and "Наложка" payment options for postal delivery methods (Европочта, Белпочта)
+  - Auto-reset payment to "Наличные" when switching from postal to non-postal delivery
 - **2025-11-05**: Updated bot welcome button URL to production store
   - Changed "Открыть магазин" button link from Replit dev URL to https://vaultroi.com
   - Bot now directs users to production store instead of development environment
