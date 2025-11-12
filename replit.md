@@ -32,6 +32,13 @@ The application uses a client-server architecture. The Telegram bot serves as an
 
 ## Recent Changes
 
+- **2025-11-12**: Implemented PNG document upload support in Telegram bot
+  - Added document handlers (F.document) alongside existing photo handlers (F.photo) for all 4 image upload states
+  - Created paired-handler pattern with shared helper functions to eliminate code duplication
+  - Document handlers validate MIME-type (image/*) before processing
+  - Telegram can now send PNG files as documents (not just photos), and bot correctly processes them
+  - Fixed FSM state reset bug in taste image upload when duplicate name detected
+  - Refactored 4 photo handlers to use centralized helper functions: _handle_item_image, _handle_taste_image, _handle_item_edit_image, _handle_category_image
 - **2025-11-12**: Implemented PNG transparency support throughout the application
   - Fixed bot's `save_photo` function to preserve file extensions (PNG, JPG) instead of forcing .jpg
   - Removed background colors from image containers across frontend (ProductCard, Home, ProductDetail, CartItem)
