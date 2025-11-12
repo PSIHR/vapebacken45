@@ -11,7 +11,7 @@ const ProductCard = ({ product }) => {
 
   return (
     <div className="glass-card overflow-hidden hover:shadow-xl transition-all hover:border-cyan-400/40">
-      <div className="relative h-48 bg-gradient-to-br from-cyan-500/10 to-purple-500/10">
+      <div className="relative h-48">
         {product.image ? (
           <img
             src={product.image}

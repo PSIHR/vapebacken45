@@ -92,7 +92,7 @@ const ProductDetail = ({ onCartUpdate }) => {
         </button>
 
         <div className="glass-panel overflow-hidden">
-          <div className="relative h-80 bg-pink-50">
+          <div className="relative h-80">
             {product.image ? (
               <img
                 src={product.image}

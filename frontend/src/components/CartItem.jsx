@@ -5,7 +5,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
   return (
     <div className="glass-panel p-4">
       <div className="flex gap-3">
-        <div className="w-20 h-20 rounded-lg bg-pink-50 flex-shrink-0 overflow-hidden">
+        <div className="w-20 h-20 rounded-lg flex-shrink-0 overflow-hidden">
           {item.image ? (
             <img
               src={item.image}

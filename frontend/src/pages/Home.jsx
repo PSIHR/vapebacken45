@@ -109,7 +109,7 @@ const Home = () => {
                 onClick={() => handleCategoryClick(category.id)}
                 className="glass-panel rounded-2xl overflow-hidden cursor-pointer transform transition-all hover:scale-105 hover:shadow-2xl hover:border-cyan-400/40 active:scale-95"
               >
-                <div className="aspect-square relative overflow-hidden bg-gradient-to-br from-cyan-500/10 via-purple-500/10 to-pink-500/10">
+                <div className="aspect-square relative overflow-hidden">
                   {category.image ? (
                     <img
                       src={category.image}

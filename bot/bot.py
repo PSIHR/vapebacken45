@@ -1377,22 +1377,28 @@ async def process_cancel_reason(message: Message, state: FSMContext):
 
 
 async def save_photo(file_id: str) -> str:
-    """Сохранение фото на диск и возврат относительного пути к файлу"""
+    """Сохранение фото на диск и возврат относительного пути к файлу
+    
+    Поддерживает PNG с прозрачностью (альфа-каналом) и JPG
+    """
     try:
         logger.info(f"[save_photo] Starting to save photo with file_id: {file_id}")
         file = await bot.get_file(file_id)
         file_path = file.file_path
         logger.info(f"[save_photo] Got file_path from Telegram: {file_path}")
         
-        file_name = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{file_id}.jpg"
+        if not file_path:
+            raise ValueError("File path is None")
+        
+        file_extension = os.path.splitext(file_path)[1] or '.jpg'
+        
+        file_name = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{file_id}{file_extension}"
         save_path = os.path.join(IMAGES_DIR, file_name)
-        logger.info(f"[save_photo] Will save to: {save_path}")
+        logger.info(f"[save_photo] Will save to: {save_path} with extension: {file_extension}")
 
-        # Скачиваем файл
         await bot.download_file(file_path, save_path)
         logger.info(f"[save_photo] Successfully downloaded file to {save_path}")
 
-        # Возвращаем относительный путь для веб-доступа
         result_path = f"/uploads/{file_name}"
         logger.info(f"[save_photo] Returning path: {result_path}")
         return result_path
