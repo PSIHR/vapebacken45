@@ -32,6 +32,12 @@ The application uses a client-server architecture. The Telegram bot serves as an
 
 ## Recent Changes
 
+- **2025-11-16**: Fixed bot admin panel - taste creation and characteristics editing
+  - **Taste Creation**: Removed mandatory photo requirement, now supports comma-separated bulk creation (e.g., "Барбарис, Вишня, Клубника")
+  - **Characteristics Editing**: Shows current values (strength, puffs, VG/PG, tank volume) before editing, supports "-" to skip fields
+  - Removed unused _handle_taste_image helper and photo handlers for taste creation
+  - Added proper word declension for taste count (вкус/вкуса/вкусов)
+  - Fixed characteristics saving to correct database fields instead of description field
 - **2025-11-16**: Enhanced product navigation and UX improvements
   - Fixed back button navigation in ProductDetail to return to correct catalog using location.state.categoryId
   - Implemented Promise.all for parallel API requests when adding multiple tastes to cart (performance improvement)
