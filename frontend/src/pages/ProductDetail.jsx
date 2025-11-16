@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { itemsAPI, basketAPI } from '../services/api';
 import { useTelegram } from '../hooks/useTelegram';
 import { formatPrice } from '../utils/helpers';
@@ -8,9 +8,10 @@ import { ArrowLeft, ShoppingCart, Check, ChevronDown, ChevronUp } from 'lucide-r
 const ProductDetail = ({ onCartUpdate }) => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, showAlert } = useTelegram();
   const [product, setProduct] = useState(null);
-  const [selectedTaste, setSelectedTaste] = useState(null);
+  const [selectedTastes, setSelectedTastes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
@@ -27,9 +28,7 @@ const ProductDetail = ({ onCartUpdate }) => {
       
       if (foundProduct) {
         setProduct(foundProduct);
-        if (foundProduct.tastes && foundProduct.tastes.length > 0) {
-          setSelectedTaste(foundProduct.tastes[0]);
-        }
+        setSelectedTastes([]);
       } else {
         showAlert('Товар не найден');
         navigate('/');
@@ -42,24 +41,53 @@ const ProductDetail = ({ onCartUpdate }) => {
     }
   };
 
+  const toggleTaste = (taste) => {
+    setSelectedTastes(prev => {
+      const isSelected = prev.some(t => t.id === taste.id);
+      if (isSelected) {
+        return prev.filter(t => t.id !== taste.id);
+      } else {
+        return [...prev, taste];
+      }
+    });
+  };
+
   const handleAddToCart = async () => {
     if (!user?.id) {
       showAlert('Пожалуйста, авторизуйтесь');
       return;
     }
 
+    if (product.tastes && product.tastes.length > 0 && selectedTastes.length === 0) {
+      showAlert('Пожалуйста, выберите хотя бы один вкус');
+      return;
+    }
+
     try {
       setAdding(true);
-      await basketAPI.addItem(user.id, {
-        item_id: product.id,
-        selected_taste: selectedTaste?.name || null,
-      });
       
-      showAlert('Товар добавлен в корзину');
+      if (product.tastes && product.tastes.length > 0) {
+        await Promise.all(
+          selectedTastes.map(taste =>
+            basketAPI.addItem(user.id, {
+              item_id: product.id,
+              selected_taste: taste.name,
+            })
+          )
+        );
+        const count = selectedTastes.length;
+        showAlert(`${count} ${count === 1 ? 'товар добавлен' : 'товара добавлено'} в корзину`);
+      } else {
+        await basketAPI.addItem(user.id, {
+          item_id: product.id,
+          selected_taste: null,
+        });
+        showAlert('Товар добавлен в корзину');
+      }
+      
       if (onCartUpdate) {
         await onCartUpdate();
       }
-      navigate('/cart');
     } catch (error) {
       console.error('Error adding to cart:', error);
       showAlert('Ошибка добавления в корзину');
@@ -84,7 +112,14 @@ const ProductDetail = ({ onCartUpdate }) => {
     <div className="min-h-screen">
       <div className="container mx-auto px-4 py-6 pb-32">
         <button
-          onClick={() => navigate('/')}
+          onClick={() => {
+            const categoryId = location.state?.categoryId || product?.category?.id;
+            if (categoryId) {
+              navigate(`/catalog/${categoryId}`);
+            } else {
+              navigate('/');
+            }
+          }}
           className="flex items-center gap-2 text-white mb-4 hover:text-white/80"
         >
           <ArrowLeft size={20} />
@@ -97,6 +132,7 @@ const ProductDetail = ({ onCartUpdate }) => {
               <img
                 src={product.image}
                 alt={product.name}
+                loading="lazy"
                 className="w-full h-full object-contain"
               />
             ) : (
@@ -120,33 +156,36 @@ const ProductDetail = ({ onCartUpdate }) => {
             {product.tastes && product.tastes.length > 0 && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-white mb-3">
-                  Выберите вкус:
+                  Выберите вкусы ({selectedTastes.length} выбрано):
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
-                  {product.tastes.map((taste) => (
-                    <button
-                      key={taste.id}
-                      onClick={() => setSelectedTaste(taste)}
-                      className={`p-4 rounded-lg border-2 transition-all ${
-                        selectedTaste?.id === taste.id
-                          ? 'border-pink-400 bg-pink-100'
-                          : 'border-white/30 hover:border-white/50'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className={`font-medium ${
-                          selectedTaste?.id === taste.id 
-                            ? 'text-black' 
-                            : 'text-white'
-                        }`}>
-                          {taste.name}
-                        </span>
-                        {selectedTaste?.id === taste.id && (
-                          <Check size={20} className="text-black" />
-                        )}
-                      </div>
-                    </button>
-                  ))}
+                  {product.tastes.map((taste) => {
+                    const isSelected = selectedTastes.some(t => t.id === taste.id);
+                    return (
+                      <button
+                        key={taste.id}
+                        onClick={() => toggleTaste(taste)}
+                        className={`p-4 rounded-lg border-2 transition-all ${
+                          isSelected
+                            ? 'border-pink-400 bg-pink-100'
+                            : 'border-white/30 hover:border-white/50'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className={`font-medium ${
+                            isSelected 
+                              ? 'text-black' 
+                              : 'text-white'
+                          }`}>
+                            {taste.name}
+                          </span>
+                          {isSelected && (
+                            <Check size={20} className="text-black" />
+                          )}
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}

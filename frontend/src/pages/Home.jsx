@@ -68,7 +68,7 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       <div className="container mx-auto px-4 py-6">
-        <div className="mb-6 grid grid-cols-2 gap-3">
+        <div className="mb-4 grid grid-cols-2 gap-3">
           <button
             onClick={() => handleLinkClick('https://t.me/vapplugg')}
             className="glass-button p-3 rounded-lg flex items-center justify-center gap-2 hover:scale-105 transition-all"
@@ -82,6 +82,16 @@ const Home = () => {
           >
             <ExternalLink size={16} className="text-purple-400 z-10" />
             <span className="text-white font-medium text-sm z-10">Беседа</span>
+          </button>
+        </div>
+        
+        <div className="mb-6">
+          <button
+            onClick={() => handleLinkClick('https://t.me/vapepluggmanager')}
+            className="glass-button w-full p-3 rounded-lg flex items-center justify-center gap-2 hover:scale-105 transition-all"
+          >
+            <ExternalLink size={16} className="text-pink-400 z-10" />
+            <span className="text-white font-medium text-sm z-10">Консультант</span>
           </button>
         </div>
 
@@ -114,6 +124,7 @@ const Home = () => {
                     <img
                       src={category.image}
                       alt={category.name}
+                      loading="lazy"
                       className="w-full h-full object-cover"
                       onError={(e) => {
                         e.target.style.display = 'none';

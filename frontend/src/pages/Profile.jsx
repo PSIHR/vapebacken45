@@ -111,7 +111,7 @@ const Profile = () => {
                           {' '}x{item.quantity}
                         </span>
                         <span className="text-white font-medium">
-                          {formatPrice(item.total_price)} BYN
+                          {formatPrice(item.total_price)}
                         </span>
                       </div>
                     ))}
@@ -127,7 +127,7 @@ const Profile = () => {
                   <div className="pt-3 border-t border-pink-200 flex justify-between items-center">
                     <span className="text-white/50">Итого:</span>
                     <span className="text-white font-bold text-xl">
-                      {formatPrice(order.total_price)} BYN
+                      {formatPrice(order.total_price)}
                     </span>
                   </div>
                 </div>

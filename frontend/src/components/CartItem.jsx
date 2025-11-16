@@ -10,6 +10,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
             <img
               src={item.image}
               alt={item.name}
+              loading="lazy"
               className="w-full h-full object-contain"
             />
           ) : (
