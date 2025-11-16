@@ -1424,68 +1424,6 @@ async def _handle_item_image(message: Message, state: FSMContext, file_id: str):
         await state.set_state(ItemStates.waiting_for_image)
 
 
-async def _handle_taste_image(message: Message, state: FSMContext, file_id: str):
-    """Helper function for processing taste images (both photo and document)"""
-    try:
-        image_path = await save_photo(file_id)
-    except Exception as e:
-        logger.error(f"Error saving photo: {e}")
-        await message.answer(
-            "❌ Ошибка при сохранении изображения. Попробуйте еще раз."
-        )
-        await state.set_state(TasteStates.waiting_for_taste_image)
-        return
-
-    data = await state.get_data()
-    item_id = data.get("item_id")
-    taste_name = data.get("taste_name")
-
-    if not item_id:
-        await message.answer("Ошибка: не найден ID товара. Попробуйте заново.")
-        await state.clear()
-        return
-
-    async with AsyncSessionLocal() as session:
-        existing_taste = (
-            (await session.execute(select(Taste).where(Taste.name == taste_name)))
-            .scalars()
-            .first()
-        )
-
-        if existing_taste:
-            await state.set_state(TasteStates.waiting_for_taste_name)
-            await message.answer(
-                f"Вкус «{taste_name}» уже существует. Попробуйте другое название:"
-            )
-            return
-
-        new_taste = Taste(name=taste_name, image=image_path)
-        session.add(new_taste)
-        await session.flush()
-
-        await session.execute(
-            insert(item_taste_association).values(
-                item_id=item_id,
-                taste_id=new_taste.id,
-            )
-        )
-
-        await session.commit()
-
-        item = (
-            (await session.execute(select(Item).where(Item.id == item_id)))
-            .scalars()
-            .first()
-        )
-
-        if item:
-            await message.answer(f"✅ Вкус «{taste_name}» добавлен к товару {item.name}!")
-        else:
-            await message.answer(f"✅ Вкус «{taste_name}» создан!")
-
-    await state.clear()
-
-
 async def _handle_item_edit_image(message: Message, state: FSMContext, file_id: str):
     """Helper function for editing item images (both photo and document)"""
     try:
@@ -2891,40 +2829,99 @@ async def create_new_taste_start(callback: CallbackQuery, state: FSMContext):
     await state.update_data(item_id=item_id)
     await state.set_state(TasteStates.waiting_for_taste_name)
 
-    await callback.message.answer("Введите название нового вкуса:")
+    await callback.message.answer(
+        "🍓 Введите названия вкусов через запятую (например: Барбарис, Вишня, Клубника):"
+    )
     await callback.answer()
 
 
 @dp.message(TasteStates.waiting_for_taste_name)
 async def create_new_taste_process(message: Message, state: FSMContext):
-    taste_name = message.text.strip()
-    if not taste_name:
+    tastes_text = message.text.strip()
+    if not tastes_text:
         await message.answer("Название вкуса не может быть пустым. Попробуйте еще раз:")
         return
 
-    await state.update_data(taste_name=taste_name)
+    data = await state.get_data()
+    item_id = data.get("item_id")
 
-    await state.set_state(TasteStates.waiting_for_taste_image)
-    await message.answer("🖼️ Отправьте изображение вкуса:")
-
-
-@dp.message(TasteStates.waiting_for_taste_image, F.photo)
-async def process_taste_image(message: Message, state: FSMContext):
-    """Обработка изображения вкуса (фото)"""
-    photo = message.photo[-1]
-    await _handle_taste_image(message, state, photo.file_id)
-
-
-@dp.message(TasteStates.waiting_for_taste_image, F.document)
-async def process_taste_image_document(message: Message, state: FSMContext):
-    """Обработка изображения вкуса (документ)"""
-    if not message.document.mime_type or not message.document.mime_type.startswith('image/'):
-        await message.answer(
-            "❌ Пожалуйста, отправьте изображение (PNG, JPG, JPEG)."
-        )
+    if not item_id:
+        await message.answer("Ошибка: не найден ID товара. Попробуйте заново.")
+        await state.clear()
         return
+
+    tastes = [taste.strip() for taste in tastes_text.split(",") if taste.strip()]
     
-    await _handle_taste_image(message, state, message.document.file_id)
+    if not tastes:
+        await message.answer("Не указано ни одного вкуса. Попробуйте еще раз:")
+        return
+
+    async with AsyncSessionLocal() as session:
+        item = (
+            (await session.execute(select(Item).where(Item.id == item_id)))
+            .scalars()
+            .first()
+        )
+        
+        if not item:
+            await message.answer("Товар не найден.")
+            await state.clear()
+            return
+
+        existing_tastes = (
+            (await session.execute(select(Taste).where(Taste.name.in_(tastes))))
+            .scalars()
+            .all()
+        )
+        
+        existing_names = {t.name for t in existing_tastes}
+        new_tastes = []
+        added_count = 0
+        skipped_count = 0
+
+        for taste_name in tastes:
+            if taste_name not in existing_names:
+                new_taste = Taste(name=taste_name, image=None)
+                new_tastes.append(new_taste)
+                session.add(new_taste)
+
+        await session.flush()
+
+        all_tastes = existing_tastes + new_tastes
+        for taste in all_tastes:
+            try:
+                await session.execute(
+                    insert(item_taste_association).values(
+                        item_id=item_id,
+                        taste_id=taste.id,
+                    )
+                )
+                added_count += 1
+            except:
+                skipped_count += 1
+                continue
+
+        await session.commit()
+
+        if added_count > 0:
+            await message.answer(
+                f"✅ Добавлено {added_count} {_get_taste_word(added_count)} к товару {item.name}!"
+                + (f"\n⚠️ Пропущено {skipped_count} (уже были прикреплены)" if skipped_count > 0 else "")
+            )
+        else:
+            await message.answer("❌ Ни один вкус не был добавлен (все уже были прикреплены)")
+
+    await state.clear()
+
+
+def _get_taste_word(count: int) -> str:
+    """Возвращает правильное склонение слова 'вкус'"""
+    if count % 10 == 1 and count % 100 != 11:
+        return "вкус"
+    elif count % 10 in (2, 3, 4) and count % 100 not in (12, 13, 14):
+        return "вкуса"
+    else:
+        return "вкусов"
 
 
 @dp.callback_query(F.data.startswith("search_taste_"))
@@ -3178,20 +3175,41 @@ async def edit_item_characteristics(callback: CallbackQuery, state: FSMContext):
         await callback.answer("Неверный ID", show_alert=True)
         return
 
+    async with AsyncSessionLocal() as session:
+        result = await session.execute(select(Item).where(Item.id == item_id))
+        item = result.scalars().first()
+
+        if not item:
+            await callback.answer("Товар не найден", show_alert=True)
+            return
+
+        current_chars = (
+            f"📋 <b>Текущие характеристики товара «{item.name}»:</b>\n\n"
+            f"💪 <b>Крепкость:</b> {item.strength or 'не указана'}\n"
+            f"💨 <b>Количество тяг:</b> {item.puffs or 'не указано'}\n"
+            f"🧪 <b>VG/PG:</b> {item.vg_pg or 'не указано'}\n"
+            f"📦 <b>Объем бака:</b> {item.tank_volume or 'не указан'}\n\n"
+            f"Введите новые значения через запятую в формате:\n"
+            f"<code>крепкость, тяги, vg/pg, объем бака</code>\n\n"
+            f"Примеры:\n"
+            f"<code>20 мг, 800, 50/50, 2 мл</code>\n"
+            f"<code>50 мг, 1500, 70/30, 3.5 мл</code>\n\n"
+            f"<i>Чтобы оставить значение без изменений, введите <b>-</b></i>"
+        )
+
+        await callback.message.answer(current_chars, parse_mode="HTML")
+
     await state.update_data(item_id=item_id)
     await state.set_state(
         ItemCharacteristicsEditStates.waiting_for_item_characteristics
     )
-
-    await callback.message.answer(
-        f"Введите новые характеристики для товара с ID {item_id}:",
-    )
+    await callback.answer()
 
 
 @dp.message(ItemCharacteristicsEditStates.waiting_for_item_characteristics)
 async def renaming_characteristics(message: Message, state: FSMContext):
-    new_description = message.text.strip()
-    if not new_description:
+    new_chars = message.text.strip()
+    if not new_chars:
         await message.answer("Введите корректные характеристики товара:")
         return
 
@@ -3203,6 +3221,17 @@ async def renaming_characteristics(message: Message, state: FSMContext):
         await state.clear()
         return
 
+    parts = [p.strip() for p in new_chars.split(",")]
+    
+    if len(parts) != 4:
+        await message.answer(
+            "❌ Неверный формат. Введите все 4 характеристики через запятую:\n"
+            "<code>крепкость, тяги, vg/pg, объем бака</code>\n\n"
+            "Пример: <code>20 мг, 800, 50/50, 2 мл</code>",
+            parse_mode="HTML"
+        )
+        return
+
     async with AsyncSessionLocal() as session:
         result = await session.execute(select(Item).where(Item.id == item_id))
         item = result.scalars().first()
@@ -3212,10 +3241,27 @@ async def renaming_characteristics(message: Message, state: FSMContext):
             await state.clear()
             return
 
-        item.description = new_description
+        if parts[0] and parts[0] != "-":
+            item.strength = parts[0]
+        if parts[1] and parts[1] != "-":
+            item.puffs = parts[1]
+        if parts[2] and parts[2] != "-":
+            item.vg_pg = parts[2]
+        if parts[3] and parts[3] != "-":
+            item.tank_volume = parts[3]
+        
         await session.commit()
 
-    await message.answer("✅ Характеристики успешно изменены.")
+        updated_chars = (
+            f"✅ <b>Характеристики успешно обновлены:</b>\n\n"
+            f"💪 <b>Крепкость:</b> {item.strength or 'не указана'}\n"
+            f"💨 <b>Количество тяг:</b> {item.puffs or 'не указано'}\n"
+            f"🧪 <b>VG/PG:</b> {item.vg_pg or 'не указано'}\n"
+            f"📦 <b>Объем бака:</b> {item.tank_volume or 'не указан'}"
+        )
+
+        await message.answer(updated_chars, parse_mode="HTML")
+
     await state.clear()
 
 
