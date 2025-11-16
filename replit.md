@@ -32,6 +32,17 @@ The application uses a client-server architecture. The Telegram bot serves as an
 
 ## Recent Changes
 
+- **2025-11-16**: Enhanced product navigation and UX improvements
+  - Fixed back button navigation in ProductDetail to return to correct catalog using location.state.categoryId
+  - Implemented Promise.all for parallel API requests when adding multiple tastes to cart (performance improvement)
+  - Updated strength badge regex to support both "mg" and "мг" (localized) formats, plus numeric-only values
+  - ProductCard now passes categoryId in navigation state for correct back button behavior
+  - Added multiple taste selection with checkboxes instead of radio buttons
+  - Added magnifying glass button with modal overlay for quick taste preview
+  - Added "Консультант" button linking to https://t.me/vapepluggmanager
+  - Removed BYN duplication in Profile orders display
+  - Implemented lazy loading (loading="lazy") for all images across ProductCard, CartItem, Home, ProductDetail
+  - Changed product card badges from category name to strength (mg) with color coding: 0-39mg green, 40-69mg red, 70+mg burgundy
 - **2025-11-12**: Implemented PNG document upload support in Telegram bot
   - Added document handlers (F.document) alongside existing photo handlers (F.photo) for all 4 image upload states
   - Created paired-handler pattern with shared helper functions to eliminate code duplication
