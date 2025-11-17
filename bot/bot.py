@@ -1863,6 +1863,14 @@ async def process_item_tank_volume(message: Message, state: FSMContext):
     # Получаем все данные
     data = await state.get_data()
     tastes = data.get("tastes", [])
+    
+    # Удаляем дубликаты из списка вкусов, сохраняя порядок
+    unique_tastes = []
+    seen = set()
+    for taste in tastes:
+        if taste not in seen:
+            unique_tastes.append(taste)
+            seen.add(taste)
 
     try:
         async with AsyncSessionLocal() as session:
@@ -1882,22 +1890,24 @@ async def process_item_tank_volume(message: Message, state: FSMContext):
             await session.flush()
 
             # Обрабатываем вкусы только если они есть
-            if tastes:
+            if unique_tastes:
                 # Получаем существующие вкусы
                 existing_tastes = (
-                    (await session.execute(select(Taste).where(Taste.name.in_(tastes))))
+                    (await session.execute(select(Taste).where(Taste.name.in_(unique_tastes))))
                     .scalars()
                     .all()
                 )
 
                 existing_names = {t.name for t in existing_tastes}
                 new_tastes = []
+                created_names = set()
 
-                # Создаем новые вкусы
-                for taste_name in tastes:
-                    if taste_name not in existing_names:
+                # Создаем новые вкусы (только уникальные)
+                for taste_name in unique_tastes:
+                    if taste_name not in existing_names and taste_name not in created_names:
                         new_taste = Taste(name=taste_name)
                         new_tastes.append(new_taste)
+                        created_names.add(taste_name)
                         session.add(new_taste)
 
                 await session.flush()
@@ -1910,15 +1920,28 @@ async def process_item_tank_volume(message: Message, state: FSMContext):
                             item_id=new_item.id, taste_id=taste.id
                         )
                     )
+                
+                if len(tastes) > len(unique_tastes):
+                    duplicates_count = len(tastes) - len(unique_tastes)
+                    logger.info(f"Removed {duplicates_count} duplicate tastes for item {new_item.name}")
             else:
                 logger.info(f"Товар {new_item.name} создан без вкусов")
 
             await session.commit()
-            await message.answer("✅ Товар успешно создан!")
+            
+            # Информируем о созданном товаре
+            if unique_tastes:
+                total_msg = f"✅ Товар успешно создан с {len(unique_tastes)} вкусами!"
+                if len(tastes) > len(unique_tastes):
+                    duplicates = len(tastes) - len(unique_tastes)
+                    total_msg += f"\n(Пропущено {duplicates} дубликатов)"
+                await message.answer(total_msg)
+            else:
+                await message.answer("✅ Товар успешно создан!")
 
     except Exception as e:
         logger.error(f"Error creating item: {e}")
-        await message.answer("❌ Произошла ошибка при создании товара")
+        await message.answer(f"❌ Произошла ошибка при создании товара:\n{str(e)[:200]}")
     finally:
         await state.clear()
 
