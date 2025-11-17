@@ -71,8 +71,8 @@ const ProductCard = ({ product }) => {
 
   return (
     <>
-      <div className="glass-card overflow-hidden hover:shadow-xl transition-all hover:border-cyan-400/40">
-        <div className="relative h-48">
+      <div className="glass-card overflow-hidden hover:shadow-xl transition-all hover:border-cyan-400/40 flex flex-col">
+        <div className="relative h-36">
           {product.image ? (
             <img
               src={product.image}
@@ -82,38 +82,35 @@ const ProductCard = ({ product }) => {
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-cyan-400/50">
-              <ShoppingCart size={48} />
+              <ShoppingCart size={40} />
             </div>
           )}
         </div>
-        <div className="p-4 relative z-10">
-          <div className="mb-2">
+        <div className="p-3 relative z-10 flex flex-col flex-1">
+          <div className="mb-1.5">
             {getStrengthBadge()}
           </div>
-          <h3 className="text-xl font-bold text-white mb-1">{product.name}</h3>
-          <p className="text-sm text-white/80 mb-3 line-clamp-2">
-            {product.description}
-          </p>
-          <div className="flex flex-col gap-3">
-            <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+          <h3 className="text-lg font-bold text-white mb-1 line-clamp-2">{product.name}</h3>
+          <div className="mt-auto">
+            <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent block mb-2">
               {formatPrice(product.price)}
             </span>
             <div className="flex gap-2">
               {product.tastes && product.tastes.length > 0 && (
                 <button
                   onClick={handleTastesClick}
-                  className="flex-shrink-0 p-2.5 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 backdrop-blur-sm text-white rounded-lg transition-all shadow-lg shadow-purple-500/20"
+                  className="flex-shrink-0 p-2 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 backdrop-blur-sm text-white rounded-lg transition-all shadow-lg shadow-purple-500/20"
                   title="Просмотр вкусов"
                 >
-                  <Search size={20} />
+                  <Search size={18} />
                 </button>
               )}
               <button
                 onClick={handleSelectClick}
-                className="flex-1 px-4 py-2.5 bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 backdrop-blur-sm text-white rounded-lg font-medium transition-all flex items-center justify-center gap-2 group shadow-lg shadow-cyan-500/20"
+                className="flex-1 px-3 py-2 bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 backdrop-blur-sm text-white rounded-lg font-medium transition-all flex items-center justify-center gap-1.5 group shadow-lg shadow-cyan-500/20 text-sm"
               >
                 Выбрать
-                <ChevronRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+                <ChevronRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
               </button>
             </div>
           </div>

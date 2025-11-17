@@ -32,12 +32,17 @@ The application uses a client-server architecture. The Telegram bot serves as an
 
 ## Recent Changes
 
-- **2025-11-17**: Fixed ProductDetail "Add to Cart" button overflow issue
-  - Made "Добавить в корзину" button fixed at bottom of screen (fixed bottom-0)
-  - Added max-h-96 with overflow-y-auto to taste selection grid for scrollable long lists
-  - Improved mobile UX - button always visible regardless of number of tastes
-  - Added glassmorphism backdrop-blur-xl to fixed button bar
-  - Increased page padding-bottom (pb-40) to prevent content hiding under fixed button
+- **2025-11-17**: Fixed button overflow issues on ProductDetail and ProductCard
+  - **ProductDetail page**: Made "Добавить в корзину" button fixed at bottom of screen
+    - Added max-h-96 with overflow-y-auto to taste selection grid for scrollable long lists
+    - Glassmorphism backdrop-blur-xl for fixed button bar
+    - Increased page padding-bottom (pb-40) to prevent content hiding under fixed button
+  - **ProductCard component**: Optimized card layout to prevent "Выбрать" button cutoff
+    - Reduced image height from h-48 to h-36 for more compact cards
+    - Removed description from card (only title + badge + price + buttons)
+    - Used flexbox with flex-col and mt-auto to push buttons to bottom
+    - Reduced padding and button sizes for better mobile fit
+    - Cards now display properly in 2-column grid without overflow
 - **2025-11-16**: Fixed bot admin panel - taste creation and characteristics editing
   - **Taste Creation**: Removed mandatory photo requirement, now supports comma-separated bulk creation (e.g., "Барбарис, Вишня, Клубника")
   - **Characteristics Editing**: Shows current values (strength, puffs, VG/PG, tank volume) before editing, supports "-" to skip fields
