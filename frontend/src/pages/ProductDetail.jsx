@@ -109,8 +109,8 @@ const ProductDetail = ({ onCartUpdate }) => {
   }
 
   return (
-    <div className="min-h-screen">
-      <div className="container mx-auto px-4 py-6 pb-32">
+    <div className="min-h-screen pb-40">
+      <div className="container mx-auto px-4 py-6">
         <button
           onClick={() => {
             const categoryId = location.state?.categoryId || product?.category?.id;
@@ -158,7 +158,7 @@ const ProductDetail = ({ onCartUpdate }) => {
                 <h3 className="text-lg font-semibold text-white mb-3">
                   Выберите вкусы ({selectedTastes.length} выбрано):
                 </h3>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-3 max-h-96 overflow-y-auto">
                   {product.tastes.map((taste) => {
                     const isSelected = selectedTastes.some(t => t.id === taste.id);
                     return (
@@ -253,30 +253,35 @@ const ProductDetail = ({ onCartUpdate }) => {
               </div>
             )}
 
-            <div className="border-t border-white/20 pt-6">
-              <div className="flex items-center justify-between mb-6">
+            <div className="border-t border-white/20 pt-6 pb-4">
+              <div className="flex items-center justify-between">
                 <span className="text-lg text-white/80">Цена:</span>
                 <span className="text-4xl font-bold text-white">
                   {formatPrice(product.price)}
                 </span>
               </div>
-
-              <button
-                onClick={handleAddToCart}
-                disabled={adding}
-                className="w-full bg-pink-500 hover:bg-pink-600 text-white py-4 rounded-lg font-medium text-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 backdrop-blur-sm"
-              >
-                {adding ? (
-                  'Добавление...'
-                ) : (
-                  <>
-                    <ShoppingCart size={24} />
-                    Добавить в корзину
-                  </>
-                )}
-              </button>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Fixed bottom button */}
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-black/80 backdrop-blur-xl border-t border-white/10 z-50">
+        <div className="container mx-auto max-w-md">
+          <button
+            onClick={handleAddToCart}
+            disabled={adding}
+            className="w-full bg-pink-500 hover:bg-pink-600 text-white py-4 rounded-lg font-medium text-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          >
+            {adding ? (
+              'Добавление...'
+            ) : (
+              <>
+                <ShoppingCart size={24} />
+                Добавить в корзину
+              </>
+            )}
+          </button>
         </div>
       </div>
     </div>
