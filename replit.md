@@ -33,16 +33,18 @@ The application uses a client-server architecture. The Telegram bot serves as an
 ## Recent Changes
 
 - **2025-11-17**: Fixed button overflow issues and duplicate taste creation bug
-  - **ProductDetail page**: Made "Добавить в корзину" button fixed at bottom of screen
+  - **ProductDetail page**: Made "Добавить в корзину" button fixed above navbar
+    - Button positioned at bottom-20 (80px above bottom) with z-[60] to stay above navbar (z-50)
     - Added max-h-96 with overflow-y-auto to taste selection grid for scrollable long lists
     - Glassmorphism backdrop-blur-xl for fixed button bar
-    - Increased page padding-bottom (pb-48) to prevent content hiding under navbar
+    - Increased page padding-bottom (pb-56) to prevent content hiding under button and navbar
   - **ProductCard component**: Optimized card layout to prevent "Выбрать" button cutoff
     - Reduced image height from h-48 to h-36 for more compact cards
     - Removed description from card (only title + badge + price + buttons)
     - Used flexbox with flex-col and mt-auto to push buttons to bottom
     - Reduced padding (p-2.5) and button sizes (text-xs) for better mobile fit
     - Removed special "РАСХОДНИКИ" badge logic - only strength badges shown now
+    - Strength badges show for all products with color coding: 0-39mg green, 40-69mg red, 70+mg burgundy
     - Cards now display properly in 2-column grid without overflow
   - **Bot duplicate taste fix**: Added deduplication logic when creating items with multiple tastes
     - Removes duplicate taste names from comma-separated input before database insert

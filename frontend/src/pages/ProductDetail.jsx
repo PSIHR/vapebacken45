@@ -109,7 +109,7 @@ const ProductDetail = ({ onCartUpdate }) => {
   }
 
   return (
-    <div className="min-h-screen pb-48">
+    <div className="min-h-screen pb-56">
       <div className="container mx-auto px-4 py-6">
         <button
           onClick={() => {
@@ -266,7 +266,7 @@ const ProductDetail = ({ onCartUpdate }) => {
       </div>
 
       {/* Fixed bottom button */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-black/80 backdrop-blur-xl border-t border-white/10 z-50">
+      <div className="fixed bottom-20 left-0 right-0 p-4 bg-black/80 backdrop-blur-xl border-t border-white/10 z-[60]">
         <div className="container mx-auto max-w-md">
           <button
             onClick={handleAddToCart}
