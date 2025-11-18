@@ -109,7 +109,7 @@ const ProductDetail = ({ onCartUpdate }) => {
   }
 
   return (
-    <div className="min-h-screen pb-40">
+    <div className="min-h-screen pb-48">
       <div className="container mx-auto px-4 py-6">
         <button
           onClick={() => {

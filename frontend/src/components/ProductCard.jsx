@@ -32,13 +32,6 @@ const ProductCard = ({ product }) => {
 
   const getStrengthBadge = () => {
     if (!product.strength) {
-      if (product.category?.name === 'РАСХОДНИКИ') {
-        return (
-          <span className="inline-block px-2 py-1 text-xs font-medium text-cyan-400 bg-cyan-500/20 rounded-full border border-cyan-500/30">
-            {product.category.name}
-          </span>
-        );
-      }
       return null;
     }
 
