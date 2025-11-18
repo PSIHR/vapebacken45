@@ -109,8 +109,8 @@ const ProductDetail = ({ onCartUpdate }) => {
   }
 
   return (
-    <div className="min-h-screen pb-56">
-      <div className="container mx-auto px-4 py-6">
+    <div className="min-h-screen">
+      <div className="container mx-auto px-4 py-6 pb-44">
         <button
           onClick={() => {
             const categoryId = location.state?.categoryId || product?.category?.id;
@@ -265,13 +265,13 @@ const ProductDetail = ({ onCartUpdate }) => {
         </div>
       </div>
 
-      {/* Fixed bottom button */}
-      <div className="fixed bottom-20 left-0 right-0 p-4 bg-black/80 backdrop-blur-xl border-t border-white/10 z-[60]">
-        <div className="container mx-auto max-w-md">
+      {/* Fixed button below navbar */}
+      <div className="fixed bottom-0 left-0 right-0 pb-24 z-40">
+        <div className="container mx-auto px-4 pb-4">
           <button
             onClick={handleAddToCart}
             disabled={adding}
-            className="w-full bg-pink-500 hover:bg-pink-600 text-white py-4 rounded-lg font-medium text-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full bg-pink-500 hover:bg-pink-600 text-white py-4 rounded-lg font-medium text-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-xl shadow-pink-500/50 border-2 border-pink-400/30"
           >
             {adding ? (
               'Добавление...'

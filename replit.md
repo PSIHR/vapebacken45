@@ -33,11 +33,11 @@ The application uses a client-server architecture. The Telegram bot serves as an
 ## Recent Changes
 
 - **2025-11-17**: Fixed button overflow issues and duplicate taste creation bug
-  - **ProductDetail page**: Made "Добавить в корзину" button fixed above navbar
-    - Button positioned at bottom-20 (80px above bottom) with z-[60] to stay above navbar (z-50)
+  - **ProductDetail page**: Made "Добавить в корзину" button fixed below navbar
+    - Button positioned at bottom-0 with pb-24 offset and z-40 to sit under navbar (z-50)
     - Added max-h-96 with overflow-y-auto to taste selection grid for scrollable long lists
-    - Glassmorphism backdrop-blur-xl for fixed button bar
-    - Increased page padding-bottom (pb-56) to prevent content hiding under button and navbar
+    - Enhanced button styling with shadow-xl and border for better visibility
+    - Increased page padding-bottom (pb-44) to prevent content hiding under button
   - **ProductCard component**: Optimized card layout to prevent "Выбрать" button cutoff
     - Reduced image height from h-48 to h-36 for more compact cards
     - Removed description from card (only title + badge + price + buttons)
