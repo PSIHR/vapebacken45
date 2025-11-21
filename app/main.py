@@ -1739,19 +1739,28 @@ async def spa_fallback(full_path: str):
 async def main():
     port = int(os.getenv("PORT", "5000"))
     log_level = os.getenv("LOG_LEVEL", "info")
+    # Ensure no SSL is attempted - these params prevent SSL cert loading errors
     config = uvicorn.Config(
         app, 
         host="0.0.0.0", 
         port=port, 
         log_level=log_level,
-        ssl_keyfile=None,
-        ssl_certfile=None,
-        ssl_ca_certs=None
+        ssl_keyfile=False,
+        ssl_certfile=False,
+        ssl_ca_certs=None,
+        ssl_version=None
     )
     server = uvicorn.Server(config)
-
     await server.serve()
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    # Check if running via gunicorn (production) or directly (development)
+    is_production = "gunicorn" in os.environ.get("SERVER_SOFTWARE", "")
+    
+    if is_production:
+        # Let gunicorn handle it - don't run asyncio.run()
+        pass
+    else:
+        # Development mode - run directly
+        asyncio.run(main())
