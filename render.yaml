@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: vape-plug-api
+    env: python
+    plan: free
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r requirements.txt
+      cd frontend && npm install && npm run build && cd ..
+    startCommand: python app/main.py
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: PORT
+        value: "10000"
+      - key: LOG_LEVEL
+        value: "info"
+      - key: BACKEND_URL
+        value: https://vape-plug-api.onrender.com
+      - key: WEBAPP_URL
+        value: https://vaultroi.com
+      - key: TOKEN
+        sync: false
+      - key: ADMINS
+        sync: false
+      - key: COURIERS
+        sync: false

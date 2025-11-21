@@ -7,7 +7,6 @@ channel = "stable-25_05"
 packages = ["cacert", "glibcLocales", "libxcrypt", "util-linux"]
 
 [workflows]
-runButton = "Project"
 
 [[workflows.workflow]]
 name = "Project"

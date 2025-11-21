@@ -58,8 +58,10 @@ from typization.models import (
     UserRegisterModel,
 )
 
-if not load_dotenv("./config/.env.local"):
-    raise Exception("Failed to load .env file")
+import os as _os
+_env_file = "./config/.env.prod" if _os.getenv("ENVIRONMENT") == "production" else "./config/.env.local"
+if not load_dotenv(_env_file):
+    raise Exception(f"Failed to load .env file: {_env_file}")
 
 router = APIRouter()
 
@@ -1736,7 +1738,16 @@ async def spa_fallback(full_path: str):
 
 async def main():
     port = int(os.getenv("PORT", "5000"))
-    config = uvicorn.Config(app, host="0.0.0.0", port=port, log_level="info")
+    log_level = os.getenv("LOG_LEVEL", "info")
+    config = uvicorn.Config(
+        app, 
+        host="0.0.0.0", 
+        port=port, 
+        log_level=log_level,
+        ssl_keyfile=None,
+        ssl_certfile=None,
+        ssl_ca_certs=None
+    )
     server = uvicorn.Server(config)
 
     await server.serve()
